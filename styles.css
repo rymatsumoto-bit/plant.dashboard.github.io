@@ -148,6 +148,54 @@ body {
     border-left-color: var(--warning-accent);
 }
 
+.alert-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+.alert-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.85em;
+    font-weight: 600;
+    transition: background 0.2s, transform 0.1s;
+}
+
+.alert-btn:hover {
+    transform: translateY(-1px);
+}
+
+.alert-btn.snooze {
+    background: var(--info-bg);
+    color: var(--info-text);
+}
+
+.alert-btn.snooze:hover {
+    background: var(--sage-mist);
+}
+
+.alert-btn.done {
+    background: var(--success-bg);
+    color: var(--success-text);
+}
+
+.alert-btn.done:hover {
+    background: var(--botanical-green);
+    color: white;
+}
+
+.alert-btn.details {
+    background: var(--btn-primary-bg);
+    color: var(--btn-primary-text);
+}
+
+.alert-btn.details:hover {
+    background: var(--btn-primary-hover);
+}
+
 .alert-info {
     flex: 1;
 }
