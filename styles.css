@@ -14,7 +14,7 @@
     --rich-soil: #401d0f;
     
     /* Backgrounds */
-    --bg-primary: #ffe2d1;
+    --bg-primary: #f8ebe3;
     --bg-secondary: #91c7b1;
     --bg-card: #ffffff;
     
@@ -79,6 +79,13 @@ body {
 .sidebar h1 {
     font-size: 1.5em;
     margin-bottom: 10px;
+}
+
+.sidebar h1 .version {
+    font-size: 0.6em;
+    opacity: 0.9;
+    margin-left: 8px;
+    font-weight: 400;
 }
 
 .sidebar .tagline {

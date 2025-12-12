@@ -252,9 +252,9 @@ function renderAttentionDashboard() {
                 <div class="alert-days ${item.waterOverdue ? '' : 'warning'}">${daysText}</div>
             </div>
             <div class="alert-actions">
-                <button class="alert-btn snooze" onclick="snoozeAlert('${item.plant.id}', '${reason}'); event.stopPropagation();" title="Snooze 3 Days"></button>
-                <button class="alert-btn done" onclick="markAsDone('${item.plant.id}', '${reason}'); event.stopPropagation();" title="Mark as Done"></button>
-                <button class="alert-btn details" onclick="showPlantDetail('${item.plant.id}'); event.stopPropagation();" title="View Details"></button>
+                <button class="alert-btn snooze" aria-label="Snooze 3 days" onclick="snoozeAlert('${item.plant.id}', '${reason}'); event.stopPropagation();" title="Snooze 3 Days">⏰ Snooze</button>
+                <button class="alert-btn done" aria-label="Mark as done" onclick="markAsDone('${item.plant.id}', '${reason}'); event.stopPropagation();" title="Mark as Done">✅ Done</button>
+                <button class="alert-btn details" aria-label="View details" onclick="showPlantDetail('${item.plant.id}'); event.stopPropagation();" title="View Details">🔎 Details</button>
             </div>        
         `;
         alertList.appendChild(alertDiv);
