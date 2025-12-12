@@ -248,14 +248,14 @@ function renderAttentionDashboard() {
         alertDiv.innerHTML = `
             <div class="alert-info">
                 <div class="alert-plant-name">${item.plant.nickname}</div>
-                <div class="alert-reason">${item.plant.nickname} needs attention because of ${reason}</div>
+                <div class="alert-reason">${reason.toUpperCase()}</div>
+                <div class="alert-days ${item.waterOverdue ? '' : 'warning'}">${daysText}</div>
             </div>
-            <div class="alert-days ${item.waterOverdue ? '' : 'warning'}">${daysText}</div>
             <div class="alert-actions">
-                <button class="alert-btn snooze" onclick="snoozeAlert('${item.plant.id}', '${reason}'); event.stopPropagation();">Snooze 3 Days</button>
-                <button class="alert-btn done" onclick="markAsDone('${item.plant.id}', '${reason}'); event.stopPropagation();">Done</button>
-                <button class="alert-btn details" onclick="showPlantDetail('${item.plant.id}'); event.stopPropagation();">Details</button>
-            </div>
+                <button class="alert-btn snooze" onclick="snoozeAlert('${item.plant.id}', '${reason}'); event.stopPropagation();" title="Snooze 3 Days"></button>
+                <button class="alert-btn done" onclick="markAsDone('${item.plant.id}', '${reason}'); event.stopPropagation();" title="Mark as Done"></button>
+                <button class="alert-btn details" onclick="showPlantDetail('${item.plant.id}'); event.stopPropagation();" title="View Details"></button>
+            </div>        
         `;
         alertList.appendChild(alertDiv);
     });
