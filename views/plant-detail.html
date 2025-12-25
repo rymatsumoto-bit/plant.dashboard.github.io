@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plant Hub Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="sidebar">
+        <h1>🌱 Plant Hub <span class="version">v0.1.1</span></h1>
+        <p class="tagline">A dashboard for plant care</p>
+        <div class="nav-item active" data-view="attention">🚥 Actionable Items</div>
+        <div class="nav-item" data-view="all-plants">📋 Plants List</div>
+    </div>
+    
+    <div class="main-content">
+        <!-- vei -->
+        <div id="attention-view" class="view">
+            <div class="header">
+                <h2>Plants Needing Attention</h2>
+                <p>These plants require immediate care</p>
+            </div>
+            <div class="alert-list" id="alert-list"></div>
+        </div>
+        
+        <!-- All Plants View -->
+        <div id="all-plants-view" class="view hidden">
+            <div class="header">
+                <h2>All Plants</h2>
+                <p>Your complete plant collection</p>
+            </div>
+            <div class="plants-grid" id="plants-grid"></div>
+        </div>
+        
+        <!-- Individual Plant Detail View -->
+        <div id="detail-view" class="view hidden">
+            <div class="detail-container">
+                <button class="back-btn" onclick="showView('all-plants')">← Back to All Plants</button>
+                <div id="plant-detail-content"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Supabase Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- Dashboard JavaScript -->
+    <script src="dashboard.js"></script>
+</body>
+</html>
