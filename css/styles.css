@@ -1,0 +1,414 @@
+/* Plant Care Dashboard Styles */
+
+/* Color Palette */
+:root {
+    /* Primary Colors */
+    --forest-teal: #03312e;
+    --botanical-green: #08827A;
+    
+    /* Secondary Colors */
+    --sage-mist: #91c7b1;
+    --clay-peach: #EDF0F2;
+    
+    /* Accent / Contrast */
+    --rich-soil: #401d0f;
+    
+    /* Backgrounds */
+    --bg-primary: #f8ebe3;
+    --bg-secondary: #91c7b1;
+    --bg-card: #ffffff;
+    
+    /* Text Colors */
+    --text-primary: #401d0f;
+    --text-secondary: #03312e;
+    --text-light: #5a5a5a;
+    
+    /* Border Colors */
+    --border-light: #e2d4c4;
+    --border-medium: #c7b9a9;
+    
+    /* Button Colors */
+    --btn-primary-bg: #03312e;
+    --btn-primary-text: #ffe2d1;
+    --btn-primary-hover: #024a45;
+    --btn-secondary-bg: #6f7c12;
+    --btn-secondary-text: #ffe2d1;
+    --btn-secondary-hover: #596b0f;
+    
+    /* Status Colors */
+    --success-bg: #d4e5a8;
+    --success-text: #4a5a08;
+    --success-accent: #6f7c12;
+    
+    --info-bg: #d8f0e8;
+    --info-text: #02241f;
+    --info-accent: #91c7b1;
+    
+    --warning-bg: #ffefd9;
+    --warning-text: #8b5000;
+    --warning-accent: #ff9800;
+    
+    --danger-bg: #ffd4c4;
+    --danger-text: #8b2500;
+    --danger-accent: #d84315;
+}
+
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: 1px solid red
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--bg-primary);
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    background: var(--forest-teal);
+    color: var(--clay-peach);
+    padding: 30px 20px;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+}
+
+.sidebar h1 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.sidebar h1 .version {
+    font-size: 0.6em;
+    opacity: 0.9;
+    margin-left: 8px;
+    font-weight: 400;
+}
+
+.sidebar .tagline {
+    font-size: 0.9em;
+    opacity: 0.9;
+    margin-bottom: 40px;
+}
+
+/* Sidebar Header with Logo */
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.sidebar-header .logo {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+}
+
+.sidebar-header h1 {
+    margin: 0;
+}
+
+/* If your logo color needs adjustment */
+.sidebar-header .logo {
+    filter: brightness(0) invert(1); /* Makes logo white - remove if logo already has correct colors */
+}
+
+.nav-item {
+    padding: 15px 20px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.nav-item:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+.nav-item.active {
+    background: rgba(255,255,255,0.2);
+    font-weight: 600;
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    padding: 40px;
+    overflow-y: auto;
+}
+
+.header {
+    margin-bottom: 30px;
+}
+
+.header h2 {
+    font-size: 2em;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+}
+
+.header p {
+    color: var(--text-light);
+    font-size: 1.1em;
+}
+
+/* Alert List (Attention Dashboard) */
+.alert-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.alert-item {
+    background: var(--bg-card);
+    padding: 20px 25px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-left: 4px solid var(--danger-accent);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.alert-item.warning {
+    border-left-color: var(--warning-accent);
+}
+
+.alert-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+.alert-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.85em;
+    font-weight: 600;
+    transition: background 0.2s, transform 0.1s;
+}
+
+.alert-btn:hover {
+    transform: translateY(-1px);
+}
+
+.alert-btn.snooze {
+    background: var(--info-bg);
+    color: var(--info-text);
+}
+
+.alert-btn.snooze:hover {
+    background: var(--sage-mist);
+}
+
+.alert-btn.done {
+    background: var(--success-bg);
+    color: var(--success-text);
+}
+
+.alert-btn.done:hover {
+    background: var(--botanical-green);
+    color: white;
+}
+
+.alert-btn.details {
+    background: var(--btn-primary-bg);
+    color: var(--btn-primary-text);
+}
+
+.alert-btn.details:hover {
+    background: var(--btn-primary-hover);
+}
+
+.alert-info {
+    flex: 1;
+}
+
+.alert-plant-name {
+    font-size: 1.2em;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 5px;
+}
+
+.alert-reason {
+    color: var(--text-light);
+    font-size: 0.95em;
+}
+
+.alert-days {
+    background: var(--danger-bg);
+    color: var(--danger-text);
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9em;
+    align-self: flex-start;
+}
+
+.alert-days.warning {
+    background: var(--warning-bg);
+    color: var(--warning-text);
+}
+
+/* Plants Grid (All Plants View) */
+.plants-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.plant-card {
+    background: var(--bg-card);
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+}
+
+.plant-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+.plant-icon {
+    font-size: 3em;
+    margin-bottom: 15px;
+}
+
+.plant-nickname {
+    font-size: 1.2em;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+}
+
+.plant-status {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 0.85em;
+    font-weight: 600;
+}
+
+.plant-status.good {
+    background: var(--success-bg);
+    color: var(--success-text);
+}
+
+.plant-status.attention {
+    background: var(--danger-bg);
+    color: var(--danger-text);
+}
+
+/* Detail View */
+.detail-container {
+    background: var(--bg-card);
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    max-width: 800px;
+}
+
+.back-btn {
+    background: var(--btn-primary-bg);
+    color: var(--btn-primary-text);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 30px;
+    font-size: 1em;
+}
+
+.back-btn:hover {
+    background: var(--btn-primary-hover);
+}
+
+.detail-section {
+    margin-bottom: 30px;
+}
+
+.detail-section h3 {
+    color: var(--botanical-green);
+    font-size: 1.3em;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border-light);
+}
+
+.detail-row {
+    display: flex;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.detail-label {
+    font-weight: 600;
+    color: var(--text-secondary);
+    width: 180px;
+}
+
+.detail-value {
+    color: var(--text-light);
+    flex: 1;
+}
+
+/* Action Log */
+.action-log {
+    list-style: none;
+}
+
+.action-item {
+    padding: 12px 15px;
+    background: var(--bg-primary);
+    border-radius: 5px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.action-type {
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.action-date {
+    color: var(--text-light);
+    font-size: 0.9em;
+}
+
+/* Utility */
+.hidden {
+    display: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    body {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: 100%;
+        padding: 20px;
+    }
+    
+    .plants-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+    
+    .alert-list {
+        grid-template-columns: 1fr;
+    }
+}
