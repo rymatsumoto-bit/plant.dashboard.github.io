@@ -1,0 +1,23 @@
+/* Table Components */
+.action-log {
+    list-style: none;
+}
+
+.action-item {
+    padding: 12px 15px;
+    background: var(--bg-primary);
+    border-radius: var(--radius-sm);
+    margin-bottom: var(--spacing-sm);
+    display: flex;
+    justify-content: space-between;
+}
+
+.action-type {
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.action-date {
+    color: var(--text-light);
+    font-size: 0.9em;
+}
