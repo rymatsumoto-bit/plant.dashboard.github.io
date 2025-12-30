@@ -4,14 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plant Hub Dashboard</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/styles.css">
     
 </head>
 <body>
     <div class="sidebar">
-        <h1>🌱 Plant Hub <span class="version">v0.1.1</span></h1>
+        <div class="sidebar-header">
+            <img src="assets/images/icons/main_logo.svg" alt="Plant Hub Logo" class="logo">
+            <h1>Plant Hub <span class="version">v0.1.1</span></h1>
+        </div>
         <p class="tagline">A dashboard for plant care</p>
-        <div class="nav-item active" data-view="actionables">🚥 Actionable Items</div>
+        <div class="nav-item active" data-view="actionable-items">🚥 Actionable Items</div>
         <div class="nav-item" data-view="inventory">📋 Inventory</div>
         <div class="nav-item" data-view="settings">⚙️ Settings</div>
     </div>
@@ -21,11 +24,9 @@
         <div id="view-container" class="view"></div>    
     </div>
     
-    <!-- Supabase Client -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-    <script src="/js/app.js"></script>
+    <!-- Calls navigation -->
+    
+    <script src="js/app.js"></script>
     
 </body>
 </html>
-
