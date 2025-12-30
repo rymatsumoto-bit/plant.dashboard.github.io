@@ -4,19 +4,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plant Hub Dashboard</title>
-    <link rel="stylesheet" href="css/styles.css">
     
+    <!-- CSS Files in Order -->
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    
+    <!-- Component Styles -->
+    <link rel="stylesheet" href="css/components/buttons.css">
+    <link rel="stylesheet" href="css/components/cards.css">
+    <link rel="stylesheet" href="css/components/badges.css">
+    <link rel="stylesheet" href="css/components/tables.css">
+    <link rel="stylesheet" href="css/components/charts.css">
+    
+    <!-- Feature Styles -->
+    <link rel="stylesheet" href="css/features/dashboard.css">
+    <link rel="stylesheet" href="css/features/inventory.css">
+    <link rel="stylesheet" href="css/features/configuration.css">
+    <link rel="stylesheet" href="css/features/reports.css">
+    <link rel="stylesheet" href="css/features/settings.css">
+    
+    <!-- Responsive -->
+    <link rel="stylesheet" href="css/responsive.css">
 </head>
 <body>
     <div class="sidebar">
         <div class="sidebar-header">
-            <img src="assets/images/icons/main_logo.svg" alt="Plant Hub Logo" class="logo">
-            <h1>Plant Hub <span class="version">v0.1.1</span></h1>
+            <img src="assets/images/icons/main-logo.svg" alt="Plant Hub Logo" class="logo">
+            <h1>Plant Hub <span class="version">v0.1.2</span></h1>
         </div>
         <p class="tagline">A dashboard for plant care</p>
-        <div class="nav-item active" data-view="actionable-items">🚥 Actionable Items</div>
-        <div class="nav-item" data-view="inventory">📋 Inventory</div>
-        <div class="nav-item" data-view="settings">⚙️ Settings</div>
+        
+        <nav class="sidebar-nav">
+            <div class="nav-item active" data-view="dashboard">
+                <img src="assets/images/icons/nav-dashboard.svg" alt="" class="nav-icon">
+                <span>Dashboard</span>
+            </div>
+            <div class="nav-item" data-view="reports">
+                <img src="assets/images/icons/nav-reports.svg" alt="" class="nav-icon">
+                <span>Reports</span>
+            </div>
+            <div class="nav-item" data-view="inventory">
+                <img src="assets/images/icons/nav-inventory.svg" alt="" class="nav-icon">
+                <span>Inventory</span>
+            </div>
+            <div class="nav-item" data-view="configuration">
+                <img src="assets/images/icons/nav-configuration.svg" alt="" class="nav-icon">
+                <span>Configuration</span>
+            </div>
+        </nav>
     </div>
     
     <div class="main-content">
@@ -24,9 +61,7 @@
         <div id="view-container" class="view"></div>    
     </div>
     
-    <!-- Calls navigation -->
-    
+    <!-- JavaScript -->
     <script src="js/app.js"></script>
-    
 </body>
 </html>

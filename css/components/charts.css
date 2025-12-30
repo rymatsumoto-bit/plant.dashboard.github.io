@@ -1,0 +1,7 @@
+/* Chart Components - Placeholder for future use */
+.chart-container {
+    background: var(--bg-card);
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+}

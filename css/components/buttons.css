@@ -1,0 +1,88 @@
+/* Button Styles */
+.btn {
+    padding: 10px 20px;
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-primary {
+    background: var(--btn-primary-bg);
+    color: var(--btn-primary-text);
+}
+
+.btn-primary:hover {
+    background: var(--btn-primary-hover);
+}
+
+.btn-secondary {
+    background: var(--btn-secondary-bg);
+    color: var(--btn-secondary-text);
+}
+
+.btn-secondary:hover {
+    background: var(--btn-secondary-hover);
+}
+
+.back-btn {
+    background: var(--btn-primary-bg);
+    color: var(--btn-primary-text);
+    border: none;
+    padding: 10px 20px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    margin-bottom: var(--spacing-xl);
+    font-size: var(--font-size-base);
+}
+
+.back-btn:hover {
+    background: var(--btn-primary-hover);
+}
+
+/* Alert Action Buttons */
+.alert-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    transition: background var(--transition-fast), transform var(--transition-fast);
+}
+
+.alert-btn:hover {
+    transform: translateY(-1px);
+}
+
+.alert-btn.snooze {
+    background: var(--info-bg);
+    color: var(--info-text);
+}
+
+.alert-btn.snooze:hover {
+    background: var(--sage-mist);
+}
+
+.alert-btn.done {
+    background: var(--success-bg);
+    color: var(--success-text);
+}
+
+.alert-btn.done:hover {
+    background: var(--botanical-green);
+    color: white;
+}
+
+.alert-btn.details {
+    background: var(--btn-primary-bg);
+    color: var(--btn-primary-text);
+}
+
+.alert-btn.details:hover {
+    background: var(--btn-primary-hover);
+}
