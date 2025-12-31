@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Habitat Configuration - Plant Hub</title>
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="css/main.css">
+   
+</head>
+<body>
+    <div class="configuration-container">
+        <div class="header">
+            <h1>Configuration</h1>
+            <p>Manage habitats and environmental settings for your plants</p>
+        </div>
+        
+        <div class="configuration-content-grid">
+            <!-- Left Panel: Habitat List -->
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-lg);">
+                    <h2 style="margin-bottom: 0; border: none; padding: 0;">Habitats</h2>
+                    <button class="btn btn-primary" onclick="showNewHabitatForm()">
+                        + New Habitat
+                    </button>
+                </div>
+                
+                <ul class="habitat-list" id="habitat-list">
+                    <li class="habitat-item active">
+                        <div>
+                            <div class="habitat-name">Living Room Window</div>
+                            <div class="habitat-info">South-facing • Medium window</div>
+                        </div>
+                        <div class="habitat-actions">
+                            <button class="btn btn-small btn-edit">Edit</button>
+                            <button class="btn btn-small btn-delete">Delete</button>
+                        </div>
+                    </li>
+                    <li class="habitat-item">
+                        <div>
+                            <div class="habitat-name">Kitchen Counter</div>
+                            <div class="habitat-info">Artificial light • High intensity</div>
+                        </div>
+                        <div class="habitat-actions">
+                            <button class="btn btn-small btn-edit">Edit</button>
+                            <button class="btn btn-small btn-delete">Delete</button>
+                        </div>
+                    </li>
+                    <li class="habitat-item">
+                        <div>
+                            <div class="habitat-name">Backyard Garden</div>
+                            <div class="habitat-info">Outdoor • Full sun</div>
+                        </div>
+                        <div class="habitat-actions">
+                            <button class="btn btn-small btn-edit">Edit</button>
+                            <button class="btn btn-small btn-delete">Delete</button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Right Panel: Habitat Form -->
+            <div class="card">
+                <h2>New Habitat</h2>
+                
+                <form id="habitat-form" style="margin-top: var(--spacing-lg);">
+                    <!-- Basic Info -->
+                    <div class="form-section">
+                        <h3>Basic Information</h3>
+                        
+                        <div class="form-group">
+                            <label for="habitat-name">Habitat Name *</label>
+                            <input type="text" id="habitat-name" placeholder="e.g., Living Room Window" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="address">Address / Location *</label>
+                            <input type="text" id="address" placeholder="Zip code or GPS coordinates">
+                            <div class="help-text">Used to fetch weather data (sunlight, rainfall, temperature)</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Light Exposure -->
+                    <div class="form-section">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-md);">
+                            <h3 style="margin-bottom: 0;">Light Exposure</h3>
+                            <div style="display: flex; gap: var(--spacing-sm);">
+                                <button type="button" class="btn btn-small btn-secondary" onclick="openLightModal('artificial')">
+                                    + Artificial
+                                </button>
+                                <button type="button" class="btn btn-small btn-secondary" onclick="openLightModal('window')">
+                                    + Window
+                                </button>
+                                <button type="button" class="btn btn-small btn-secondary" onclick="openLightModal('outdoor')">
+                                    + Outdoor
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- All Light Sources List -->
+                        <div class="habitat-light-items-container">
+                            <div id="all-lights-list">
+                                <div class="habitat-light-item">
+                                    <div class="habitat-light-item-header">
+                                        <div>
+                                            <span class="light-item-title">Grow Light 1</span>
+                                            <span style="font-size: 0.85em; color: var(--text-light); margin-left: 10px;">(Artificial Light)</span>
+                                        </div>
+                                        <div>
+                                            <button type="button" class="btn btn-small btn-primary" onclick="editLight(0, 'artificial')">Edit</button>
+                                            <button type="button" class="btn btn-small btn-delete" onclick="deleteLight(0, 'artificial')">Delete</button>
+                                        </div>
+                                    </div>
+                                    <div class="habitat-light-item-details">
+                                        Strength: High (500-1000 FC)<br>
+                                        Schedule: 6:00 AM - 8:00 PM (Fixed times)
+                                    </div>
+                                </div>
+                                
+                                <div class="habitat-light-item">
+                                    <div class="habitat-light-item-header">
+                                        <div>
+                                            <span class="habitat-light-item-title">South Window</span>
+                                            <span style="font-size: 0.85em; color: var(--text-light); margin-left: 10px;">(Window)</span>
+                                        </div>
+                                        <div>
+                                            <button type="button" class="btn btn-small btn-primary" onclick="editLight(0, 'window')">Edit</button>
+                                            <button type="button" class="btn btn-small btn-delete" onclick="deleteLight(0, 'window')">Delete</button>
+                                        </div>
+                                    </div>
+                                    <div class="habitat-light-item-details">
+                                        Direction: South<br>
+                                        Size: Medium (10-43 sq ft)
+                                    </div>
+                                </div>
+                                
+                                <div class="habitat-light-item">
+                                    <div class="habitat-light-item-header">
+                                        <div>
+                                            <span class="habitat-light-item-title">Full Sun Area</span>
+                                            <span style="font-size: 0.85em; color: var(--text-light); margin-left: 10px;">(Outdoor)</span>
+                                        </div>
+                                        <div>
+                                            <button type="button" class="btn btn-small btn-primary" onclick="editLight(0, 'outdoor')">Edit</button>
+                                            <button type="button" class="btn btn-small btn-delete" onclick="deleteLight(0, 'outdoor')">Delete</button>
+                                        </div>
+                                    </div>
+                                    <div class="habitat-light-item-details">
+                                        Exposure: S, SE, SW
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Temperature -->
+                    <div class="form-section">
+                        <h3>Temperature</h3>
+                        
+                        <div class="form-group">
+                            <label>Temperature Control</label>
+                            <div class="radio-group">
+                                <div class="radio-option">
+                                    <input type="radio" id="temp-controlled" name="temp-control" value="controlled" onchange="toggleTempDetails()">
+                                    <label for="temp-controlled">Controlled</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" id="temp-uncontrolled" name="temp-control" value="uncontrolled" checked onchange="toggleTempDetails()">
+                                    <label for="temp-uncontrolled">Non-Controlled</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="temp-details" style="display: none;">
+                            <div class="form-group-inline">
+                                <div class="form-group">
+                                    <label for="temp-min">Min (°F)</label>
+                                    <input type="number" id="temp-min" placeholder="65">
+                                </div>
+                                <div class="form-group">
+                                    <label for="temp-max">Max (°F)</label>
+                                    <input type="number" id="temp-max" placeholder="75">
+                                </div>
+                                <div class="form-group">
+                                    <label for="temp-avg">Avg (°F)</label>
+                                    <input type="number" id="temp-avg" placeholder="70">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Humidity -->
+                    <div class="form-section">
+                        <h3>Humidity</h3>
+                        
+                        <div class="form-group">
+                            <label for="humidity">Humidity Level</label>
+                            <select id="humidity">
+                                <option value="low">Low: <40%</option>
+                                <option value="medium">Medium: 30-60%</option>
+                                <option value="high">High: 60-80%</option>
+                                <option value="very-high">Very High: >80%</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Appliances -->
+                    <div class="form-section">
+                        <h3>Appliances</h3>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-sm);">
+                            <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+                                <input type="checkbox" id="appliance-ac" style="width: auto;">
+                                <label for="appliance-ac" style="margin: 0;">Air Conditioning (AC)</label>
+                            </div>
+                            
+                            <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+                                <input type="checkbox" id="appliance-heater" style="width: auto;">
+                                <label for="appliance-heater" style="margin: 0;">Heater</label>
+                            </div>
+                            
+                            <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+                                <input type="checkbox" id="appliance-fan" style="width: auto;">
+                                <label for="appliance-fan" style="margin: 0;">Fan</label>
+                            </div>
+                            
+                            <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+                                <input type="checkbox" id="appliance-humidifier" style="width: auto;">
+                                <label for="appliance-humidifier" style="margin: 0;">Humidifier</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Form Actions -->
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Save Habitat</button>
+                        <button type="button" class="btn" style="background: var(--bg-primary);" onclick="resetForm()">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal for Adding/Editing Light Sources -->
+    <div id="light-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Add Artificial Light</h3>
+                <button class="close-modal" onclick="closeLightModal()">&times;</button>
+            </div>
+            
+            <form id="light-form">
+                <!-- Artificial Light Form -->
+                <div id="artificial-form" style="display: none;">
+                    <div class="form-group">
+                        <label for="artificial-name">Light Name</label>
+                        <input type="text" id="artificial-name" placeholder="e.g., Grow Light 1">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="light-strength">Light Strength (FC: foot candle)</label>
+                        <select id="light-strength">
+                            <option value="low">Low: <100 FC</option>
+                            <option value="medium">Medium: 100-500 FC</option>
+                            <option value="high">High: 500-1000 FC</option>
+                            <option value="very-high">Very High: >1000 FC</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Light Schedule</label>
+                        <div class="form-group-inline">
+                            <div>
+                                <label for="light-start-type">Start Time</label>
+                                <select id="light-start-type" onchange="toggleTimeInput('start')">
+                                    <option value="fixed">Fixed Time</option>
+                                    <option value="sunrise">Sunrise</option>
+                                </select>
+                            </div>
+                            <div id="light-start-input">
+                                <label for="light-start-time">&nbsp;</label>
+                                <input type="time" id="light-start-time">
+                            </div>
+                        </div>
+                        <div id="light-start-location" style="display: none; margin-top: var(--spacing-sm);">
+                            <label for="light-start-address">Location (Zip code / GPS)</label>
+                            <input type="text" id="light-start-address" placeholder="e.g., 90210 or 34.0522,-118.2437">
+                            <div class="help-text">Used to determine sunrise time for this location</div>
+                        </div>
+                        
+                        <div class="form-group-inline" style="margin-top: var(--spacing-md);">
+                            <div>
+                                <label for="light-end-type">End Time</label>
+                                <select id="light-end-type" onchange="toggleTimeInput('end')">
+                                    <option value="fixed">Fixed Time</option>
+                                    <option value="sunset">Sunset</option>
+                                </select>
+                            </div>
+                            <div id="light-end-input">
+                                <label for="light-end-time">&nbsp;</label>
+                                <input type="time" id="light-end-time">
+                            </div>
+                        </div>
+                        <div id="light-end-location" style="display: none; margin-top: var(--spacing-sm);">
+                            <label for="light-end-address">Location (Zip code / GPS)</label>
+                            <input type="text" id="light-end-address" placeholder="e.g., 90210 or 34.0522,-118.2437">
+                            <div class="help-text">Used to determine sunset time for this location</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Window Form -->
+                <div id="window-form" style="display: none;">
+                    <div class="form-group">
+                        <label for="window-name">Window Name</label>
+                        <input type="text" id="window-name" placeholder="e.g., South Window">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="window-direction">Window Direction</label>
+                        <select id="window-direction">
+                            <option value="N">North (N)</option>
+                            <option value="NE">Northeast (NE)</option>
+                            <option value="E">East (E)</option>
+                            <option value="SE">Southeast (SE)</option>
+                            <option value="S">South (S)</option>
+                            <option value="SW">Southwest (SW)</option>
+                            <option value="W">West (W)</option>
+                            <option value="NW">Northwest (NW)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="window-size">Window Size</label>
+                        <select id="window-size">
+                            <option value="small">Small: <10 sq ft (<1.0 m²)</option>
+                            <option value="medium">Medium: 10-43 sq ft (1.0-4.0 m²)</option>
+                            <option value="large">Large: >43 sq ft (>4.0 m²)</option>
+                        </select>
+                        <div class="help-text">Small: up to 40"×40" | Medium: 40"×40" to 72"×72" | Large: 72"×72"+</div>
+                    </div>
+                </div>
+                
+                <!-- Outdoor Form -->
+                <div id="outdoor-form" style="display: none;">
+                    <div class="form-group">
+                        <label for="outdoor-name">Outdoor Area Name</label>
+                        <input type="text" id="outdoor-name" placeholder="e.g., Full Sun Area">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Exposure Directions (select all that apply)</label>
+                        <div class="btn-grid">
+                            <button type="button" class="btn-toggle" onclick="toggleDirection(this, 'N')">N</button>
+                            <button type="button" class="btn-toggle" onclick="toggleDirection(this, 'NE')">NE</button>
+                            <button type="button" class="btn-toggle" onclick="toggleDirection(this, 'E')">E</button>
+                            <button type="button" class="btn-toggle" onclick="toggleDirection(this, 'SE')">SE</button>
+                            <button type="button" class="btn-toggle" onclick="toggleDirection(this, 'S')">S</button>
+                            <button type="button" class="btn-toggle" onclick="toggleDirection(this, 'SW')">SW</button>
+                            <button type="button" class="btn-toggle" onclick="toggleDirection(this, 'W')">W</button>
+                            <button type="button" class="btn-toggle" onclick="toggleDirection(this, 'NW')">NW</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: var(--spacing-md); margin-top: var(--spacing-xl);">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn" style="background: var(--bg-primary);" onclick="closeLightModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        let currentLightType = null;
+        let selectedOutdoorDirections = [];
+        
+        function openLightModal(type) {
+            currentLightType = type;
+            document.getElementById('light-modal').classList.add('active');
+            
+            // Hide all forms
+            document.getElementById('artificial-form').style.display = 'none';
+            document.getElementById('window-form').style.display = 'none';
+            document.getElementById('outdoor-form').style.display = 'none';
+            
+            // Show appropriate form and update title
+            if (type === 'artificial') {
+                document.getElementById('modal-title').textContent = 'Add Artificial Light';
+                document.getElementById('artificial-form').style.display = 'block';
+            } else if (type === 'window') {
+                document.getElementById('modal-title').textContent = 'Add Window';
+                document.getElementById('window-form').style.display = 'block';
+            } else if (type === 'outdoor') {
+                document.getElementById('modal-title').textContent = 'Add Outdoor Exposure';
+                document.getElementById('outdoor-form').style.display = 'block';
+            }
+        }
+        
+        function closeLightModal() {
+            document.getElementById('light-modal').classList.remove('active');
+            document.getElementById('light-form').reset();
+            selectedOutdoorDirections = [];
+            // Reset toggle buttons
+            document.querySelectorAll('.btn-toggle').forEach(btn => btn.classList.remove('active'));
+        }
+        
+        function toggleTimeInput(type) {
+            const selectId = `light-${type}-type`;
+            const inputId = `light-${type}-input`;
+            const locationId = `light-${type}-location`;
+            const select = document.getElementById(selectId);
+            const input = document.getElementById(inputId);
+            const location = document.getElementById(locationId);
+            
+            if (select.value === 'fixed') {
+                input.style.display = 'block';
+                location.style.display = 'none';
+            } else {
+                input.style.display = 'none';
+                location.style.display = 'block';
+            }
+        }
+        
+        function toggleDirection(button, direction) {
+            button.classList.toggle('active');
+            const index = selectedOutdoorDirections.indexOf(direction);
+            if (index > -1) {
+                selectedOutdoorDirections.splice(index, 1);
+            } else {
+                selectedOutdoorDirections.push(direction);
+            }
+        }
+        
+        function toggleTempDetails() {
+            const controlled = document.getElementById('temp-controlled').checked;
+            document.getElementById('temp-details').style.display = controlled ? 'block' : 'none';
+        }
+        
+        function showNewHabitatForm() {
+            alert('Opening new habitat form');
+        }
+        
+        function resetForm() {
+            document.getElementById('habitat-form').reset();
+            document.getElementById('temp-details').style.display = 'none';
+        }
+        
+        function editLight(index, type) {
+            alert('Edit ' + type + ' light ' + index);
+        }
+        
+        function deleteLight(index, type) {
+            if (confirm('Delete this ' + type + ' exposure?')) {
+                alert('Deleted ' + type + ' light ' + index);
+            }
+        }
+        
+        // Form submission handlers
+        document.getElementById('habitat-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Habitat saved! (In production, this would save to Supabase)');
+        });
+        
+        document.getElementById('light-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            if (currentLightType === 'artificial') {
+                alert('Artificial light added!');
+            } else if (currentLightType === 'window') {
+                alert('Window added!');
+            } else if (currentLightType === 'outdoor') {
+                alert('Outdoor exposure added! Directions: ' + selectedOutdoorDirections.join(', '));
+            }
+            
+            closeLightModal();
+        });
+        
+        // Close modal when clicking outside
+        document.getElementById('light-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'light-modal') {
+                closeLightModal();
+            }
+        });
+    </script>
+</body>
+</html>
