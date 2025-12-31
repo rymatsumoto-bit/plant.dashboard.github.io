@@ -33,6 +33,20 @@
     --btn-secondary-text: #ffe2d1;
     --btn-secondary-hover: #596b0f;
     
+    /* Action Button Colors */
+    --btn-act-add-bg: #03312e;
+    --btn-act-add-text: #dcffd1;
+    --btn-act-add-hover: #024a45;
+    --btn-act-edit-bg: #4e7c12;
+    --btn-act-edit-text: #edffe7;
+    --btn-act-edit-hover: #5d8529;
+    --btn-act-cancel-bg: #ad9300;
+    --btn-act-cancel-text: #fff6c5;
+    --btn-act-cancel-hover: #bba110;
+    --btn-act-delete-bg: #b15e00;
+    --btn-act-delete-text: #fcd4a6;
+    --btn-act-delete-hover: #b96c13;
+    
     /* Status Colors */
     --success-bg: #d4e5a8;
     --success-text: #4a5a08;
