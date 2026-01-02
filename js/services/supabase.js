@@ -8,55 +8,45 @@ import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 const SUPABASE_URL = 'https://dciowholtqcpgzpryush.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRjaW93aG9sdHFjcGd6cHJ5dXNoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ1Mzg2MDQsImV4cCI6MjA4MDExNDYwNH0.UdNGgOT_mpDrFQXjQp7XB6F0Bbdn-eGJi9mcjz-ZnIw';
 
-let supabase = null;
+// Initialize Supabase client immediately
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-/**
- * Initialize Supabase client
- */
-export function initSupabase() {
-    if (typeof window.supabase !== 'undefined') {
-        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        console.log('✅ Supabase client initialized');
-    } else {
-        console.warn('⚠️ Supabase library not loaded');
-    }
-}
+console.log('✅ Supabase client initialized');
 
 /**
  * Get Supabase client instance
  */
 export function getSupabase() {
-    if (!supabase) {
-        initSupabase();
-    }
     return supabase;
 }
 
 // ============================================
-// PLANT QUERIES
+// HABITAT QUERIES
 // ============================================
 
 /**
- * Get all plants with care status
+ * Get all habitats
  */
-export async function getPlants() {
+export async function getHabitats() {
     const { data, error } = await supabase
-        .from('plant_care_status')
+        .from('habitat')
         .select('*')
-        .order('nickname');
+        .eq('is_active', true)
+        .order('habitat_name');
     
     if (error) throw error;
     return data;
 }
 
 /**
- * Get single plant by ID
+ * Get single habitat by ID
  */
-export async function getPlantById(plantId) {
+export async function getHabitatById(habitatId) {
     const { data, error } = await supabase
-        .from('plant_care_status')
+        .from('habitat')
         .select('*')
-        .eq('plant_id', plantId)
+        .eq('habitat_id', habitatId)
+        .eq('is_active', true)
         .single();
     
     if (error) throw error;
@@ -64,147 +54,85 @@ export async function getPlantById(plantId) {
 }
 
 /**
- * Add new plant
+ * Get habitat light sources (artificial)
  */
-export async function addPlant(plantData) {
+export async function getHabitatLightArtificial(habitatId) {
     const { data, error } = await supabase
-        .from('plants')
-        .insert(plantData)
-        .select();
+        .from('habitat_light_artificial')
+        .select(`
+            *,
+            light_artificial_strength:habitat_light_artifical_strenght_lookup(light_artificial_strength),
+            start_type:habitat_light_schedule_start_type_lookup(light_schedule_start_type),
+            end_type:habitat_light_schedule_end_type_lookup(light_schedule_end_type)
+        `)
+        .eq('habitat_id', habitatId)
+        .eq('is_active', true);
     
     if (error) throw error;
     return data;
 }
 
 /**
- * Update plant
+ * Get habitat light sources (window)
  */
-export async function updatePlant(plantId, plantData) {
+export async function getHabitatLightWindow(habitatId) {
     const { data, error } = await supabase
-        .from('plants')
-        .update(plantData)
-        .eq('plant_id', plantId)
-        .select();
+        .from('habitat_light_window')
+        .select(`
+            *,
+            window_size:habitat_light_window_size_lookup(window_size, window_size_desc),
+            direction:compass_direction_lookup(full_name)
+        `)
+        .eq('habitat_id', habitatId)
+        .eq('is_active', true);
     
     if (error) throw error;
     return data;
 }
 
 /**
- * Archive plant (soft delete)
+ * Get habitat light sources (outdoor)
  */
-export async function archivePlant(plantId) {
+export async function getHabitatLightOutdoor(habitatId) {
     const { data, error } = await supabase
-        .from('plants')
-        .update({ status: 'Archived' })
-        .eq('plant_id', plantId)
-        .select();
-    
-    if (error) throw error;
-    return data;
-}
-
-// ============================================
-// CARE ACTION QUERIES
-// ============================================
-
-/**
- * Add care action (watering, fertilizing)
- */
-export async function addCareAction(plantId, actionType, actionDate) {
-    const { data, error } = await supabase
-        .from('care_actions')
-        .insert({
-            plant_id: plantId,
-            action_type: actionType,
-            action_date: actionDate
-        })
-        .select();
-    
-    if (error) throw error;
-    return data;
-}
-
-/**
- * Get care actions for a plant
- */
-export async function getCareActions(plantId, limit = 10) {
-    const { data, error } = await supabase
-        .from('care_actions')
+        .from('habitat_light_outdoor')
         .select('*')
-        .eq('plant_id', plantId)
-        .order('action_date', { ascending: false })
-        .limit(limit);
+        .eq('habitat_id', habitatId)
+        .eq('is_active', true);
     
     if (error) throw error;
     return data;
 }
 
-// ============================================
-// SNOOZE QUERIES
-// ============================================
-
 /**
- * Snooze plant alert
+ * Get habitat humidity level lookup value
  */
-export async function snoozePlant(plantId, snoozeType, days = 3) {
-    const snoozeUntil = new Date();
-    snoozeUntil.setDate(snoozeUntil.getDate() + days);
-    const snoozeUntilStr = snoozeUntil.toISOString().split('T')[0];
+export async function getHumidityLevel(humidityLevelId) {
+    if (!humidityLevelId) return null;
     
     const { data, error } = await supabase
-        .from('plant_snoozes')
-        .insert({
-            plant_id: plantId,
-            snooze_type: snoozeType,
-            snoozed_until: snoozeUntilStr
-        })
-        .select();
+        .from('habitat_humidity_level_lookup')
+        .select('humidity_level, humidity_level_desc')
+        .eq('humidity_level_id', humidityLevelId)
+        .eq('is_active', true)
+        .single();
     
     if (error) throw error;
     return data;
 }
 
-// ============================================
-// LOCATION QUERIES
-// ============================================
-
 /**
- * Get all locations
+ * Get address by ID
  */
-export async function getLocations() {
+export async function getAddressById(addressId) {
+    if (!addressId) return null;
+    
     const { data, error } = await supabase
-        .from('locations')
+        .from('address')
         .select('*')
-        .eq('status', 'Active')
-        .order('location_name');
-    
-    if (error) throw error;
-    return data;
-}
-
-/**
- * Add new location
- */
-export async function addLocation(locationData) {
-    const { data, error } = await supabase
-        .from('locations')
-        .insert(locationData)
-        .select();
-    
-    if (error) throw error;
-    return data;
-}
-
-/**
- * Update location
- */
-export async function updateLocation(locationId, locationData) {
-    const { data, error } = await supabase
-        .from('locations')
-        .update(locationData)
-        .eq('location_id', locationId)
-        .select();
+        .eq('address_id', addressId)
+        .eq('is_active', true)
+        .single();
     
     if (error) throw error;
     return data;
