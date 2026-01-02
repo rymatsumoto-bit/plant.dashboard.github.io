@@ -1,0 +1,62 @@
+<!-- Artificial Light Form -->
+
+<form id="light-form">
+    <div id="artificial-light-form" style="display: none;">
+        <div class="form-group">
+            <label for="light-name">Light Name</label>
+            <input type="text" id="light-name" placeholder="e.g., Grow Light 1">
+        </div>
+        
+        <div class="form-group">
+            <label for="light-strength">Light Strength (fc: foot candle)</label>
+            <select id="light-strength">
+                <option value="low">Low: <100 fc</option>
+                <option value="medium">Medium: 100-500 fc</option>
+                <option value="high">High: 500-1000 fc</option>
+                <option value="very-high">Very High: >1000 fc</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label>Light Schedule</label>
+            <div class="form-group-inline">
+                <div>
+                    <label for="light-start-type">Start Time</label>
+                    <select id="light-start-type" onchange="toggleTimeInput('start')">
+                        <option value="fixed">Fixed Time</option>
+                        <option value="sunrise">Sunrise</option>
+                    </select>
+                </div>
+                <div id="light-start-input">
+                    <label for="light-start-time">&nbsp;</label>
+                    <input type="time" id="light-start-time">
+                </div>
+            </div>
+            <div id="light-start-location" style="display: none; margin-top: var(--spacing-sm);">
+                <label for="light-start-address">Location (Zip code / GPS)</label>
+                <input type="text" id="light-start-address" placeholder="e.g., 90210 or 34.0522,-118.2437">
+                <div class="help-text">Used to determine sunrise time for this location</div>
+            </div>
+            
+            <div class="form-group-inline" style="margin-top: var(--spacing-md);">
+                <div>
+                    <label for="light-end-type">End Time</label>
+                    <select id="light-end-type" onchange="toggleTimeInput('end')">
+                        <option value="fixed">Fixed Time</option>
+                        <option value="sunset">Sunset</option>
+                    </select>
+                </div>
+                <div id="light-end-input">
+                    <label for="light-end-time">&nbsp;</label>
+                    <input type="time" id="light-end-time">
+                </div>
+            </div>
+            <div id="light-end-location" style="display: none; margin-top: var(--spacing-sm);">
+                <label for="light-end-address">Location (Zip code / GPS)</label>
+                <input type="text" id="light-end-address" placeholder="e.g., 90210 or 34.0522,-118.2437">
+                <div class="help-text">Used to determine sunset time for this location</div>
+            </div>
+        </div>
+    </div>
+
+</form>

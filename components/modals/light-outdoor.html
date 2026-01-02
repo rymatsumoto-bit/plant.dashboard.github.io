@@ -1,0 +1,29 @@
+<!-- Outdoor Form -->
+    
+<form id="light-form">
+    <div id="outdoor-form" style="display: none;">
+        <div class="form-group">
+            <label for="outdoor-name">Outdoor Area Name</label>
+            <input type="text" id="outdoor-name" placeholder="e.g., Full Sun Area">
+        </div>
+        
+        <div class="form-group">
+            <label>Exposure Directions (select all that apply)</label>
+            <div class="btn-grid">
+                <button type="button" class="btn-toggle" onclick="toggleDirection(this, 'N')">N</button>
+                <button type="button" class="btn-toggle" onclick="toggleDirection(this, 'NE')">NE</button>
+                <button type="button" class="btn-toggle" onclick="toggleDirection(this, 'E')">E</button>
+                <button type="button" class="btn-toggle" onclick="toggleDirection(this, 'SE')">SE</button>
+                <button type="button" class="btn-toggle" onclick="toggleDirection(this, 'S')">S</button>
+                <button type="button" class="btn-toggle" onclick="toggleDirection(this, 'SW')">SW</button>
+                <button type="button" class="btn-toggle" onclick="toggleDirection(this, 'W')">W</button>
+                <button type="button" class="btn-toggle" onclick="toggleDirection(this, 'NW')">NW</button>
+            </div>
+        </div>
+    </div>
+
+    <div style="display: flex; gap: var(--spacing-md); margin-top: var(--spacing-xl);">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn" style="background: var(--bg-primary);" onclick="closeLightModal()">Cancel</button>
+    </div>
+</form>
