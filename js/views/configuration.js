@@ -5,7 +5,6 @@
 import { 
     getHabitats, 
     getHabitatById,
-    getHabitatClassification,
     getHabitatLightArtificial,
     getHabitatLightWindow,
     getHabitatLightOutdoor,
