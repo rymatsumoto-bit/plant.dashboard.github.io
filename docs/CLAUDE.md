@@ -163,6 +163,7 @@ plant-care-dashboard/
 │   │   ├── charts.css                  # Chart styles
 │   │   ├── empty-state.css             # Style for emtpy state
 │   │   ├── forms.css                   # Forms styles
+│   │   ├── loading.css                 # Style for loading data
 │   │   ├── modal.css                   # Modal styling
 │   │   ├── tables.css                  # Table and list styles
 │   │   └── charts.css                  # Chart components (placeholder)
@@ -559,6 +560,23 @@ Habitat location data (zip code/GPS) will be used to:
 3. **Request file uploads** if you need to see current code before making modifications
 4. **Generate new code** following the established folder structure and naming conventions
 5. **Supabase table schema** use the SCHEMA.md file
+
+### Code Generation Protocol
+**To optimize token usage, follow this two-step process:**
+
+1. **First Response - Summary Only:**
+   - When asked about code changes, creation, or modifications, provide ONLY a summary/plan
+   - Describe what files would be affected
+   - Outline what changes would be made
+   - Explain the approach and logic
+   - **Do NOT generate actual code**
+
+2. **Second Response - Code Generation:**
+   - Wait for explicit request: "Please generate the code" or similar
+   - Only then provide the actual code implementation
+   - Follow the established folder structure and conventions
+
+**Exception:** Only skip the summary step if the user explicitly requests code immediately (e.g., "write the code for...").
 
 ### Development Philosophy
 - Start with functional prototypes
