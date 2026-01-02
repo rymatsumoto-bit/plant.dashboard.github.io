@@ -13,6 +13,10 @@
     justify-content: center;
 }
 
+.modal.show {
+    display: flex; /* Show when .show class is added */
+}
+
 .modal.active {
     display: flex;
 }

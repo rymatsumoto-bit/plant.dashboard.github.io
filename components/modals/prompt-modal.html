@@ -1,0 +1,23 @@
+<!-- Modal for prompts -->
+<div id="prompt-modal" class="modal">
+    <div class="modal-content">
+
+        <!-- Header -->
+        <div class="modal-header">
+            <!-- prompt title -->
+            <h3 id="modal-title"></h3>
+            <button class="close-modal" onclick="closeLightModal()">&times;</button>
+        </div>
+        
+        <!-- Dynamic content -->
+        <div id="modal-body"></div>
+        
+        <!-- Footer -->
+        <!-- SAVE and CANCEL buttons -->
+        <div style="display: flex; gap: var(--spacing-md); margin-top: var(--spacing-xl);">
+            <button type="submit" class="btn btn-primary">SAVE</button>
+            <button type="button" class="btn" style="background: var(--bg-primary);" onclick="closeLightModal()">CANCEL</button>
+        </div>
+
+    </div>
+</div>

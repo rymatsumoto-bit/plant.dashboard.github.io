@@ -1,0 +1,34 @@
+<!-- Window Form -->
+     
+<form id="light-form">
+    <div id="window-form" style="display: none;">
+        <div class="form-group">
+            <label for="window-name">Window Name</label>
+            <input type="text" id="window-name" placeholder="e.g., South Window">
+        </div>
+        
+        <div class="form-group">
+            <label for="window-direction">Window Direction</label>
+            <select id="window-direction">
+                <option value="N">North (N)</option>
+                <option value="NE">Northeast (NE)</option>
+                <option value="E">East (E)</option>
+                <option value="SE">Southeast (SE)</option>
+                <option value="S">South (S)</option>
+                <option value="SW">Southwest (SW)</option>
+                <option value="W">West (W)</option>
+                <option value="NW">Northwest (NW)</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="window-size">Window Size</label>
+            <select id="window-size">
+                <option value="small">Small: <10 sq ft (<1.0 m²)</option>
+                <option value="medium">Medium: 10-43 sq ft (1.0-4.0 m²)</option>
+                <option value="large">Large: >43 sq ft (>4.0 m²)</option>
+            </select>
+            <div class="help-text">Small: up to 40"×40" | Medium: 40"×40" to 72"×72" | Large: 72"×72"+</div>
+        </div>
+    </div>
+</form>

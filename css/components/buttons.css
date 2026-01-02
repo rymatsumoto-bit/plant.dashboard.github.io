@@ -47,7 +47,14 @@
 /* Small Buttons */
 .btn-small {
     padding: 5px 10px;
-    font-size: 0.85em;
+    font-size: var(--font-size-sm);
+    border-radius: var(--radius-sm);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
 }
 
 /* Action Buttons colors */

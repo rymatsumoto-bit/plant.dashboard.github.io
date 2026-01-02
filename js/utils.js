@@ -77,3 +77,19 @@ export function generateId() {
 export function deepClone(obj) {
     return JSON.parse(JSON.stringify(obj));
 }
+
+/**
+ * Load HTML from external file
+ */
+export async function loadHTML(url) {
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`Failed to load ${url}: ${response.statusText}`);
+        }
+        return await response.text();
+    } catch (error) {
+        console.error('Error loading HTML:', error);
+        throw error;
+    }
+}
