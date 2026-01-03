@@ -115,7 +115,6 @@ async function loadHabitatDetails(habitatId) {
         
         // Fetch all habitat data
         const habitat = await getHabitatById(habitatId);
-        const address = await getAddressById(habitat.address_id);
         const humidityLevel = await getHumidityLevel(habitat.humidity_level_id);
         const lightArtificial = await getHabitatLightArtificial(habitatId);
         const lightWindow = await getHabitatLightWindow(habitatId);
@@ -129,7 +128,7 @@ async function loadHabitatDetails(habitatId) {
         });
         
         // Render form with data
-        renderHabitatForm(habitat, address, humidityLevel, {
+        renderHabitatForm(habitat, humidityLevel, {
             artificial: lightArtificial,
             window: lightWindow,
             outdoor: lightOutdoor
@@ -169,13 +168,10 @@ function updateHabitatListInfo(habitatId, lights) {
 /**
  * Render habitat form with data
  */
-function renderHabitatForm(habitat, address, humidityLevel, lights) {
+function renderHabitatForm(habitat, humidityLevel, lights) {
     // Update basic info fields
     document.getElementById('habitat-name').value = habitat.habitat_name || '';
-    document.getElementById('address').value = address 
-        ? `${address.postal_code}, ${address.city}, ${address.state_province}` 
-        : '';
-    
+        
     // Update temperature controls
     if (habitat.temperature_controlled) {
         document.getElementById('temp-controlled').checked = true;
@@ -254,6 +250,7 @@ function renderLightSources(lights) {
         lights.window.forEach(light => {
             const direction = light.direction_code || 'Unknown';
             const size = light.window_size?.window_size || 'Unknown';
+            const addressName = light.address?.address_name || 'Location not set';
             
             html += `
                 <div class="habitat-light-item">
@@ -275,7 +272,8 @@ function renderLightSources(lights) {
                     </div>
                     <div class="habitat-light-item-details">
                         Direction: ${direction}<br>
-                        Size: ${size}
+                        Size: ${size}<br>
+                        Location: ${addressName}
                     </div>
                 </div>
             `;

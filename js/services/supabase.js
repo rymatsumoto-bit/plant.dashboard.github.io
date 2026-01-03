@@ -61,7 +61,7 @@ export async function getHabitatLightArtificial(habitatId) {
         .from('habitat_light_artificial')
         .select(`
             *,
-            light_artificial_strength:habitat_light_artifical_strenght_lookup(light_artificial_strength),
+            light_artificial_strength:habitat_light_artificial_strength_lookup(light_artificial_strength),
             start_type:habitat_light_schedule_start_type_lookup(light_schedule_start_type),
             end_type:habitat_light_schedule_end_type_lookup(light_schedule_end_type)
         `)
@@ -81,7 +81,8 @@ export async function getHabitatLightWindow(habitatId) {
         .select(`
             *,
             window_size:habitat_light_window_size_lookup(window_size, window_size_desc),
-            direction:compass_direction_lookup(full_name)
+            direction:compass_direction_lookup(full_name),
+            address:address(address_name)
         `)
         .eq('habitat_id', habitatId)
         .eq('is_active', true);
