@@ -122,6 +122,24 @@ export async function getHumidityLevel(humidityLevelId) {
     return data;
 }
 
+// ============================================
+// ADDRESS QUERIES
+// ============================================
+
+/**
+ * Get all addresses
+ */
+export async function getAddresses() {
+    const { data, error } = await supabase
+        .from('address')
+        .select('*')
+        .eq('is_active', true)
+        .order('address_name');
+    
+    if (error) throw error;
+    return data;
+}
+
 /**
  * Get address by ID
  */

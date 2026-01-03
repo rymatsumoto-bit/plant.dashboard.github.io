@@ -502,6 +502,15 @@ To add a new feature:
 
 ## Configuration Features
 
+The Configuration view uses a **tabbed layout** to manage multiple foundational entity types that require infrequent updates.
+
+### Tab Navigation Pattern
+- Horizontal tabs below the page header
+- Each tab shows the same two-column layout: entity list (left) + detail form (right)
+- Currently implemented tabs:
+  1. **Habitats** - Environmental settings for plant locations
+  2. **Addresses** - Location data for weather integration and sunrise/sunset calculations
+
 ### Habitat Management
 Habitats define the environmental conditions where plants are located. The configuration interface allows users to create, edit, and delete habitats with the following parameters:
 
@@ -530,10 +539,35 @@ Habitats define the environmental conditions where plants are located. The confi
 - Fan
 - Humidifier
 
+### Address Management
+Addresses store location data used by light sources and weather integration. Users can create, edit, and delete addresses with the following parameters:
+
+**Basic Information:**
+- Address name (user-defined label, e.g., "Home", "Office")
+- Postal code
+- City
+- State/Province (optional)
+- Country
+
+**Geographic Coordinates:**
+- Latitude (decimal degrees)
+- Longitude (decimal degrees)
+- Used for precise sunrise/sunset calculations
+
+**Timezone:**
+- Timezone identifier (e.g., "America/Los_Angeles")
+- Used for accurate time-based lighting schedules
+
+**Usage:**
+- Referenced by artificial light sources (for sunrise/sunset scheduling)
+- Referenced by window light sources (for location-based light calculations)
+- Referenced by outdoor light sources (for weather data integration)
+- Will be used to fetch real-time weather data from NOAA API
+
 ### Data Integration
-Habitat location data (zip code/GPS) will be used to:
+Lighting location data (zip code/GPS) will be used to:
 - Fetch real-time weather data from NOAA API
-- Calculate sunrise/sunset times for artificial light scheduling
+- Calculate sunrise/sunset times for light scheduling
 - Incorporate environmental factors into care forecasting algorithms
 
 ### User Interface

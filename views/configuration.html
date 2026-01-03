@@ -3,157 +3,264 @@
     <p>Manage habitat and environmental settings for your plants</p>
 </div>
 
-<div class="configuration-content-grid">
-    <!-- Left Panel: Habitat List -->
-    <div class="card">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-lg);">
-            <h1 style="margin-bottom: 0; border: none; padding: 0;">Habitats</h1>
-            <button class="btn-small btn-primary" onclick="showNewHabitatForm()">
-                + CREATE
-            </button>
+<!-- Tab Navigation -->
+<div class="config-tabs">
+    <button class="config-tab active" data-tab="habitats" onclick="switchConfigTab('habitats')">
+        Habitats
+    </button>
+    <button class="config-tab" data-tab="addresses" onclick="switchConfigTab('addresses')">
+        Addresses
+    </button>
+</div>
+
+<!-- Habitats Tab Panel -->
+<div id="habitats-panel" class="config-tab-panel active">
+    <div class="configuration-content-grid">
+        <!-- Left Panel: Habitat List -->
+        <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-lg);">
+                <h1 style="margin-bottom: 0; border: none; padding: 0;">Habitats</h1>
+                <button class="btn-small btn-primary" onclick="showNewHabitatForm()">
+                    + CREATE
+                </button>
+            </div>
+            
+            <ul class="habitat-list" id="habitat-list">
+                <!-- Habitats will be dynamically loaded here -->
+                <li class="loading-inline">
+                    <div class="loading-spinner"></div>
+                    <span>Loading habitats...</span>
+                </li>
+            </ul>
         </div>
         
-        <ul class="habitat-list" id="habitat-list">
-            <!-- Habitats will be dynamically loaded here -->
-            <li class="loading-inline">
-                <div class="loading-spinner"></div>
-                <span>Loading habitats...</span>
-            </li>
-        </ul>
+        <!-- Right Panel: Habitat Form -->
+        <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-lg);">
+                <h1 style="margin-bottom: 0; border: none; padding: 0;">Habitat Details</h1>
+            </div>
+            
+            <form id="habitat-form" style="margin-top: var(--spacing-lg);">
+                <!-- Basic Info -->
+                <div class="form-section">
+                    <h3>Basic Information</h3>
+                    
+                    <div class="form-group">
+                        <label for="habitat-name">Habitat Name *</label>
+                        <input type="text" id="habitat-name" placeholder="e.g., Living Room Window" required readonly>
+                    </div>
+                    
+                </div>
+                
+                <!-- Light Exposure -->
+                <div class="form-section">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-md);">
+                        <h3 style="margin-bottom: 0;">Light Exposure</h3>
+                        <div style="display: flex; gap: var(--spacing-sm);">
+                            <button type="button" class="btn btn-small btn-secondary" onclick="openPromptModal('light-artificial')">
+                                + Artificial
+                            </button>
+                            <button type="button" class="btn btn-small btn-secondary" onclick="openPromptModal('light-window')">
+                                + Window
+                            </button>
+                            <button type="button" class="btn btn-small btn-secondary" onclick="openPromptModal('light-outdoor')">
+                                + Outdoor
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- All Light Sources List -->
+                    <div class="habitat-light-items-container">
+                        <div id="all-lights-list">
+                            <!-- Light sources will be dynamically loaded here -->
+                            <div class="loading-inline">
+                                <div class="loading-spinner"></div>
+                                <span>Loading light sources...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Temperature -->
+                <div class="form-section">
+                    <h3>Temperature</h3>
+                    
+                    <div class="form-group">
+                        <label>Temperature Control</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="temp-controlled" name="temp-control" value="controlled" onchange="toggleTempDetails()" disabled>
+                                <label for="temp-controlled">Controlled</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="temp-uncontrolled" name="temp-control" value="uncontrolled" checked onchange="toggleTempDetails()" disabled>
+                                <label for="temp-uncontrolled">Non-Controlled</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="temp-details" style="display: none;">
+                        <div class="form-group-inline">
+                            <div class="form-group">
+                                <label for="temp-min">Min (°F)</label>
+                                <input type="number" id="temp-min" placeholder="65" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="temp-max">Max (°F)</label>
+                                <input type="number" id="temp-max" placeholder="75" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="temp-avg">Avg (°F)</label>
+                                <input type="number" id="temp-avg" placeholder="70" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Humidity -->
+                <div class="form-section">
+                    <h3>Humidity</h3>
+                    
+                    <div class="form-group">
+                        <label for="humidity">Humidity Level</label>
+                        <select id="humidity" disabled>
+                            <option value="">Not set</option>
+                            <option value="low">Low: <40%</option>
+                            <option value="medium">Medium: 30-60%</option>
+                            <option value="high">High: 60-80%</option>
+                            <option value="very-high">Very High: >80%</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Appliances -->
+                <div class="form-section">
+                    <h3>Appliances</h3>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-sm);">
+                        <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+                            <input type="checkbox" id="appliance-ac" style="width: auto;" disabled>
+                            <label for="appliance-ac" style="margin: 0;">Air Conditioning (AC)</label>
+                        </div>
+                        
+                        <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+                            <input type="checkbox" id="appliance-heater" style="width: auto;" disabled>
+                            <label for="appliance-heater" style="margin: 0;">Heater</label>
+                        </div>
+                        
+                        <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+                            <input type="checkbox" id="appliance-fan" style="width: auto;" disabled>
+                            <label for="appliance-fan" style="margin: 0;">Fan</label>
+                        </div>
+                        
+                        <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+                            <input type="checkbox" id="appliance-humidifier" style="width: auto;" disabled>
+                            <label for="appliance-humidifier" style="margin: 0;">Humidifier</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Form Actions (hidden for now since form is read-only) -->
+                <div class="form-actions" style="display: none;">
+                    <button type="submit" class="btn btn-primary">Save Habitat</button>
+                    <button type="button" class="btn" style="background: var(--bg-primary);" onclick="resetForm()">Cancel</button>
+                </div>
+            </form>
+        </div>
     </div>
-    
-    <!-- Right Panel: Habitat Form -->
-    <div class="card">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-lg);">
-            <h1 style="margin-bottom: 0; border: none; padding: 0;">Habitat Details</h1>
+</div>
+
+<!-- Addresses Tab Panel -->
+<div id="addresses-panel" class="config-tab-panel">
+    <div class="configuration-content-grid">
+        <!-- Left Panel: Address List -->
+        <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-lg);">
+                <h1 style="margin-bottom: 0; border: none; padding: 0;">Addresses</h1>
+                <button class="btn-small btn-primary" onclick="showNewAddressForm()">
+                    + CREATE
+                </button>
+            </div>
+            
+            <ul class="habitat-list" id="address-list">
+                <!-- Addresses will be dynamically loaded here -->
+                <li class="empty-state">
+                    Address management coming soon...
+                </li>
+            </ul>
         </div>
         
-        <form id="habitat-form" style="margin-top: var(--spacing-lg);">
-            <!-- Basic Info -->
-            <div class="form-section">
-                <h3>Basic Information</h3>
-                
-                <div class="form-group">
-                    <label for="habitat-name">Habitat Name *</label>
-                    <input type="text" id="habitat-name" placeholder="e.g., Living Room Window" required readonly>
-                </div>
-                
+        <!-- Right Panel: Address Form -->
+        <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-lg);">
+                <h1 style="margin-bottom: 0; border: none; padding: 0;">Address Details</h1>
             </div>
             
-            <!-- Light Exposure -->
-            <div class="form-section">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-md);">
-                    <h3 style="margin-bottom: 0;">Light Exposure</h3>
-                    <div style="display: flex; gap: var(--spacing-sm);">
-                        <button type="button" class="btn btn-small btn-secondary" onclick="openPromptModal('light-artificial')">
-                            + Artificial
-                        </button>
-                        <button type="button" class="btn btn-small btn-secondary" onclick="openPromptModal('light-window')">
-                            + Window
-                        </button>
-                        <button type="button" class="btn btn-small btn-secondary" onclick="openPromptModal('light-outdoor')">
-                            + Outdoor
-                        </button>
+            <form id="address-form" style="margin-top: var(--spacing-lg);">
+                <!-- Basic Info -->
+                <div class="form-section">
+                    <h3>Basic Information</h3>
+                    
+                    <div class="form-group">
+                        <label for="address-name">Address Name *</label>
+                        <input type="text" id="address-name" placeholder="e.g., Home" required readonly>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="postal-code">Postal Code *</label>
+                        <input type="text" id="postal-code" placeholder="e.g., 90210" required readonly>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="city">City *</label>
+                        <input type="text" id="city" placeholder="e.g., Los Angeles" required readonly>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="state-province">State/Province</label>
+                        <input type="text" id="state-province" placeholder="e.g., CA" readonly>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="country">Country *</label>
+                        <input type="text" id="country" placeholder="e.g., USA" required readonly>
                     </div>
                 </div>
                 
-                <!-- All Light Sources List -->
-                <div class="habitat-light-items-container">
-                    <div id="all-lights-list">
-                        <!-- Light sources will be dynamically loaded here -->
-                        <div class="loading-inline">
-                            <div class="loading-spinner"></div>
-                            <span>Loading light sources...</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Temperature -->
-            <div class="form-section">
-                <h3>Temperature</h3>
-                
-                <div class="form-group">
-                    <label>Temperature Control</label>
-                    <div class="radio-group">
-                        <div class="radio-option">
-                            <input type="radio" id="temp-controlled" name="temp-control" value="controlled" onchange="toggleTempDetails()" disabled>
-                            <label for="temp-controlled">Controlled</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="temp-uncontrolled" name="temp-control" value="uncontrolled" checked onchange="toggleTempDetails()" disabled>
-                            <label for="temp-uncontrolled">Non-Controlled</label>
-                        </div>
-                    </div>
-                </div>
-                
-                <div id="temp-details" style="display: none;">
+                <!-- Location Coordinates -->
+                <div class="form-section">
+                    <h3>Coordinates</h3>
+                    
                     <div class="form-group-inline">
                         <div class="form-group">
-                            <label for="temp-min">Min (°F)</label>
-                            <input type="number" id="temp-min" placeholder="65" readonly>
+                            <label for="latitude">Latitude</label>
+                            <input type="number" id="latitude" step="0.000001" placeholder="34.0522" readonly>
                         </div>
                         <div class="form-group">
-                            <label for="temp-max">Max (°F)</label>
-                            <input type="number" id="temp-max" placeholder="75" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label for="temp-avg">Avg (°F)</label>
-                            <input type="number" id="temp-avg" placeholder="70" readonly>
+                            <label for="longitude">Longitude</label>
+                            <input type="number" id="longitude" step="0.000001" placeholder="-118.2437" readonly>
                         </div>
                     </div>
+                    <div class="help-text">Used for weather data and sunrise/sunset calculations</div>
                 </div>
-            </div>
-            
-            <!-- Humidity -->
-            <div class="form-section">
-                <h3>Humidity</h3>
                 
-                <div class="form-group">
-                    <label for="humidity">Humidity Level</label>
-                    <select id="humidity" disabled>
-                        <option value="">Not set</option>
-                        <option value="low">Low: <40%</option>
-                        <option value="medium">Medium: 30-60%</option>
-                        <option value="high">High: 60-80%</option>
-                        <option value="very-high">Very High: >80%</option>
-                    </select>
+                <!-- Timezone -->
+                <div class="form-section">
+                    <h3>Timezone</h3>
+                    
+                    <div class="form-group">
+                        <label for="timezone">Timezone</label>
+                        <input type="text" id="timezone" placeholder="e.g., America/Los_Angeles" readonly>
+                    </div>
                 </div>
-            </div>
-            
-            <!-- Appliances -->
-            <div class="form-section">
-                <h3>Appliances</h3>
                 
-                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-sm);">
-                    <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
-                        <input type="checkbox" id="appliance-ac" style="width: auto;" disabled>
-                        <label for="appliance-ac" style="margin: 0;">Air Conditioning (AC)</label>
-                    </div>
-                    
-                    <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
-                        <input type="checkbox" id="appliance-heater" style="width: auto;" disabled>
-                        <label for="appliance-heater" style="margin: 0;">Heater</label>
-                    </div>
-                    
-                    <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
-                        <input type="checkbox" id="appliance-fan" style="width: auto;" disabled>
-                        <label for="appliance-fan" style="margin: 0;">Fan</label>
-                    </div>
-                    
-                    <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
-                        <input type="checkbox" id="appliance-humidifier" style="width: auto;" disabled>
-                        <label for="appliance-humidifier" style="margin: 0;">Humidifier</label>
-                    </div>
+                <!-- Form Actions (hidden for now since form is read-only) -->
+                <div class="form-actions" style="display: none;">
+                    <button type="submit" class="btn btn-primary">Save Address</button>
+                    <button type="button" class="btn" style="background: var(--bg-primary);" onclick="resetAddressForm()">Cancel</button>
                 </div>
-            </div>
-            
-            <!-- Form Actions (hidden for now since form is read-only) -->
-            <div class="form-actions" style="display: none;">
-                <button type="submit" class="btn btn-primary">Save Habitat</button>
-                <button type="button" class="btn" style="background: var(--bg-primary);" onclick="resetForm()">Cancel</button>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 </div>
 
@@ -169,9 +276,35 @@
         alert('Create new habitat feature coming soon!');
     }
     
+    // Placeholder for new address form
+    function showNewAddressForm() {
+        alert('Create new address feature coming soon!');
+    }
+    
     // Placeholder for form reset
     function resetForm() {
         document.getElementById('habitat-form').reset();
         document.getElementById('temp-details').style.display = 'none';
+    }
+    
+    // Placeholder for address form reset
+    function resetAddressForm() {
+        document.getElementById('address-form').reset();
+    }
+    
+    // Tab switching function (will be enhanced by configuration.js)
+    function switchConfigTab(tabName) {
+        // Remove active class from all tabs and panels
+        document.querySelectorAll('.config-tab').forEach(tab => tab.classList.remove('active'));
+        document.querySelectorAll('.config-tab-panel').forEach(panel => panel.classList.remove('active'));
+        
+        // Add active class to clicked tab and corresponding panel
+        document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+        document.getElementById(`${tabName}-panel`).classList.add('active');
+        
+        // Trigger data loading for the active tab
+        if (window.onConfigTabSwitch) {
+            window.onConfigTabSwitch(tabName);
+        }
     }
 </script>

@@ -9,13 +9,17 @@ import {
     getHabitatLightWindow,
     getHabitatLightOutdoor,
     getHumidityLevel,
-    getAddressById
+    getAddressById,
+    getAddresses
 } from '../services/supabase.js';
 import { showNotification, logError } from '../utils.js';
 
 // Store loaded data
 let habitats = [];
+let addresses = [];
 let currentHabitatId = null;
+let currentAddressId = null;
+let currentTab = 'habitats';
 
 /**
  * Initialize configuration view
@@ -23,19 +27,45 @@ let currentHabitatId = null;
 export function initializeConfiguration() {
     console.log('Configuration view initialized');
     
-    // Load configuration data
-    loadConfiguration();
+    // Setup tab switching
+    setupTabSwitching();
     
     // Setup forms
     setupConfigurationForms();
+    
+    // Load initial tab data (habitats by default)
+    loadTabData('habitats');
 }
 
 /**
- * Load configuration data
+ * Setup tab switching functionality
  */
-async function loadConfiguration() {
+function setupTabSwitching() {
+    // Make tab switch handler globally available
+    window.onConfigTabSwitch = (tabName) => {
+        currentTab = tabName;
+        loadTabData(tabName);
+    };
+}
+
+/**
+ * Load data for the active tab
+ */
+async function loadTabData(tabName) {
+    if (tabName === 'habitats') {
+        await loadHabitats();
+    } else if (tabName === 'addresses') {
+        await loadAddresses();
+    }
+}
+
+
+/**
+ * Load habitats data
+ */
+async function loadHabitats() {
     try {
-        showLoadingState();
+        showLoadingState('habitat-list');
         
         // Load all habitats
         habitats = await getHabitats();
@@ -48,51 +78,13 @@ async function loadConfiguration() {
         if (habitats.length > 0) {
             await loadHabitatDetails(habitats[0].habitat_id);
         } else {
-            showEmptyState();
+            showEmptyState('habitat');
         }
         
     } catch (error) {
-        logError(error, 'loading configuration');
-        showErrorState(error);
+        logError(error, 'loading habitats');
+        showErrorState('habitat-list', error);
     }
-}
-
-/**
- * Render habitat list in left panel
- */
-function renderHabitatList() {
-    const habitatList = document.getElementById('habitat-list');
-    
-    if (!habitatList) {
-        console.warn('habitat-list element not found');
-        return;
-    }
-    
-    if (habitats.length === 0) {
-        habitatList.innerHTML = '<li class="empty-state">No habitats configured yet.</li>';
-        return;
-    }
-    
-    habitatList.innerHTML = habitats.map((habitat, index) => `
-        <li class="habitat-item ${index === 0 ? 'active' : ''}" 
-            data-habitat-id="${habitat.habitat_id}"
-            onclick="window.loadHabitatDetails('${habitat.habitat_id}')">
-            <div>
-                <div class="habitat-name">${habitat.habitat_name}</div>
-                <div class="habitat-info">Loading details...</div>
-            </div>
-            <div class="habitat-actions">
-                <button class="btn btn-small btn-edit" 
-                        onclick="event.stopPropagation(); window.editHabitat('${habitat.habitat_id}')">
-                    EDIT
-                </button>
-                <button class="btn btn-small btn-delete" 
-                        onclick="event.stopPropagation(); window.deleteHabitat('${habitat.habitat_id}')">
-                    DELETE
-                </button>
-            </div>
-        </li>
-    `).join('');
 }
 
 /**
@@ -141,6 +133,137 @@ async function loadHabitatDetails(habitatId) {
 }
 
 /**
+ * Load addresses data
+ */
+async function loadAddresses() {
+    try {
+        showLoadingState('address-list');
+        
+        // Load all addresses
+        addresses = await getAddresses();
+        console.log('Loaded addresses:', addresses);
+        
+        // Render address list
+        renderAddressList();
+        
+        // If we have addresses, load the first one
+        if (addresses.length > 0) {
+            await loadAddressDetails(addresses[0].address_id);
+        } else {
+            showEmptyStateAddress();
+        }
+        
+    } catch (error) {
+        logError(error, 'loading addresses');
+        showErrorState('address-list', error);
+    }
+}
+
+/**
+ * Load and display address details
+ */
+async function loadAddressDetails(addressId) {
+    try {
+        currentAddressId = addressId;
+        
+        // Update active state in list
+        document.querySelectorAll('[data-address-id]').forEach(item => {
+            item.classList.remove('active');
+            if (item.dataset.addressId === addressId) {
+                item.classList.add('active');
+            }
+        });
+        
+        // Fetch address data
+        const address = await getAddressById(addressId);
+        
+        // Render form with data
+        renderAddressForm(address);
+        
+    } catch (error) {
+        logError(error, `loading address ${addressId}`);
+        showNotification('Error loading address details', 'error');
+    }
+}
+
+
+/**
+ * Render habitat list in left panel
+ */
+function renderHabitatList() {
+    const habitatList = document.getElementById('habitat-list');
+    
+    if (!habitatList) {
+        console.warn('habitat-list element not found');
+        return;
+    }
+    
+    if (habitats.length === 0) {
+        habitatList.innerHTML = '<li class="empty-state">No habitats configured yet.</li>';
+        return;
+    }
+    
+    habitatList.innerHTML = habitats.map((habitat, index) => `
+        <li class="habitat-item ${index === 0 ? 'active' : ''}" 
+            data-habitat-id="${habitat.habitat_id}"
+            onclick="window.loadHabitatDetails('${habitat.habitat_id}')">
+            <div>
+                <div class="habitat-name">${habitat.habitat_name}</div>
+                <div class="habitat-info">Loading details...</div>
+            </div>
+            <div class="habitat-actions">
+                <button class="btn btn-small btn-edit" 
+                        onclick="event.stopPropagation(); window.editHabitat('${habitat.habitat_id}')">
+                    EDIT
+                </button>
+                <button class="btn btn-small btn-delete" 
+                        onclick="event.stopPropagation(); window.deleteHabitat('${habitat.habitat_id}')">
+                    DELETE
+                </button>
+            </div>
+        </li>
+    `).join('');
+}
+
+/**
+ * Render address list in left panel
+ */
+function renderAddressList() {
+    const addressList = document.getElementById('address-list');
+    
+    if (!addressList) {
+        console.warn('address-list element not found');
+        return;
+    }
+    
+    if (addresses.length === 0) {
+        addressList.innerHTML = '<li class="empty-state">No addresses configured yet.</li>';
+        return;
+    }
+    
+    addressList.innerHTML = addresses.map((address, index) => `
+        <li class="habitat-item ${index === 0 ? 'active' : ''}" 
+            data-address-id="${address.address_id}"
+            onclick="window.loadAddressDetails('${address.address_id}')">
+            <div>
+                <div class="habitat-name">${address.address_name}</div>
+                <div class="habitat-info">${address.city}, ${address.state_province || address.country}</div>
+            </div>
+            <div class="habitat-actions">
+                <button class="btn btn-small btn-edit" 
+                        onclick="event.stopPropagation(); window.editAddress('${address.address_id}')">
+                    EDIT
+                </button>
+                <button class="btn btn-small btn-delete" 
+                        onclick="event.stopPropagation(); window.deleteAddress('${address.address_id}')">
+                    DELETE
+                </button>
+            </div>
+        </li>
+    `).join('');
+}
+
+/**
  * Update habitat info text in list
  */
 function updateHabitatListInfo(habitatId, lights) {
@@ -184,9 +307,8 @@ function renderHabitatForm(habitat, humidityLevel, lights) {
         document.getElementById('temp-details').style.display = 'none';
     }
     
-    // Update humidity
-    // Note: We'll need to match the humidity_level_id to the select options
-    // For now, just leave default selected
+    // Update humidity (match to select options if needed)
+    // For now, leave default selected
     
     // Update appliances
     document.getElementById('appliance-ac').checked = habitat.appliance_ac || false;
@@ -196,6 +318,20 @@ function renderHabitatForm(habitat, humidityLevel, lights) {
     
     // Render light sources
     renderLightSources(lights);
+}
+
+/**
+ * Render address form with data
+ */
+function renderAddressForm(address) {
+    document.getElementById('address-name').value = address.address_name || '';
+    document.getElementById('postal-code').value = address.postal_code || '';
+    document.getElementById('city').value = address.city || '';
+    document.getElementById('state-province').value = address.state_province || '';
+    document.getElementById('country').value = address.country || '';
+    document.getElementById('latitude').value = address.latitude || '';
+    document.getElementById('longitude').value = address.longitude || '';
+    document.getElementById('timezone').value = address.timezone || '';
 }
 
 /**
@@ -321,14 +457,18 @@ function renderLightSources(lights) {
     container.innerHTML = html;
 }
 
+
 /**
  * Setup configuration forms
  */
 function setupConfigurationForms() {
     // Make functions globally available for onclick handlers
     window.loadHabitatDetails = loadHabitatDetails;
+    window.loadAddressDetails = loadAddressDetails;
     window.editHabitat = editHabitat;
     window.deleteHabitat = deleteHabitat;
+    window.editAddress = editAddress;
+    window.deleteAddress = deleteAddress;
     window.editLight = editLight;
     window.deleteLight = deleteLight;
     
@@ -338,13 +478,13 @@ function setupConfigurationForms() {
 /**
  * Show loading state
  */
-function showLoadingState() {
-    const habitatList = document.getElementById('habitat-list');
-    if (habitatList) {
-        habitatList.innerHTML = `
+function showLoadingState(elementId) {
+    const element = document.getElementById(elementId);
+    if (element) {
+        element.innerHTML = `
             <li class="loading-inline">
                 <div class="loading-spinner"></div>
-                <span>Loading habitats...</span>
+                <span>Loading...</span>
             </li>
         `;
     }
@@ -354,17 +494,13 @@ function showLoadingState() {
  * Show loading in form area
  */
 function showFormLoading() {
-    const formContainer = document.querySelector('.configuration-content-grid .card:last-child');
-    if (formContainer) {
-        // Just show a subtle loading indicator, don't replace entire form
-        console.log('Loading habitat details...');
-    }
+    console.log('Loading details...');
 }
 
 /**
- * Show empty state
+ * Show empty state for habitats
  */
-function showEmptyState() {
+function showEmptyState(type) {
     const habitatList = document.getElementById('habitat-list');
     if (habitatList) {
         habitatList.innerHTML = `
@@ -381,16 +517,35 @@ function showEmptyState() {
 }
 
 /**
+ * Show empty state for addresses
+ */
+function showEmptyStateAddress() {
+    const addressList = document.getElementById('address-list');
+    if (addressList) {
+        addressList.innerHTML = `
+            <li class="empty-state">
+                No addresses configured yet.<br>
+                <button class="btn btn-small btn-primary" 
+                        style="margin-top: var(--spacing-md);" 
+                        onclick="window.showNewAddressForm()">
+                    + CREATE ADDRESS
+                </button>
+            </li>
+        `;
+    }
+}
+
+/**
  * Show error state
  */
-function showErrorState(error) {
-    const habitatList = document.getElementById('habitat-list');
-    if (habitatList) {
-        habitatList.innerHTML = `
+function showErrorState(elementId, error) {
+    const element = document.getElementById(elementId);
+    if (element) {
+        element.innerHTML = `
             <li class="error-container" style="padding: var(--spacing-lg);">
                 <div class="error-icon">⚠️</div>
                 <div class="error-message">
-                    Error loading habitats.<br>
+                    Error loading data.<br>
                     ${error.message || 'Please try again.'}
                 </div>
             </li>
@@ -411,6 +566,16 @@ function deleteHabitat(habitatId) {
     showNotification('Delete habitat feature coming soon', 'info');
 }
 
+function editAddress(addressId) {
+    console.log('Edit address:', addressId);
+    showNotification('Edit address feature coming soon', 'info');
+}
+
+function deleteAddress(addressId) {
+    console.log('Delete address:', addressId);
+    showNotification('Delete address feature coming soon', 'info');
+}
+
 function editLight(lightId, type) {
     console.log('Edit light:', lightId, type);
     showNotification('Edit light feature coming soon', 'info');
@@ -428,3 +593,4 @@ export function saveConfiguration(data) {
     console.log('Saving configuration:', data);
     showNotification('Save feature coming soon', 'info');
 }
+
