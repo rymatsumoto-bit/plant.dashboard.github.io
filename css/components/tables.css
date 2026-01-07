@@ -1,23 +1,31 @@
 /* Table Components */
-.action-log {
-    list-style: none;
+
+.table {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    overflow: hidden;
 }
 
-.action-item {
-    padding: 12px 15px;
-    background: var(--bg-primary);
-    border-radius: var(--radius-sm);
-    margin-bottom: var(--spacing-sm);
-    display: flex;
-    justify-content: space-between;
-}
-
-.action-type {
+.table-header {
+    display: grid;
+    grid-template-columns: 2fr 1.5fr 1fr 1.5fr 0.5fr;
+    padding: 20px 25px;
+    background: #fafafa;
     font-weight: 600;
-    color: var(--text-secondary);
+    font-size: 14px;
+    color: #333;
 }
 
-.action-date {
-    color: var(--text-light);
-    font-size: 0.9em;
+.table-row {
+    display: grid;
+    grid-template-columns: 2fr 1.5fr 1fr 1.5fr 0.5fr;
+    padding: 20px 25px;
+    border-top: 1px solid #f3f4f6;
+    align-items: center;
+    transition: background 0.2s;
+}
+
+.table-row:hover {
+    background: #fafafa;
 }

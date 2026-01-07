@@ -1,0 +1,111 @@
+<div class="configuration-content-grid">
+    <!-- Left Panel: Address List -->
+    <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-lg);">
+            <h1 style="margin-bottom: 0; border: none; padding: 0;">List</h1>
+            <button class="btn-small btn-primary" onclick="showNewAddressForm()">
+                + CREATE
+            </button>
+        </div>
+        
+        <ul class="habitat-list" id="address-list">
+            <!-- Addresses will be dynamically loaded here -->
+            <li class="loading-inline">
+                <div class="loading-spinner"></div>
+                <span>Loading addresses...</span>
+            </li>
+        </ul>
+    </div>
+    
+    <!-- Right Panel: Address Form -->
+    <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-lg);">
+            <h1 style="margin-bottom: 0; border: none; padding: 0;">Address Details</h1>
+        </div>
+        
+        <form id="address-form" style="margin-top: var(--spacing-lg);">
+            <!-- Basic Info -->
+            <div class="form-section">
+                <h3>Basic Information</h3>
+                
+                <div class="form-group">
+                    <label for="address-name">Address Name *</label>
+                    <input type="text" id="address-name" placeholder="e.g., Home" required readonly>
+                </div>
+                
+                <div class="form-group">
+                    <label for="postal-code">Postal Code *</label>
+                    <input type="text" id="postal-code" placeholder="e.g., 90210" required readonly>
+                </div>
+                
+                <div class="form-group">
+                    <label for="city">City *</label>
+                    <input type="text" id="city" placeholder="e.g., Los Angeles" required readonly>
+                </div>
+                
+                <div class="form-group">
+                    <label for="state-province">State/Province</label>
+                    <input type="text" id="state-province" placeholder="e.g., CA" readonly>
+                </div>
+                
+                <div class="form-group">
+                    <label for="country">Country *</label>
+                    <input type="text" id="country" placeholder="e.g., USA" required readonly>
+                </div>
+            </div>
+            
+            <!-- Location Coordinates -->
+            <div class="form-section">
+                <h3>Coordinates</h3>
+                
+                <div class="form-group-inline">
+                    <div class="form-group">
+                        <label for="latitude">Latitude</label>
+                        <input type="number" id="latitude" step="0.000001" placeholder="34.0522" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="longitude">Longitude</label>
+                        <input type="number" id="longitude" step="0.000001" placeholder="-118.2437" readonly>
+                    </div>
+                </div>
+                <div class="help-text">Used for weather data and sunrise/sunset calculations</div>
+            </div>
+            
+            <!-- Timezone -->
+            <div class="form-section">
+                <h3>Timezone</h3>
+                
+                <div class="form-group">
+                    <label for="timezone">Timezone</label>
+                    <input type="text" id="timezone" placeholder="e.g., America/Los_Angeles" readonly>
+                </div>
+            </div>
+            
+            <!-- Form Actions (hidden for now since form is read-only) -->
+            <div class="form-actions" style="display: none;">
+                <button type="submit" class="btn btn-primary">Save Address</button>
+                <button type="button" class="btn" style="background: var(--bg-primary);" onclick="resetAddressForm()">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Placeholder for new address form
+    function showNewAddressForm() {
+        alert('Create new address feature coming soon!');
+    }
+    
+    // Placeholder for form reset
+    function resetForm() {
+        document.getElementById('habitat-form').reset();
+        document.getElementById('temp-details').style.display = 'none';
+    }
+    
+    // Placeholder for address form reset
+    function resetAddressForm() {
+        document.getElementById('address-form').reset();
+    }
+    
+
+</script>

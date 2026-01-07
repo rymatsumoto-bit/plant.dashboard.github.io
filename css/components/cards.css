@@ -1,4 +1,4 @@
-/* Card Components */
+/* Card Basics */
 .card {
     background: var(--bg-card);
     border-radius: var(--radius-lg);

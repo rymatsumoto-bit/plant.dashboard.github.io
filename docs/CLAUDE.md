@@ -183,6 +183,9 @@ plant-care-dashboard/
 │   └── settings.html                   # System configuration
 │
 ├── components/                         # Reusable UI components
+│   ├── configuration-tabs/             # Tabs under configuration view
+│   │   ├── address.html                # Content for address configuration
+│   │   └── habitat.html                # Content for habitat configuration
 │   ├── modals/                         # Reusable modal componentes
 │   │   ├── light-artificial.html       # Form content for artifical light details
 │   │   ├── light-outdoor.html          # Form content for outdoor light details
@@ -203,7 +206,11 @@ plant-care-dashboard/
 │   │   ├── dashboard.js                # Dashboard-specific logic
 │   │   ├── reports.js                  # Reports-specific logic
 │   │   ├── inventory.js                # Inventory-specific logic
-│   │   ├── configuration.js            # Configuration-specific logic
+│   │   ├── configuration.js            # Configuration orchestrator (main)
+│   │   ├── configuration/              # Configuration sub-modules
+│   │   │   ├── habitat-manager.js      # Habitat CRUD and rendering
+│   │   │   ├── address-manager.js      # Address CRUD and rendering
+│   │   │   └── shared-utils.js         # Shared configuration utilities
 │   │   └── settings.js                 # Settings-specific logic
 │   └── services/
 │       ├── supabase.js                 # Database queries and operations
@@ -211,12 +218,7 @@ plant-care-dashboard/
 │
 ├── assets/                             # Static assets
 │   ├── images/
-│   │   └── icons/                      
-│   │       ├── main-logo.svg           # Main logo
-│   │       ├── nav-dashboard.svg       # Dashboard nav icon
-│   │       ├── nav-reports.svg         # Reports nav icon
-│   │       ├── nav-inventory.svg       # Inventory nav icon
-│   │       └── nav-configuration.svg   # Configuration nav icon
+│   │   └── icons/                      # Storage of icons
 │   └── fonts/                          
 │
 └── docs/
@@ -277,6 +279,42 @@ export class MyClass { /* ...*/ }
 import { myFunction, MyClass } from './myModule.js';
 
 **Note:** Requires `<script type="module">` in HTML and modern browser support.
+
+### Manager Pattern
+
+For complex views with multiple entity types, we use a **Manager Pattern** to organize code:
+
+**Structure:**
+- **Main Orchestrator** - Coordinates tab switching and delegates to managers
+- **Entity Managers** - Handle CRUD operations for specific entity types
+- **Shared Utilities** - Common functions used across managers
+
+**Example: Configuration View**
+configuration.js              # Orchestrator (~100 lines)
+├── setupTabSwitching()       # Handle tab navigation
+├── loadTabContent()          # Load HTML dynamically
+└── Delegates to:
+├── habitat-manager.js    # All habitat logic (~200 lines)
+└── address-manager.js    # All address logic (~150 lines)
+
+**Benefits:**
+- Clear separation of concerns
+- Easy to add new entity types
+- Testable in isolation
+- Reduced file size (no 800+ line monsters)
+- Parallel development possible
+
+**When to Use:**
+- Views managing multiple entity types (habitats, addresses, plants)
+- Features with CRUD operations
+- Complex business logic that would exceed 300 lines
+- When adding more entity types is expected
+
+**File Naming Convention:**
+- Orchestrator: `feature-name.js`
+- Managers: `feature-name/entity-manager.js`
+- Utilities: `feature-name/shared-utils.js`
+
 
 ### Modal System
 
@@ -406,6 +444,13 @@ To add a new modal type:
 - Initialization functions
 - Event handlers
 - Data loading for specific views
+- Complex views may have sub-folders with managers
+
+**views/configuration/** - Configuration sub-modules
+- Manager pattern implementation
+- Each entity type has its own manager
+- Shared utilities for common operations
+- Orchestrator delegates to appropriate manager
 
 **components/*.js** - Reusable components
 - Self-contained UI components
@@ -437,7 +482,51 @@ To add a new feature:
 5. Add navigation item if needed
 6. Update breadcrumb names
 
+---------------
 
+## Code Organization Principles
+
+### File Size Guidelines
+- **Target**: 200-300 lines per file
+- **Maximum**: 400 lines before considering split
+- **Minimum**: 50 lines (avoid over-fragmentation)
+
+### When to Create a Sub-Module
+Split a file when:
+1. File exceeds 400 lines
+2. Multiple distinct responsibilities exist
+3. Code can be developed/tested independently
+4. Future expansion is expected
+
+### Module Responsibilities
+Each module should have:
+- **Single Responsibility** - one clear purpose
+- **Clear Interface** - exported functions are obvious
+- **Minimal Dependencies** - import only what's needed
+- **Self-Contained** - can be understood in isolation
+
+### Folder Structure for Complex Features
+views/
+├── feature-name.js           # Orchestrator
+└── feature-name/
+├── entity1-manager.js    # Entity-specific logic
+├── entity2-manager.js    # Entity-specific logic
+└── shared-utils.js       # Common utilities
+
+### Import/Export Conventions
+```javascript
+// Manager exports (entity-manager.js)
+export async function initEntityManager() { }
+export function getCurrentEntityId() { }
+export function getLoadedEntities() { }
+
+// Orchestrator imports (feature-name.js)
+import { initEntityManager } from './feature-name/entity-manager.js';
+
+// Shared utilities (shared-utils.js)
+export function showLoadingState(elementId) { }
+export function showEmptyState(elementId) { }
+```
 
 ---------------
 
@@ -459,6 +548,8 @@ To add a new feature:
 ✅ Breadcrumb navigation with multi-level support  
 ✅ Settings view accessible via top-right button  
 ✅ **Modal system implemented for forms**  
+✅ **Refactored Configuration JavaScript into Manager Pattern**
+✅ **Established code organization principles for complex features**
 
 ### In Progress
 🔄 Configuration view with location management  
@@ -508,8 +599,8 @@ The Configuration view uses a **tabbed layout** to manage multiple foundational 
 - Horizontal tabs below the page header
 - Each tab shows the same two-column layout: entity list (left) + detail form (right)
 - Currently implemented tabs:
-  1. **Habitats** - Environmental settings for plant locations
-  2. **Addresses** - Location data for weather integration and sunrise/sunset calculations
+  1. **Habitat** - Environmental settings for plant locations
+  2. **Address** - Location data for weather integration and sunrise/sunset calculations
 
 ### Habitat Management
 Habitats define the environmental conditions where plants are located. The configuration interface allows users to create, edit, and delete habitats with the following parameters:
