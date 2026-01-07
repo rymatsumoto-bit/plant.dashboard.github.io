@@ -270,3 +270,98 @@
 - window_size_id
 
 ### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| ## plant
+
+### Columns
+| Column | Type | Nullable | Default |
+| --- | --- | --- | --- |
+| plant_id | uuid | NO | gen_random_uuid() |
+| plant_name | text | NO |  |
+| plant_type_id | uuid | NO |  |
+| habitat_id | uuid | NO |  |
+| is_active | boolean | NO | true |
+| created_at | timestamp with time zone | NO | now() |
+| modified_at | timestamp with time zone | NO | now() |
+
+### Primary Key
+- plant_id
+
+### Foreign Keys
+- habitat_id → habitat.habitat_id
+- plant_type_id → plant_type_lookup.plant_type_id
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| ## plant_inventory_view
+
+### Columns
+| Column | Type | Nullable | Default |
+| --- | --- | --- | --- |
+| plant_id | uuid | YES |  |
+| plant_name | text | YES |  |
+| plant_category | text | YES |  |
+| plant_icon | text | YES |  |
+| species | text | YES |  |
+| status_code | text | YES |  |
+| status_label | text | YES |  |
+| severity | integer | YES |  |
+| status_calculated_at | timestamp with time zone | YES |  |
+
+### Primary Key\n- (none)\n
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| ## plant_status_history
+
+### Columns
+| Column | Type | Nullable | Default |
+| --- | --- | --- | --- |
+| plant_status_history_id | uuid | NO | gen_random_uuid() |
+| plant_id | uuid | NO |  |
+| status_code | text | NO |  |
+| valid_from | date | NO |  |
+| valid_to | date | YES |  |
+| is_current | boolean | NO | true |
+| calculated_at | timestamp with time zone | NO | now() |
+| calculation_run_id | uuid | YES |  |
+| source | text | NO | 'system'::text |
+| confidence_score | numeric | YES |  |
+| created_at | timestamp with time zone | NO | now() |
+
+### Primary Key
+- plant_status_history_id
+
+### Foreign Keys
+- plant_id → plant.plant_id
+- status_code → plant_status_lookup.status_code
+                                                                                                                                                                                                                                                                                                                                                                                             |
+| ## plant_status_lookup
+
+### Columns
+| Column | Type | Nullable | Default |
+| --- | --- | --- | --- |
+| status_code | text | NO |  |
+| status_label | text | NO |  |
+| severity | integer | NO |  |
+| is_active | boolean | NO | true |
+| created_at | timestamp with time zone | NO | now() |
+| modified_at | timestamp with time zone | NO | now() |
+
+### Primary Key
+- status_code
+
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| ## plant_type_lookup
+
+### Columns
+| Column | Type | Nullable | Default |
+| --- | --- | --- | --- |
+| plant_type_id | uuid | NO | gen_random_uuid() |
+| category | text | NO |  |
+| species | text | NO |  |
+| icon | text | NO |  |
+| is_active | boolean | NO | true |
+| created_at | timestamp with time zone | NO | now() |
+| modified_at | timestamp with time zone | NO | now() |
+| common_name | text | NO |  |
+
+### Primary Key
+- plant_type_id
+
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
