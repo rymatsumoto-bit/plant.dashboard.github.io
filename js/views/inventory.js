@@ -2,7 +2,7 @@
 // INVENTORY.JS - Inventory View Logic
 // ============================================
 
-import { loadHTML, logError } from '../utils.js';
+import { loadHTML, logError, formatDate } from '../utils.js';
 import { getPlantInventory } from '../services/supabase.js';
 
 let plants = [];
@@ -31,7 +31,7 @@ export async function initializeInventory() {
  * Load plant inventory
  */
 function loadPlantInventory() {
-    const plantList = document.getElementById('plant-inventory-table');
+    const plantList = document.getElementById('plant-inventory-rows');
     
     if (!plantList) {
         console.warn('plant-inventory-table element not found');
@@ -48,13 +48,20 @@ function loadPlantInventory() {
             <div class="plant-name-cell">
                 <div class="plant-name-icon">🌿</div>
                 <div class="plant-name-text">
-                    <div class="name">${plant.plant_name}</div>
-                    <div class="species">${plant.species}</div>
+                    <div class="name">${plant.plant_name || 'Unnamed Plant'}</div>
+                    <div class="species">${plant.species || 'Unknown Species'}</div>
                 </div>
             </div>
-            <div>Living Room</div>
-            <div><span class="status-icon">😎</span></div>
-            <div>12 January 2026</div>
+            <div>${plant.habitat || 'Habitat unknown'}</div>
+            <div><span class="status-icon">${plant.status_icon || '❓'}</span>
+                <div class="tooltip-text">${plant.status_label || 'unknown'}</div>
+            </div>
+            <div class="plant-name-cell">
+                <div class="plant-name-text">
+                    <div class="name">${formatDate(plant.last_activity_date) || 'no activity'}</div>
+                    <div class="species">${plant.last_activity_label || '-'}</div>
+                </div>
+            </div>
             <div class="menu-dots">⋯</div>
         </div>
     `).join('');

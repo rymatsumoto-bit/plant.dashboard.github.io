@@ -16,10 +16,10 @@ export function capitalize(str) {
 export function formatDate(dateString) {
     if (!dateString) return 'N/A';
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { 
+    return date.toLocaleDateString('en-GB', { 
         year: 'numeric', 
         month: 'short', 
-        day: 'numeric' 
+        day: '2-digit' 
     });
 }
 

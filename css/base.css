@@ -40,3 +40,23 @@ p {
 .mb-sm { margin-bottom: var(--spacing-sm); }
 .mb-md { margin-bottom: var(--spacing-md); }
 .mb-lg { margin-bottom: var(--spacing-lg); }
+
+
+/* Tooltip Text */
+
+.tooltip-text {
+    /* visibility: hidden; /* Hides the tooltip by default */
+    width: 120px;
+    background-color: var(--bg-secondary);
+    color: var(--text-secondary);
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    position: absolute; /* Positions the tooltip relative to its parent container */
+    z-index: 1;
+    bottom: 125%; /* Position the tooltip above the container */
+    left: 50%;
+    margin-left: -60px; /* Center the tooltip (half of the width) */
+    opacity: 0;
+    transition: opacity 0.3s; /* Smooth transition for appearance */
+}
