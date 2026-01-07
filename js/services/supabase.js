@@ -156,3 +156,20 @@ export async function getAddressById(addressId) {
     if (error) throw error;
     return data;
 }
+
+
+// ============================================
+// PLANT QUERIES
+// ============================================
+
+/**
+ * Get all addresses
+ */
+export async function getPlantInventory() {
+    const { data, error } = await supabase
+        .from('plant_inventory_view')
+        .select('*');
+    
+    if (error) throw error;
+    return data;
+}
