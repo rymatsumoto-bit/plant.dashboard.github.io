@@ -34,12 +34,11 @@ export class Router {
             });
         });
 
-        // Settings button (not in sidebar)
-        const settingsBtn = document.getElementById('settings-btn');
-        if (settingsBtn) {
-            settingsBtn.addEventListener('click', () => {
-                this.loadView('settings');
-                sessionStorage.setItem('currentView', 'settings');
+        // New Activity button (not in sidebar)
+        const newActivityBtn = document.getElementById('new-activity-btn');
+        if (newActivityBtn) {
+            newActivityBtn.addEventListener('click', () => {
+                // load form for new activity
             });
         }
 

@@ -84,7 +84,7 @@ async function loadHabitatDetails(habitatId) {
         });
         
     } catch (error) {
-        logError(error, `loading habitat ${habitatId}`);
+        logError(error, `laoading habitat ${habitatId}`);
         showNotification('Error loading habitat details', 'error');
     }
 }
