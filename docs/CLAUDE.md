@@ -141,6 +141,7 @@ User Input (Web) → Supabase ← Python Analysis Engine
 
 ### Documentation
 - `CLAUDE.md` - This file, project context for AI assistants
+- `SCHEMA.md` - Table structure in supabase
 
 ### Working Files
 All project files (HTML, CSS, JS) are maintained in the project folder and uploaded by the project owner. AI assistants should reference these uploaded files for current code状态 rather than relying on code snippets in this document.
@@ -187,11 +188,10 @@ plant-care-dashboard/
 │   │   ├── address.html                # Content for address configuration
 │   │   └── habitat.html                # Content for habitat configuration
 │   ├── modals/                         # Reusable modal componentes
-│   │   ├── light-artificial.html       # Form content for artifical light details
-│   │   ├── light-outdoor.html          # Form content for outdoor light details
-│   │   ├── light-window.html           # Form content for window light details
-│   │   └── prompt-modal.html           # Modal shell/container
-│   └── plant-detail.html               
+│       ├── light-artificial.html       # Form content for artifical light details
+│       ├── light-outdoor.html          # Form content for outdoor light details
+│       ├── light-window.html           # Form content for window light details
+│       └── prompt-modal.html           # Modal shell/container
 │
 ├── js/                                 # JavaScript modules
 │   ├── app.js                          # Main entry point
@@ -238,7 +238,8 @@ plant-care-dashboard/
   1. **Dashboard** (nav-dashboard.svg) - Main overview and actionable items
   2. **Reports** (nav-reports.svg) - Analytics and insights
   3. **Inventory** (nav-inventory.svg) - Complete plant collection
-  4. **Configuration** (nav-configuration.svg) - System settings and preferences
+  4. **Configuration** (nav-configuration.svg) - Parameters of care, such as habitats, addresses
+  4. **Settings** (nav-settings.svg) - System settings
 
 ### Icon System
 - **Format:** SVG (scalable, customizable)
@@ -547,14 +548,15 @@ export function showEmptyState(elementId) { }
 ✅ Modular JavaScript architecture (ES6 modules)  
 ✅ Breadcrumb navigation with multi-level support  
 ✅ Settings view accessible via top-right button  
-✅ **Modal system implemented for forms**  
-✅ **Refactored Configuration JavaScript into Manager Pattern**
-✅ **Established code organization principles for complex features**
+✅ Modal system implemented for forms
+✅ Refactored Configuration JavaScript into Manager Pattern
+✅ Established code organization principles for complex features
+✅ Configuration view with location management  
+✅ Inventory view with plant grid  
 
 ### In Progress
-🔄 Configuration view with location management  
 🔄 Form validation and submission  
-🔄 Inventory view with plant grid  
+🔄 Add new activity
 
 ### Pending
 ⏳ Plant detail component  
