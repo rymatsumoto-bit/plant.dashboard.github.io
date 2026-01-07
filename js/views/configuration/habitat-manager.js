@@ -215,10 +215,6 @@ function renderLightSources(lights) {
                             <span style="font-size: 0.85em; color: var(--text-light); margin-left: 10px;">(Artificial Light)</span>
                         </div>
                         <div>
-                            <button type="button" class="btn btn-small btn-primary" 
-                                    onclick="window.editLight('${light.light_artificial_id}', 'artificial')">
-                                Edit
-                            </button>
                             <button type="button" class="btn btn-small btn-delete" 
                                     onclick="window.deleteLight('${light.light_artificial_id}', 'artificial')">
                                 Delete
@@ -249,10 +245,6 @@ function renderLightSources(lights) {
                             <span style="font-size: 0.85em; color: var(--text-light); margin-left: 10px;">(Window)</span>
                         </div>
                         <div>
-                            <button type="button" class="btn btn-small btn-primary" 
-                                    onclick="window.editLight('${light.light_window_id}', 'window')">
-                                Edit
-                            </button>
                             <button type="button" class="btn btn-small btn-delete" 
                                     onclick="window.deleteLight('${light.light_window_id}', 'window')">
                                 Delete
@@ -284,10 +276,6 @@ function renderLightSources(lights) {
                             <span style="font-size: 0.85em; color: var(--text-light); margin-left: 10px;">(Outdoor)</span>
                         </div>
                         <div>
-                            <button type="button" class="btn btn-small btn-primary" 
-                                    onclick="window.editLight('${light.light_outdoor_id}', 'outdoor')">
-                                Edit
-                            </button>
                             <button type="button" class="btn btn-small btn-delete" 
                                     onclick="window.deleteLight('${light.light_outdoor_id}', 'outdoor')">
                                 Delete

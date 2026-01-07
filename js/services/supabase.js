@@ -173,3 +173,25 @@ export async function getPlantInventory() {
     if (error) throw error;
     return data;
 }
+
+
+
+/**
+ * Add new plant activity
+ */
+export async function addPlantActivity(activityData) {
+    const { data, error } = await supabase
+        .from('plant_activity_history')
+        .insert([{
+            plant_id: activityData.plant_id,
+            activity_type_code: activityData.activity_type,
+            activity_date: activityData.activity_date,
+            quantifier: activityData.quantifier || null,
+            unit: activityData.unit || null,
+            details: activityData.notes || null
+        }])
+        .select();
+    
+    if (error) throw error;
+    return data;
+}

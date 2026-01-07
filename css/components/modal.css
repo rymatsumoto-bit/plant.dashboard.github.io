@@ -14,7 +14,7 @@
 }
 
 .modal.show {
-    display: flex; /* Show when .show class is added */
+    display: flex;
 }
 
 .modal.active {
@@ -29,6 +29,19 @@
     width: 90%;
     max-height: 90vh;
     overflow-y: auto;
+}
+
+/* Modal size variations */
+.modal-content.modal-small {
+    max-width: 400px;
+}
+
+.modal-content.modal-medium {
+    max-width: 600px;
+}
+
+.modal-content.modal-large {
+    max-width: 800px;
 }
 
 .modal-header {
@@ -58,4 +71,13 @@
 
 .close-modal:hover {
     color: var(--text-primary);
+}
+
+/* Modal buttons container */
+.modal-buttons {
+    display: flex;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-xl);
+    padding-top: var(--spacing-lg);
+    border-top: 1px solid var(--border-light);
 }

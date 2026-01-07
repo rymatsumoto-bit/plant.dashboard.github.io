@@ -8,7 +8,9 @@ import { initializeReports } from './views/reports.js';
 import { initializeInventory } from './views/inventory.js';
 import { initializeConfiguration } from './views/configuration.js';
 import { initializeSettings } from './views/settings.js';
-import { capitalize } from './utils.js';
+import { openModal } from './modals/prompt-modal.js';
+import { addPlantActivity } from './services/supabase.js';
+import { showNotification, capitalize } from './utils.js';
 
 export class Router {
     constructor() {
@@ -33,12 +35,36 @@ export class Router {
                 sessionStorage.setItem('currentView', view);
             });
         });
-
+        console.log('openModal function:', typeof openModal);
         // New Activity button (not in sidebar)
         const newActivityBtn = document.getElementById('new-activity-btn');
         if (newActivityBtn) {
             newActivityBtn.addEventListener('click', () => {
-                // load form for new activity
+                openModal({
+                    title: 'Log New Activity',
+                    contentUrl: 'components/modals/new-activity.html',
+                    size: 'medium',
+                    buttons: [
+                        { label: 'LOG ACTIVITY', type: 'primary', action: 'submit' },
+                        { label: 'CANCEL', type: 'secondary', action: 'close' }
+                    ],
+                    onSubmit: async (data, modal) => {
+                        try {
+                            // Save to database
+                            await addPlantActivity(data);
+                            showNotification('Activity logged successfully!', 'success');
+                            
+                            // Close modal
+                            modal.querySelector('[data-action="close"]').click();
+                            
+                            // Refresh current view (not just dashboard)
+                            this.loadView(this.currentView);
+                        } catch (error) {
+                            console.error('Error logging activity:', error);
+                            showNotification('Failed to log activity', 'error');
+                        }
+                    }
+                });
             });
         }
 

@@ -191,6 +191,7 @@ plant-care-dashboard/
 │       ├── light-artificial.html       # Form content for artifical light details
 │       ├── light-outdoor.html          # Form content for outdoor light details
 │       ├── light-window.html           # Form content for window light details
+│       ├── new-activity.html           # Form content for new activity log
 │       └── prompt-modal.html           # Modal shell/container
 │
 ├── js/                                 # JavaScript modules
@@ -320,94 +321,128 @@ configuration.js              # Orchestrator (~100 lines)
 ### Modal System
 
 #### Overview
-The project uses a reusable modal system for forms and prompts. Modals are dynamically loaded and can display different content types.
+The project uses a flexible, configuration-based modal system that can display different types of forms and content with dynamic button configurations.
 
-#### How It Works
+#### Architecture
 
-**1. Modal Shell (`prompt-modal.html`):**
-- Contains the modal structure (overlay, header, body, footer)
-- Has `id="modal-title"` for dynamic title
-- Has `id="modal-body"` for dynamic content insertion
-- Includes close button and action buttons
+**Core Files:**
+- `components/modals/prompt-modal.html` - Generic modal shell
+- `js/modals/prompt-modal.js` - Modal management and configuration
+- Individual content files (e.g., `new-activity.html`, `light-artificial.html`)
 
-**2. Modal Content Files:**
-- Individual HTML files for different modal types
-- Contain only the form/content (no modal wrapper)
-- Examples: `light-artificial.html`, `location-form.html`, etc.
-
-**3. Modal JavaScript (`js/modals/prompt-modal.js`):**
-- `openPromptModal(type)` - Loads modal shell and specific content
-- Dynamically fetches HTML files using `loadHTML()`
-- Handles form submission and validation
-- Manages modal open/close lifecycle
+**Key Features:**
+- Dynamic title and size configuration
+- Flexible button configurations (labels, styles, actions)
+- Automatic form validation
+- Custom submit/close handlers
+- Data population for edit forms
+- Close methods: close button, backdrop click, Escape key
 
 #### Usage
 
-**In View HTML (e.g., configuration.html):**
-```html
-<button onclick="openPromptModal('light-artificial')">+ Artificial Light</button>
+**Basic Modal Call:**
+```javascript
+import { openModal } from '../modals/prompt-modal.js';
+
+openModal({
+  title: 'Modal Title',
+  contentUrl: 'components/modals/form-content.html',
+  size: 'medium',  // 'small', 'medium', 'large'
+  buttons: [
+    { label: 'SAVE', type: 'primary', action: 'submit' },
+    { label: 'CANCEL', type: 'secondary', action: 'close' }
+  ],
+  onSubmit: (data, modal) => {
+    // Handle form submission
+  },
+  onClose: (modal) => {
+    // Optional cleanup
+  }
+});
 ```
 
-**The function will:**
-1. Load `components/modals/prompt-modal.html` (shell)
-2. Load `components/modals/light-artificial.html` (content)
-3. Insert content into modal body
-4. Set title: "Add Artificial Light"
-5. Display modal with fade-in animation
+**Button Types:**
+- `primary` - Primary action button (green)
+- `secondary` - Secondary action (neutral gray)
+- `danger` - Destructive action (red)
+- `cancel` - Cancel action (yellow)
+
+**Button Actions:**
+- `submit` - Triggers form validation and onSubmit handler
+- `close` - Closes modal and calls onClose handler
+- `delete` - Prompts confirmation and calls onDelete handler
+
+**Modal Sizes:**
+- `small` - 400px max width (simple forms)
+- `medium` - 600px max width (default)
+- `large` - 800px max width (complex forms)
+
+#### Examples
+
+**Add New Activity:**
+```javascript
+openModal({
+  title: 'Log New Activity',
+  contentUrl: 'components/modals/new-activity.html',
+  buttons: [
+    { label: 'LOG ACTIVITY', type: 'primary', action: 'submit' },
+    { label: 'CANCEL', type: 'secondary', action: 'close' }
+  ],
+  onSubmit: async (data, modal) => {
+    await saveActivity(data);
+    modal.querySelector('[data-action="close"]').click();
+  }
+});
+```
+
+**Edit Plant with Delete:**
+```javascript
+openModal({
+  title: 'Edit Plant: Monstera',
+  contentUrl: 'components/modals/edit-plant.html',
+  data: { plant_name: 'Monstera', habitat_id: '123' },
+  buttons: [
+    { label: 'SAVE', type: 'primary', action: 'submit' },
+    { label: 'DELETE', type: 'danger', action: 'delete' },
+    { label: 'CANCEL', type: 'secondary', action: 'close' }
+  ],
+  onSubmit: async (data) => { /* save */ },
+  onDelete: async () => { /* delete */ }
+});
+```
+
+**Simple Confirmation:**
+```javascript
+openModal({
+  title: 'Confirm Action',
+  contentUrl: 'components/modals/confirm-message.html',
+  size: 'small',
+  buttons: [
+    { label: 'CONFIRM', type: 'primary', action: 'submit' },
+    { label: 'CANCEL', type: 'secondary', action: 'close' }
+  ]
+});
+```
 
 #### Adding New Modal Content
 
-To add a new modal type:
+1. Create HTML file in `components/modals/your-form.html`
+2. Content should include only the form/content (no wrapper)
+3. Use semantic form elements with `name` attributes
+4. Call `openModal()` with appropriate configuration
 
-1. **Create content HTML file:**
-```
-   components/modals/your-modal-type.html
-```
+#### Form Data Handling
 
-2. **Call from button:**
-```html
-   <button onclick="openPromptModal('your-modal-type')">Open Modal</button>
-```
+- Modal automatically collects FormData from `<form>` elements
+- Form validation uses HTML5 constraints (required, pattern, etc.)
+- Data passed to `onSubmit` handler as key-value object
+- For edit modals, pass `data` config to pre-populate fields
 
-3. **Optional: Add specific form logic in prompt-modal.js:**
-```javascript
-   function initFormLogic(type, modal) {
-       if (type === 'your-modal-type') {
-           // Custom validation or handlers
-       }
-   }
-```
+#### Global Availability
 
-#### Key Features
+The `openModal()` function is available globally via `window.openModal` for use in inline handlers if needed, though ES6 imports are preferred.
 
-- **Dynamic Loading:** Modal content loaded on-demand
-- **Reusable Shell:** One modal structure for all types
-- **Global Access:** `openPromptModal()` available via `window` object
-- **Form Handling:** Automatic form submission handling
-- **Close Methods:**
-  - Click close button (×)
-  - Click CANCEL button
-  - Click outside modal (backdrop)
-  - Press Escape key
-- **Animations:** Fade-in effect on open
-
-#### Modal CSS Classes
-```css
-.modal              /* Modal overlay (backdrop) */
-.modal.show         /* Visible state */
-.modal-content      /* Modal container */
-.modal-header       /* Header section */
-.modal-body         /* Dynamic content area */
-.close-modal        /* Close button (×) */
-```
-
-#### Important Notes
-
-- Modal function is globally available via `window.openPromptModal`
-- Loaded in `app.js` and exposed globally for inline `onclick` handlers
-- Uses ES6 modules internally but accessible from HTML
-- Modal shell must have `id="modal-title"` and `id="modal-body"`
-- Content files should contain only the form/content (no wrapper divs)
+----------
 
 ### Key Modules
 
