@@ -6,6 +6,9 @@ body {
 
 /* Sidebar */
 .sidebar {
+    position: sticky;
+    top: 0;
+    height: 100vh;
     width: 250px;
     background: var(--forest-teal);
     color: var(--clay-peach);
@@ -52,7 +55,18 @@ body {
 .sidebar-nav {
     display: flex;
     flex-direction: column;
+    height: 100%;
+}
+
+.sidebar-nav-top {
     gap: var(--spacing-sm);
+    flex: 1;
+    overflow-y: auto;
+}
+
+.sidebar-nav-bottom {
+    margin-top: auto;
+    flex-shrink: 0;
 }
 
 .nav-item {
@@ -82,23 +96,32 @@ body {
     filter: brightness(0) invert(1);
 }
 
+.nav-icon:hover {
+    background: var(--botanical-green);
+    border-color: var(--botanical-green);
+    transform: rotate(45deg);
+}
+
 /* Main Content Area */
 .main-content {
     flex: 1;
     padding: var(--spacing-xxl);
-    overflow-y: auto;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
+    height: 100vh;
 }
 
 /* Breadcrumb Bar */
 .breadcrumb-bar {
     display: flex;
+    flex-shrink: 0;
     justify-content: space-between;
     align-items: center;
     margin-bottom: var(--spacing-xl);
     padding-bottom: var(--spacing-md);
     border-bottom: 1px solid var(--border-light);
+    z-index: 10;
 }
 
 /* Breadcrumb Navigation */
@@ -134,41 +157,11 @@ body {
     user-select: none;
 }
 
-/* Settings Button */
-.settings-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    padding: 0;
-    background: var(--bg-card);
-    border: 1px solid var(--border-light);
-    border-radius: var(--radius-md);
-    cursor: pointer;
-    transition: all var(--transition-fast);
-}
-
-.settings-btn:hover {
-    background: var(--botanical-green);
-    border-color: var(--botanical-green);
-    transform: rotate(45deg);
-}
-
-.settings-icon {
-    width: 20px;
-    height: 20px;
-    filter: brightness(0) saturate(100%) invert(20%) sepia(10%) saturate(500%);
-    transition: filter var(--transition-fast);
-}
-
-.settings-btn:hover .settings-icon {
-    filter: brightness(0) invert(1);
-}
 
 /* View Container */
 #view-container {
     flex: 1;
+    overflow-y: auto;
 }
 
 .header {
