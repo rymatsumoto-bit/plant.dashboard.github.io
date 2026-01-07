@@ -282,6 +282,8 @@
 | is_active | boolean | NO | true |
 | created_at | timestamp with time zone | NO | now() |
 | modified_at | timestamp with time zone | NO | now() |
+| acquisition_date | date | NO |  |
+| source | text | NO |  |
 
 ### Primary Key
 - plant_id
@@ -289,7 +291,48 @@
 ### Foreign Keys
 - habitat_id → habitat.habitat_id
 - plant_type_id → plant_type_lookup.plant_type_id
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| ## plant_activity_history
+
+### Columns
+| Column | Type | Nullable | Default |
+| --- | --- | --- | --- |
+| activity_id | uuid | NO | gen_random_uuid() |
+| plant_id | uuid | NO |  |
+| activity_type_code | text | NO |  |
+| activity_date | date | NO | CURRENT_DATE |
+| quantifier | numeric | YES |  |
+| unit | text | YES |  |
+| details | text | YES |  |
+| result | text | YES |  |
+| created_at | timestamp with time zone | NO | now() |
+
+### Primary Key
+- activity_id
+
+### Foreign Keys
+- activity_type_code → plant_activity_type_lookup.activity_type_code
+- plant_id → plant.plant_id
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| ## plant_activity_type_lookup
+
+### Columns
+| Column | Type | Nullable | Default |
+| --- | --- | --- | --- |
+| activity_type_code | text | NO |  |
+| activity_label | text | NO |  |
+| activity_category | text | NO |  |
+| description | text | YES |  |
+| requires_quantifier | boolean | NO | false |
+| default_unit | text | YES |  |
+| is_active | boolean | NO | true |
+| created_at | timestamp with time zone | NO | now() |
+| modified_at | timestamp with time zone | NO | now() |
+
+### Primary Key
+- activity_type_code
+
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | ## plant_inventory_view
 
 ### Columns
@@ -300,13 +343,16 @@
 | plant_category | text | YES |  |
 | plant_icon | text | YES |  |
 | species | text | YES |  |
+| habitat | text | YES |  |
 | status_code | text | YES |  |
 | status_label | text | YES |  |
-| severity | integer | YES |  |
-| status_calculated_at | timestamp with time zone | YES |  |
+| status_icon | text | YES |  |
+| last_activity_code | text | YES |  |
+| last_activity_label | text | YES |  |
+| last_activity_date | date | YES |  |
 
 ### Primary Key\n- (none)\n
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | ## plant_status_history
 
 ### Columns
@@ -342,11 +388,12 @@
 | is_active | boolean | NO | true |
 | created_at | timestamp with time zone | NO | now() |
 | modified_at | timestamp with time zone | NO | now() |
+| status_icon | text | NO |  |
 
 ### Primary Key
 - status_code
 
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | ## plant_type_lookup
 
 ### Columns
