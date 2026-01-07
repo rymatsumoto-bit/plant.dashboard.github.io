@@ -1,70 +1,85 @@
 import { loadHTML, capitalize } from '../utils.js';
 
 /**
- * Opens the prompt-modal and fills in the content (type)
+ * Opens a modal with flexible configuration
+ * @param {Object} config - Modal configuration
+ * @param {string} config.title - Modal title
+ * @param {string} config.contentUrl - Path to content HTML file
+ * @param {string} config.size - Modal size: 'small', 'medium', 'large' (default: 'medium')
+ * @param {Array} config.buttons - Button configuration array
+ * @param {Function} config.onSubmit - Optional submit handler
+ * @param {Function} config.onClose - Optional close handler
+ * @param {Object} config.data - Optional data to pass to form
  */
-export async function openPromptModal(type) {
+export async function openModal(config) {
   try {
+    // Validate required config
+    if (!config.title || !config.contentUrl) {
+      throw new Error('Modal config must include title and contentUrl');
+    }
+    
+    // Default configuration
+    const modalConfig = {
+      size: 'medium',
+      buttons: [
+        { label: 'SAVE', type: 'primary', action: 'submit' },
+        { label: 'CANCEL', type: 'secondary', action: 'close' }
+      ],
+      onSubmit: null,
+      onClose: null,
+      data: null,
+      ...config
+    };
+    
     // Load modal shell HTML
     const modalHTML = await loadHTML('components/modals/prompt-modal.html');
     
     // Create modal element
     const tempDiv = document.createElement('div');
     tempDiv.innerHTML = modalHTML.trim();
-    const modal = tempDiv.firstElementChild; // This is the #prompt-modal div
+    const modal = tempDiv.firstElementChild;
     
     // Append to body FIRST
     document.body.appendChild(modal);
 
-    // NOW query elements (query from modal, not document)
+    // Query elements from modal
     const body = modal.querySelector('#modal-body');
     const title = modal.querySelector('#modal-title');
+    const buttonContainer = modal.querySelector('#modal-buttons');
 
-    if (!body) {
-      console.error('Modal body not found');
-      modal.remove();
-      return;
-    }
-    
-    if (!title) {
-      console.error('Modal title not found');
+    if (!body || !title || !buttonContainer) {
+      console.error('Modal elements not found');
       modal.remove();
       return;
     }
 
     // Load specific form content
-    const formHTML = await loadHTML(`components/modals/${type}.html`);
+    const formHTML = await loadHTML(modalConfig.contentUrl);
     body.innerHTML = formHTML;
     
     // Set title
-    const formattedType = type.replace(/-/g, ' ');
-    title.textContent = `Add ${capitalize(formattedType)}`;
+    title.textContent = modalConfig.title;
+    
+    // Set modal size
+    const modalContent = modal.querySelector('.modal-content');
+    modalContent.classList.add(`modal-${modalConfig.size}`);
+    
+    // Render buttons
+    renderButtons(buttonContainer, modalConfig.buttons, modal, modalConfig);
 
-    // Make modal visible (add 'show' class if needed for CSS)
+    // Make modal visible
     modal.classList.add('show');
 
-    // Setup close handlers - use the closeLightModal function you already have
-    // Or define it here
-    window.closeLightModal = () => closeModal(modal);
+    // Setup close handlers
+    setupCloseHandlers(modal, modalConfig.onClose);
     
-    // Close on backdrop click (clicking outside modal-content)
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) {
-        closeModal(modal);
-      }
-    });
+    // If data provided, populate form
+    if (modalConfig.data) {
+      populateForm(modal, modalConfig.data);
+    }
     
-    // Close on Escape key
-    const escapeHandler = (e) => {
-      if (e.key === 'Escape') {
-        closeModal(modal);
-        document.removeEventListener('keydown', escapeHandler);
-      }
-    };
-    document.addEventListener('keydown', escapeHandler);
-
-    // Initialize form logic
-    initFormLogic(type, modal);
+    // Return modal reference for external manipulation if needed
+    return modal;
     
   } catch (error) {
     console.error('Error opening modal:', error);
@@ -73,10 +88,137 @@ export async function openPromptModal(type) {
 }
 
 /**
- * Close modal
+ * Render dynamic buttons in modal footer
  */
-function closeModal(modal) {
+function renderButtons(container, buttons, modal, config) {
+  container.innerHTML = buttons.map(btn => {
+    const btnClass = getButtonClass(btn.type);
+    return `<button type="button" class="btn ${btnClass}" data-action="${btn.action}">${btn.label}</button>`;
+  }).join('');
+  
+  // Attach event listeners
+  container.querySelectorAll('button').forEach(button => {
+    button.addEventListener('click', () => {
+      handleButtonAction(button.dataset.action, modal, config);
+    });
+  });
+}
+
+/**
+ * Get CSS class for button type
+ */
+function getButtonClass(type) {
+  const classMap = {
+    'primary': 'btn-primary',
+    'secondary': 'btn-secondary',
+    'danger': 'btn-delete',
+    'cancel': 'btn-cancel'
+  };
+  return classMap[type] || 'btn-secondary';
+}
+
+/**
+ * Handle button actions
+ */
+function handleButtonAction(action, modal, config) {
+  switch (action) {
+    case 'submit':
+      handleSubmit(modal, config);
+      break;
+    case 'close':
+      closeModal(modal, config.onClose);
+      break;
+    case 'delete':
+      handleDelete(modal, config);
+      break;
+    default:
+      console.warn(`Unknown action: ${action}`);
+  }
+}
+
+/**
+ * Handle form submission
+ */
+function handleSubmit(modal, config) {
+  const form = modal.querySelector('form');
+  
+  if (form) {
+    // Trigger HTML5 validation
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+    
+    // Collect form data
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData);
+    
+    // Call custom submit handler if provided
+    if (config.onSubmit) {
+      config.onSubmit(data, modal);
+    } else {
+      console.log('Form data:', data);
+      closeModal(modal, config.onClose);
+    }
+  } else {
+    // No form found, just close
+    closeModal(modal, config.onClose);
+  }
+}
+
+/**
+ * Handle delete action
+ */
+function handleDelete(modal, config) {
+  if (confirm('Are you sure you want to delete this item?')) {
+    // Call custom delete handler if provided
+    if (config.onDelete) {
+      config.onDelete(modal);
+    }
+    closeModal(modal, config.onClose);
+  }
+}
+
+/**
+ * Setup close handlers (backdrop click, escape key)
+ */
+function setupCloseHandlers(modal, onClose) {
+  // Close on backdrop click
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      closeModal(modal, onClose);
+    }
+  });
+  
+  // Close on Escape key
+  const escapeHandler = (e) => {
+    if (e.key === 'Escape') {
+      closeModal(modal, onClose);
+      document.removeEventListener('keydown', escapeHandler);
+    }
+  };
+  document.addEventListener('keydown', escapeHandler);
+  
+  // Store handler reference for cleanup
+  modal._escapeHandler = escapeHandler;
+}
+
+/**
+ * Close modal with cleanup
+ */
+function closeModal(modal, onClose) {
+  // Call custom close handler if provided
+  if (onClose) {
+    onClose(modal);
+  }
+  
+  // Remove escape key handler
+  if (modal._escapeHandler) {
+    document.removeEventListener('keydown', modal._escapeHandler);
+  }
+  
   modal.classList.remove('show');
+  
   // Wait for animation before removing
   setTimeout(() => {
     modal.remove();
@@ -84,64 +226,25 @@ function closeModal(modal) {
 }
 
 /**
- * Initialize form-specific logic
+ * Populate form with data (for edit modals)
  */
-function initFormLogic(type, modal) {
-  console.log(`Initializing form logic for: ${type}`);
-  
-  const form = modal.querySelector('form');
-  if (form) {
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      handleFormSubmit(type, form, modal);
-    });
-  }
-  
-  // If there's a submit button outside the form, handle it
-  const submitBtn = modal.querySelector('.btn-primary');
-  if (submitBtn && !form) {
-    submitBtn.addEventListener('click', () => {
-      // Collect form data from inputs in modal-body
-      const inputs = modal.querySelectorAll('#modal-body input, #modal-body select, #modal-body textarea');
-      const data = {};
-      inputs.forEach(input => {
-        if (input.name) {
-          data[input.name] = input.value;
-        }
-      });
-      console.log('Collected data:', data);
-      handleFormSubmit(type, data, modal);
-    });
-  }
+function populateForm(modal, data) {
+  Object.keys(data).forEach(key => {
+    const input = modal.querySelector(`[name="${key}"], #${key}`);
+    if (input) {
+      if (input.type === 'checkbox') {
+        input.checked = data[key];
+      } else if (input.type === 'radio') {
+        const radio = modal.querySelector(`[name="${key}"][value="${data[key]}"]`);
+        if (radio) radio.checked = true;
+      } else {
+        input.value = data[key];
+      }
+    }
+  });
 }
 
-/**
- * Handle form submission
- */
-function handleFormSubmit(type, formOrData, modal) {
-  console.log(`Submitting ${type} form`);
-  
-  let data;
-  if (formOrData instanceof HTMLFormElement) {
-    // It's a form
-    const formData = new FormData(formOrData);
-    data = Object.fromEntries(formData);
-  } else {
-    // It's already data object
-    data = formOrData;
-  }
-  
-  console.log('Form data:', data);
-  
-  // TODO: Save to database
-  // TODO: Refresh view
-  
-  // Close modal
-  closeModal(modal);
-  
-  alert('Data saved! (TODO: Actually save to database)');
+// Also make available globally for inline handlers if needed
+if (typeof window !== 'undefined') {
+    window.openModal = openModal;
 }
-
-// Make functions globally available
-window.openPromptModal = openPromptModal;
-window.closeLightModal = null; // Will be set when modal opens
