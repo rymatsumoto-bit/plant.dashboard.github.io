@@ -187,12 +187,12 @@ plant-care-dashboard/
 │   ├── configuration-tabs/             # Tabs under configuration view
 │   │   ├── address.html                # Content for address configuration
 │   │   └── habitat.html                # Content for habitat configuration
-│   ├── modals/                         # Reusable modal componentes
+│   └── modals/                         # Reusable modal componentes
+│       ├── prompt-modal.html           # Modal shell/container
 │       ├── light-artificial.html       # Form content for artifical light details
 │       ├── light-outdoor.html          # Form content for outdoor light details
 │       ├── light-window.html           # Form content for window light details
-│       ├── new-activity.html           # Form content for new activity log
-│       └── prompt-modal.html           # Modal shell/container
+│       └── new-activity.html           # Form content for new activity log
 │
 ├── js/                                 # JavaScript modules
 │   ├── app.js                          # Main entry point
@@ -588,10 +588,12 @@ export function showEmptyState(elementId) { }
 ✅ Established code organization principles for complex features
 ✅ Configuration view with location management  
 ✅ Inventory view with plant grid  
+✅ Form validation and submission  
+✅ Add new activity
+
 
 ### In Progress
-🔄 Form validation and submission  
-🔄 Add new activity
+🔄 Create new plant form
 
 ### Pending
 ⏳ Plant detail component  

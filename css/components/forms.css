@@ -55,6 +55,14 @@
     gap: var(--spacing-md);
 }
 
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--spacing-md);
+}
+
+
+
 .form-actions {
     display: flex;
     gap: var(--spacing-md);
