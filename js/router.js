@@ -2,7 +2,6 @@
 // ROUTER.JS - View Loading and Navigation
 // ============================================
 
-import { updateBreadcrumb } from './components/breadcrumb.js';
 import { initializeDashboard } from './views/dashboard.js';
 import { initializeReports } from './views/reports.js';
 import { initializeInventory } from './views/inventory.js';
@@ -185,7 +184,6 @@ export class Router {
     // Update navigation active states
     updateNavigation(viewName) {
         this.updateActiveNav(viewName);
-        updateBreadcrumb(viewName);
     }
 
     // Update sidebar active state

@@ -105,56 +105,60 @@ body {
 /* Main Content Area */
 .main-content {
     flex: 1;
-    padding: var(--spacing-xxl);
     display: flex;
     flex-direction: column;
     overflow: hidden;
     height: 100vh;
 }
 
-/* Breadcrumb Bar */
-.breadcrumb-bar {
+/* Toolbar */
+.toolbar {
+    background-color: var(--bg-white);
     display: flex;
     flex-shrink: 0;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: var(--spacing-xl);
-    padding-bottom: var(--spacing-md);
+    padding: var(--spacing-lg);
     border-bottom: 1px solid var(--border-light);
+    box-shadow: var(--shadow-sm);
     z-index: 10;
 }
 
-/* Breadcrumb Navigation */
-.breadcrumb {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    font-size: var(--font-size-sm);
+.toolbar h1 {
+    font-size: var(--font-size-title);
+    color: var(--text-primary);    
 }
 
-.breadcrumb-item {
+.toolbar p {
+    font-size: 0.9em;
+    opacity: 0.9;
+    margin: 0;
+}
+
+/* Search Container */
+.search-container {
+    flex: 1;
+    max-width: 400px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-base);
+    font-family: inherit;
+    transition: border-color var(--transition-fast);
+    box-shadow: var(--shadow-md);
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--botanical-green);
+}
+
+.search-input::placeholder {
     color: var(--text-light);
-}
-
-.breadcrumb-item.home {
-    color: var(--botanical-green);
-    cursor: pointer;
-    transition: color var(--transition-fast);
-}
-
-.breadcrumb-item.home:hover {
-    color: var(--forest-teal);
-    text-decoration: underline;
-}
-
-.breadcrumb-item.current {
-    color: var(--text-primary);
-    font-weight: 600;
-}
-
-.breadcrumb-separator {
-    color: var(--text-light);
-    user-select: none;
 }
 
 
@@ -162,6 +166,8 @@ body {
 #view-container {
     flex: 1;
     overflow-y: auto;
+    padding: var(--spacing-xxl);
+
 }
 
 .header {
