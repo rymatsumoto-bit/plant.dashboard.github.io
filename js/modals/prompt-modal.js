@@ -244,6 +244,38 @@ function populateForm(modal, data) {
   });
 }
 
+/**
+ * Populate a dropdown with options
+ * @param {string} selectId - ID of the select element
+ * @param {Array} items - Array of data objects
+ * @param {string} valueKey - Property name for option value
+ * @param {string} labelKey - Property name for option label
+ */
+export function populateDropdown(selectId, items, valueKey, labelKey) {
+    const select = document.getElementById(selectId);
+    
+    if (!select) {
+        console.warn(`Select element with id '${selectId}' not found`);
+        return;
+    }
+    
+    // Clear existing options except the first (placeholder)
+    while (select.options.length > 1) {
+        select.remove(1);
+    }
+    
+    // Add new options
+    items.forEach(item => {
+        const option = document.createElement('option');
+        option.value = item[valueKey];
+        option.textContent = item[labelKey];
+        select.appendChild(option);
+    });
+}
+
+
+
+
 // Also make available globally for inline handlers if needed
 if (typeof window !== 'undefined') {
     window.openModal = openModal;

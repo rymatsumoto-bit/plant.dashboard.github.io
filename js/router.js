@@ -8,8 +8,8 @@ import { initializeReports } from './views/reports.js';
 import { initializeInventory } from './views/inventory.js';
 import { initializeConfiguration } from './views/configuration.js';
 import { initializeSettings } from './views/settings.js';
-import { openModal } from './modals/prompt-modal.js';
-import { addPlantActivity } from './services/supabase.js';
+import { openModal, populateDropdown } from './modals/prompt-modal.js';
+import { getActivityTypes, getActivePlants, addPlantActivity } from './services/supabase.js';
 import { showNotification, capitalize } from './utils.js';
 
 export class Router {
@@ -39,8 +39,9 @@ export class Router {
         // New Activity button (not in sidebar)
         const newActivityBtn = document.getElementById('new-activity-btn');
         if (newActivityBtn) {
-            newActivityBtn.addEventListener('click', () => {
-                openModal({
+            newActivityBtn.addEventListener('click', async () => {
+                // Open modal first
+                const modal = await openModal({
                     title: 'Log New Activity',
                     contentUrl: 'components/modals/new-activity.html',
                     size: 'medium',
@@ -50,14 +51,9 @@ export class Router {
                     ],
                     onSubmit: async (data, modal) => {
                         try {
-                            // Save to database
                             await addPlantActivity(data);
                             showNotification('Activity logged successfully!', 'success');
-                            
-                            // Close modal
                             modal.querySelector('[data-action="close"]').click();
-                            
-                            // Refresh current view (not just dashboard)
                             this.loadView(this.currentView);
                         } catch (error) {
                             console.error('Error logging activity:', error);
@@ -65,6 +61,29 @@ export class Router {
                         }
                     }
                 });
+                
+                // After modal opens, load dropdown data
+                try {
+                    // Fetch data from Supabase
+                    const [activityTypes, plants] = await Promise.all([
+                        getActivityTypes(),
+                        getActivePlants()
+                    ]);
+                    
+                    // Populate dropdowns
+                    populateDropdown('activity-type', activityTypes, 'activity_type_code', 'activity_label');
+                    populateDropdown('plant-select', plants, 'plant_id', 'plant_name');
+                    
+                    // Set today's date as default
+                    const dateInput = modal.querySelector('#activity-date');
+                    if (dateInput) {
+                        dateInput.valueAsDate = new Date();
+                    }
+                    
+                } catch (error) {
+                    console.error('Error loading form data:', error);
+                    showNotification('Error loading form data', 'error');
+                }
             });
         }
 

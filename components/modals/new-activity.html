@@ -4,12 +4,7 @@
         <label for="activity-type">Activity Type *</label>
         <select id="activity-type" name="activity_type" required>
             <option value="">Select activity type...</option>
-            <option value="watering">Watering</option>
-            <option value="fertilizing">Fertilizing</option>
-            <option value="repotting">Repotting</option>
-            <option value="pruning">Pruning</option>
-            <option value="pest-treatment">Pest Treatment</option>
-            <option value="observation">Observation</option>
+            <!-- Options will be loaded dynamically -->
         </select>
     </div>
     
@@ -26,30 +21,41 @@
         <input type="date" id="activity-date" name="activity_date" required>
     </div>
     
-    <div class="form-group">
-        <label for="activity-notes">Notes</label>
-        <textarea id="activity-notes" name="notes" rows="4" placeholder="Optional notes about this activity..."></textarea>
-    </div>
-    
     <!-- Optional fields section -->
     <div class="form-section">
         <h3>Optional Details</h3>
-        
-        <div class="form-group">
-            <label for="activity-quantity">Quantity</label>
-            <input type="number" id="activity-quantity" name="quantifier" step="0.01" placeholder="e.g., 250">
+
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="activity-quantity">Quantity</label>
+                <input type="number" id="activity-quantity" name="quantifier" step="0.01" placeholder="e.g., 250">
+            </div>
+            
+            <div class="form-group">
+                <label for="activity-unit">Unit</label>
+                <select id="activity-unit" name="unit">
+                    <option value="">Select unit...</option>
+                    <option value="ml">Milliliters (ml)</option>
+                    <option value="oz">Ounces (oz)</option>
+                    <option value="cups">Cups</option>
+                    <option value="grams">Grams (g)</option>
+                    <option value="tsp">Teaspoons (tsp)</option>
+                </select>
+            </div>
         </div>
-        
-        <div class="form-group">
-            <label for="activity-unit">Unit</label>
-            <select id="activity-unit" name="unit">
-                <option value="">Select unit...</option>
-                <option value="ml">Milliliters (ml)</option>
-                <option value="oz">Ounces (oz)</option>
-                <option value="cups">Cups</option>
-                <option value="grams">Grams (g)</option>
-                <option value="tsp">Teaspoons (tsp)</option>
-            </select>
+
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="activity-result">Notes</label>
+                <textarea id="activity-result" name="result" rows="3" style="width: 100%; resize: none;" placeholder="e.g., recovered"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="activity-notes">Notes</label>
+                <textarea id="activity-notes" name="notes" rows="3" style="width: 100%; resize: none;" placeholder="Optional notes about this activity..."></textarea>
+            </div>
         </div>
+
+
     </div>
 </form>

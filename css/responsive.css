@@ -36,3 +36,9 @@
         height: 18px;
     }
 }
+
+@media (max-width: 600px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}

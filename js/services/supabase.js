@@ -163,7 +163,7 @@ export async function getAddressById(addressId) {
 // ============================================
 
 /**
- * Get all addresses
+ * Get all plants
  */
 export async function getPlantInventory() {
     const { data, error } = await supabase
@@ -174,6 +174,45 @@ export async function getPlantInventory() {
     return data;
 }
 
+
+// ============================================
+// ACTIVITY QUERIES
+// ============================================
+
+/**
+ * Get all active activity types for dropdown
+ */
+export async function getActivityTypes() {
+    const { data, error } = await supabase
+        .from('plant_activity_type_lookup')
+        .select('activity_type_code, activity_label, activity_category')
+        .eq('is_active', true)
+        .order('activity_label');
+    
+    if (error) throw error;
+    return data;
+}
+
+/**
+ * Get all active plants for dropdown
+ */
+export async function getActivePlants() {
+    const { data, error } = await supabase
+        .from('plant')
+        .select('plant_id, plant_name')
+        .eq('is_active', true)
+        .order('plant_name');
+    
+    if (error) throw error;
+    return data;
+}
+
+
+
+
+// ============================================
+// WRITE QUERIES
+// ============================================
 
 
 /**
