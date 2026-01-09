@@ -39,14 +39,6 @@
     border-bottom-color: var(--botanical-green);
 }
 
-/* Tab Panels */
-.config-tab-panel {
-    display: none;
-}
-
-.config-tab-panel.active {
-    display: block;
-}
 
 /* Two-column Grid */
 .configuration-content-grid {
@@ -56,12 +48,12 @@
     margin-bottom: var(--spacing-xl);
 }
 
-/* Habitat List */
-
-.habitat-list {
+.configuration-list {
     list-style: none;
     margin-top: var(--spacing-lg);
 }
+
+/* Habitat List */
 
 .habitat-item {
     padding: var(--spacing-md);

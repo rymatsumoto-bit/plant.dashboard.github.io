@@ -1,5 +1,5 @@
 // ============================================
-// HABITAT-MANAGER.JS -  View Logic
+// HABITAT-MANAGER.JS - View Logic
 // ============================================
 
 import { 
@@ -10,34 +10,32 @@ import {
     getHabitatLightOutdoor,
     getHumidityLevel
 } from '../../services/supabase.js';
+
 import { showNotification, logError } from '../../utils.js';
 import { showLoadingState, showErrorState } from './shared-utils.js';
 
-// Store loaded data
+// ----------------------------
+// Module-level state
+// ----------------------------
 let habitats = [];
 let currentHabitatId = null;
 
 /**
- * Load habitats data
+ * Entry point for Habitat view
  */
 export async function initHabitatManager() {
     try {
         showLoadingState('habitat-list');
-        
-        // Load all habitats
+
         habitats = await getHabitats();
-        console.log('Loaded habitats:', habitats);
-        
-        // Render habitat list
         renderHabitatList();
-        
-        // If we have habitats, load the first one
+
         if (habitats.length > 0) {
             await loadHabitatDetails(habitats[0].habitat_id);
         } else {
-            showEmptyState('habitat');
+            showEmptyState();
         }
-        
+
     } catch (error) {
         logError(error, 'loading habitats');
         showErrorState('habitat-list', error);
@@ -45,23 +43,68 @@ export async function initHabitatManager() {
 }
 
 /**
- * Load and display habitat details
+ * Render habitat list (LEFT PANEL)
+ */
+function renderHabitatList() {
+    const habitatList = document.getElementById('habitat-list');
+
+    if (!habitatList) {
+        console.warn('habitat-list element not found');
+        return;
+    }
+
+
+    if (habitats.length === 0) {
+        habitatList.innerHTML = '<li class="empty-state">No habitats configured yet.</li>';
+        return;
+    }
+
+    habitatList.innerHTML = habitats.map((habitat, index) => `
+        <li class="habitat-item ${index === 0 ? 'active' : ''}"
+            data-habitat-id="${habitat.habitat_id}">
+            <div>
+                <div class="habitat-name">${habitat.habitat_name}</div>
+                <div class="habitat-info">Loading details...</div>
+            </div>
+        </li>
+    `).join('');
+
+    attachHabitatListEvents();
+}
+
+/**
+ * Click handling for habitat list
+ */
+function attachHabitatListEvents() {
+    const habitatList = document.getElementById('habitat-list');
+    if (!habitatList) return;
+
+    habitatList.addEventListener('click', (event) => {
+        const item = event.target.closest('.habitat-item');
+        if (!item) return;
+
+        loadHabitatDetails(item.dataset.habitatId);
+    });
+}
+
+/**
+ * Load and display habitat details (RIGHT PANEL)
  */
 async function loadHabitatDetails(habitatId) {
     try {
         currentHabitatId = habitatId;
-        
-        // Update active state in list
+
+        // Update active state
         document.querySelectorAll('.habitat-item').forEach(item => {
-            item.classList.remove('active');
-            if (item.dataset.habitatId === habitatId) {
-                item.classList.add('active');
-            }
+            item.classList.toggle(
+                'active',
+                item.dataset.habitatId === habitatId
+            );
         });
         
         // Show loading in form area
         showFormLoading();
-        
+
         // Fetch all habitat data
         const habitat = await getHabitatById(habitatId);
         const humidityLevel = await getHumidityLevel(habitat.humidity_level_id);
@@ -71,74 +114,36 @@ async function loadHabitatDetails(habitatId) {
         
         // Update habitat info in list
         updateHabitatListInfo(habitatId, {
-            lightArtificial,
-            lightWindow,
-            lightOutdoor
-        });
-        
-        // Render form with data
-        renderHabitatForm(habitat, humidityLevel, {
             artificial: lightArtificial,
             window: lightWindow,
             outdoor: lightOutdoor
         });
-        
+
+        // Render form with data
+        renderHabitatForm(
+            habitat,
+            humidityLevel,
+            { artificial: lightArtificial, window: lightWindow, outdoor: lightOutdoor }
+        );
+
+        attachHabitatFormActions();
+
     } catch (error) {
-        logError(error, `laoading habitat ${habitatId}`);
+        logError(error, `loading habitat ${habitatId}`);
         showNotification('Error loading habitat details', 'error');
     }
 }
 
-
 /**
- * Render habitat list in left panel
- */
-function renderHabitatList() {
-    const habitatList = document.getElementById('habitat-list');
-    
-    if (!habitatList) {
-        console.warn('habitat-list element not found');
-        return;
-    }
-    
-    if (habitats.length === 0) {
-        habitatList.innerHTML = '<li class="empty-state">No habitats configured yet.</li>';
-        return;
-    }
-    
-    habitatList.innerHTML = habitats.map((habitat, index) => `
-        <li class="habitat-item ${index === 0 ? 'active' : ''}" 
-            data-habitat-id="${habitat.habitat_id}"
-            onclick="window.loadHabitatDetails('${habitat.habitat_id}')">
-            <div>
-                <div class="habitat-name">${habitat.habitat_name}</div>
-                <div class="habitat-info">Loading details...</div>
-            </div>
-            <div class="habitat-actions">
-                <button class="btn btn-small btn-edit" 
-                        onclick="event.stopPropagation(); window.editHabitat('${habitat.habitat_id}')">
-                    EDIT
-                </button>
-                <button class="btn btn-small btn-delete" 
-                        onclick="event.stopPropagation(); window.deleteHabitat('${habitat.habitat_id}')">
-                    DELETE
-                </button>
-            </div>
-        </li>
-    `).join('');
-}
-
-
-/**
- * Update habitat info text in list
+ * Update info text under habitat name in list
  */
 function updateHabitatListInfo(habitatId, lights) {
     const habitatItem = document.querySelector(`[data-habitat-id="${habitatId}"]`);
     if (!habitatItem) return;
-    
+
     const infoElement = habitatItem.querySelector('.habitat-info');
     const lightTypes = [];
-    
+
     if (lights.artificial && lights.artificial.length > 0) {
         lightTypes.push('Artificial light');
     }
@@ -148,20 +153,18 @@ function updateHabitatListInfo(habitatId, lights) {
     if (lights.outdoor && lights.outdoor.length > 0) {
         lightTypes.push('Outdoor');
     }
-    
-    infoElement.textContent = lightTypes.length > 0 
-        ? lightTypes.join(' • ') 
+
+    infoElement.textContent = lightTypes.length
+        ? lightTypes.join(' • ')
         : 'No light sources configured';
 }
 
 /**
- * Render habitat form with data
+ * Render habitat form fields
  */
 function renderHabitatForm(habitat, humidityLevel, lights) {
-    // Update basic info fields
     document.getElementById('habitat-name').value = habitat.habitat_name || '';
-        
-    // Update temperature controls
+
     if (habitat.temperature_controlled) {
         document.getElementById('temp-controlled').checked = true;
         document.getElementById('temp-details').style.display = 'block';
@@ -172,34 +175,29 @@ function renderHabitatForm(habitat, humidityLevel, lights) {
         document.getElementById('temp-uncontrolled').checked = true;
         document.getElementById('temp-details').style.display = 'none';
     }
-    
-    // Update humidity (match to select options if needed)
-    // For now, leave default selected
-    
-    // Update appliances
+
     document.getElementById('appliance-ac').checked = habitat.appliance_ac || false;
     document.getElementById('appliance-heater').checked = habitat.appliance_heater || false;
     document.getElementById('appliance-fan').checked = habitat.appliance_fan || false;
     document.getElementById('appliance-humidifier').checked = habitat.appliance_humidifier || false;
-    
-    // Render light sources
+
     renderLightSources(lights);
 }
 
 
 /**
- * Render all light sources
+ * Render all light sources (unchanged)
  */
 function renderLightSources(lights) {
     const container = document.getElementById('all-lights-list');
-    
+
     if (!container) {
         console.warn('all-lights-list element not found');
         return;
     }
-    
+
     let html = '';
-    
+
     // Render artificial lights
     if (lights.artificial && lights.artificial.length > 0) {
         lights.artificial.forEach(light => {
@@ -229,7 +227,7 @@ function renderLightSources(lights) {
             `;
         });
     }
-    
+
     // Render window lights
     if (lights.window && lights.window.length > 0) {
         lights.window.forEach(light => {
@@ -299,31 +297,43 @@ function renderLightSources(lights) {
 }
 
 /**
- * Show loading in form area
+ * UI helpers
  */
 function showFormLoading() {
-    console.log('Loading details...');
+    console.log('Loading habitat details...');
 }
+
+function showEmptyState() {
+    const habitatList = document.getElementById('habitat-list');
+    if (!habitatList) return;
+
+    habitatList.innerHTML = `
+        <li class="empty-state">
+            No habitats configured yet.
+        </li>
+    `;
+}
+
 
 /**
- * Show empty state for habitats
+ * Listens to EDIT / DELETE buttons in form header
  */
-function showEmptyState(type) {
-    const habitatList = document.getElementById('habitat-list');
-    if (habitatList) {
-        habitatList.innerHTML = `
-            <li class="empty-state">
-                No habitats configured yet.<br>
-                <button class="btn btn-small btn-primary" 
-                        style="margin-top: var(--spacing-md);" 
-                        onclick="window.showNewHabitatForm()">
-                    + CREATE HABITAT
-                </button>
-            </li>
-        `;
-    }
-}
+function attachHabitatFormActions() {
+  const editBtn = document.getElementById('habitat-edit-btn');
+  const deleteBtn = document.getElementById('habitat-delete-btn');
 
+  if (!editBtn || !deleteBtn) return;
+
+  editBtn.addEventListener('click', () => {
+    if (!currentHabitatId) return;
+    editHabitat(currentHabitatId);
+  });
+
+  deleteBtn.addEventListener('click', () => {
+    if (!currentHabitatId) return;
+    deleteHabitat(currentHabitatId);
+  });
+}
 
 /**
  * Placeholder functions for future implementation

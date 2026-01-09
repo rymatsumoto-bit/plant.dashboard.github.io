@@ -593,16 +593,17 @@ export function showEmptyState(elementId) { }
 
 
 ### In Progress
-🔄 Create new plant form
+🔄 Create "new plant" form
 
 ### Pending
 ⏳ Plant detail component  
 ⏳ Add/Edit plant forms  
 ⏳ Add/Edit location forms  
+⏳ User timezone selection in Settings (localStorage implementation)
 ⏳ Python forecasting algorithm development  
 ⏳ Data export functionality  
 ⏳ Mobile responsive optimization  
-⏳ Toast notification system  
+⏳ Toast notification system
 
 
 
@@ -616,6 +617,7 @@ export function showEmptyState(elementId) { }
 4. **Activities Tracked:** Watering, fertilizing, repotting (soil changes), pest occurrences, pest treatments
 5. **Design Approach:** Modular components that can be developed and tested independently
 6. **Data Input Architecture:** Web forms write directly to Supabase for user-facing inputs (plant profiles, care logging, alert actions). Python backend reads from Supabase for forecasting and alert generation, creating a clean separation between user interaction and intelligence layer.
+7. **User Settings Storage:** Currently using browser localStorage for single-user simplicity. Future multi-user implementation will migrate to Supabase-based user preferences table with authentication. Timezone context stored with activities (`user_timezone` field) to support accurate forecasting and weather data alignment.
 
 ---------------
 
@@ -764,6 +766,50 @@ Lighting location data (zip code/GPS) will be used to:
 - Sunrise/sunset API selection for location-based light scheduling
 - Weather data polling frequency and caching strategy
 
----
+---------------
+
+## Future Enhancements
+
+### Multi-User Support & Authentication
+**Current State:** Single-user application with no authentication
+- User timezone stored as default value in database (`America/New_York`)
+- Settings stored in browser localStorage only
+- No user accounts or login system
+
+**Future Enhancement Plan:**
+When multi-user support is needed:
+1. Implement Supabase Authentication
+2. Create `user_preferences` table with RLS policies
+3. Migrate localStorage settings to database
+4. Sync settings across devices per user
+5. User-specific timezone selection in Settings UI
+
+**Migration Path:**
+```javascript
+// Future migration function
+async function migrateLocalPreferencesToSupabase(userId) {
+    const localPrefs = loadFromLocal('userPreferences');
+    if (localPrefs) {
+        await savePreferencesToSupabase(userId, localPrefs);
+    }
+}
+```
+
+**Database Schema for Future:**
+```sql
+CREATE TABLE user_preferences (
+    user_id UUID PRIMARY KEY,
+    timezone TEXT DEFAULT 'UTC',
+    theme TEXT DEFAULT 'light',
+    notifications BOOLEAN DEFAULT true,
+    language TEXT DEFAULT 'en',
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    modified_at TIMESTAMPTZ DEFAULT NOW()
+);
+```
+
+**Timeline:** Implement when second user is added or cross-device sync is required.
+
+---------------
 
 *This document should be updated as the project evolves to maintain accurate context for all conversations.*

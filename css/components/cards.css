@@ -22,3 +22,25 @@
     border-bottom: 2px solid var(--border-light);
 }
 
+.card-title {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    font-size: var(--font-size-base);
+    color: var(--text-primary);
+    align-items: center;
+
+}
+
+.card-title h1 {
+    margin-bottom: 0;
+    border: none;
+    padding: 0;
+}
+
+.card-title-btn {
+    display: flex;
+    font-size: var(--font-size-base);
+    color: var(--text-primary);
+    justify-content: flex-end;
+    gap: 0.5rem;
+}

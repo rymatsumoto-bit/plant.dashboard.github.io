@@ -93,16 +93,6 @@ function renderAddressList() {
                 <div class="habitat-name">${address.address_name}</div>
                 <div class="habitat-info">${address.city}, ${address.state_province || address.country}</div>
             </div>
-            <div class="habitat-actions">
-                <button class="btn btn-small btn-edit" 
-                        onclick="event.stopPropagation(); window.editAddress('${address.address_id}')">
-                    EDIT
-                </button>
-                <button class="btn btn-small btn-delete" 
-                        onclick="event.stopPropagation(); window.deleteAddress('${address.address_id}')">
-                    DELETE
-                </button>
-            </div>
         </li>
     `).join('');
 }
