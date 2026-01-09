@@ -1,5 +1,5 @@
-| table_markdown                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| table_markdown                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | ## address
 
 ### Columns
@@ -21,7 +21,7 @@
 ### Primary Key
 - address_id
 
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | ## compass_direction_lookup
 
 ### Columns
@@ -37,7 +37,7 @@
 ### Primary Key
 - direction_code
 
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | ## habitat
 
 ### Columns
@@ -63,7 +63,7 @@
 
 ### Foreign Keys
 - humidity_level_id → habitat_humidity_level_lookup.humidity_level_id
-                                                                                                                                                                                                                                                                                     |
+                                                                                                                                                                                                                                                                                    |
 | ## habitat_classifications
 
 ### Columns
@@ -85,7 +85,7 @@
 
 ### Foreign Keys
 - habitat_id → habitat.habitat_id
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | ## habitat_humidity_level_lookup
 
 ### Columns
@@ -101,14 +101,14 @@
 ### Primary Key
 - humidity_level_id
 
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | ## habitat_light_artificial
 
 ### Columns
 | Column | Type | Nullable | Default |
 | --- | --- | --- | --- |
 | light_artificial_id | uuid | NO | gen_random_uuid() |
-| light_name | text | YES |  |
+| light_name | text | NO |  |
 | habitat_id | uuid | NO |  |
 | address_id | uuid | NO |  |
 | light_artificial_strength_id | uuid | NO |  |
@@ -145,7 +145,7 @@
 ### Primary Key
 - light_artificial_strength_id
 
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | ## habitat_light_outdoor
 
 ### Columns
@@ -165,7 +165,7 @@
 ### Foreign Keys
 - address_id → address.address_id
 - habitat_id → habitat.habitat_id
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | ## habitat_light_outdoor_direction
 
 ### Columns
@@ -184,7 +184,7 @@
 ### Foreign Keys
 - direction_code → compass_direction_lookup.direction_code
 - habitat_id → habitat.habitat_id
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | ## habitat_light_schedule_end_type_lookup
 
 ### Columns
@@ -199,7 +199,7 @@
 ### Primary Key
 - light_schedule_end_type_id
 
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | ## habitat_light_schedule_start_type_lookup
 
 ### Columns
@@ -214,7 +214,7 @@
 ### Primary Key
 - light_schedule_start_type_id
 
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | ## habitat_light_type_lookup
 
 ### Columns
@@ -229,7 +229,7 @@
 ### Primary Key
 - light_type_id
 
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | ## habitat_light_window
 
 ### Columns
@@ -253,7 +253,7 @@
 - direction_code → compass_direction_lookup.direction_code
 - habitat_id → habitat.habitat_id
 - window_size_id → habitat_light_window_size_lookup.window_size_id
-                                                                                                                                                                                                                                                                                                                                                                     |
+                                                                                                                                                                                                                                                                                                                                                                    |
 | ## habitat_light_window_size_lookup
 
 ### Columns
@@ -269,7 +269,7 @@
 ### Primary Key
 - window_size_id
 
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | ## plant
 
 ### Columns
@@ -291,7 +291,7 @@
 ### Foreign Keys
 - habitat_id → habitat.habitat_id
 - plant_type_id → plant_type_lookup.plant_type_id
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | ## plant_activity_history
 
 ### Columns
@@ -306,6 +306,7 @@
 | details | text | YES |  |
 | result | text | YES |  |
 | created_at | timestamp with time zone | NO | now() |
+| user_timezone | text | NO | 'America/New_York'::text |
 
 ### Primary Key
 - activity_id
@@ -313,7 +314,7 @@
 ### Foreign Keys
 - activity_type_code → plant_activity_type_lookup.activity_type_code
 - plant_id → plant.plant_id
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | ## plant_activity_type_lookup
 
 ### Columns
@@ -332,7 +333,7 @@
 ### Primary Key
 - activity_type_code
 
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | ## plant_inventory_view
 
 ### Columns
@@ -352,7 +353,7 @@
 | last_activity_date | date | YES |  |
 
 ### Primary Key\n- (none)\n
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | ## plant_status_history
 
 ### Columns
@@ -376,7 +377,7 @@
 ### Foreign Keys
 - plant_id → plant.plant_id
 - status_code → plant_status_lookup.status_code
-                                                                                                                                                                                                                                                                                                                                                                                             |
+                                                                                                                                                                                                                                                                                                                                                                                            |
 | ## plant_status_lookup
 
 ### Columns
@@ -393,7 +394,7 @@
 ### Primary Key
 - status_code
 
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | ## plant_type_lookup
 
 ### Columns
@@ -411,4 +412,4 @@
 ### Primary Key
 - plant_type_id
 
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |

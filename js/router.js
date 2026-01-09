@@ -2,6 +2,7 @@
 // ROUTER.JS - View Loading and Navigation
 // ============================================
 
+import { updateToolbarTitle } from './components/toolbar.js';
 import { initializeDashboard } from './views/dashboard.js';
 import { initializeReports } from './views/reports.js';
 import { initializeInventory } from './views/inventory.js';
@@ -35,7 +36,7 @@ export class Router {
             });
         });
         console.log('openModal function:', typeof openModal);
-        // New Activity button (not in sidebar)
+        // New Activity button
         const newActivityBtn = document.getElementById('new-activity-btn');
         if (newActivityBtn) {
             newActivityBtn.addEventListener('click', async () => {
@@ -184,6 +185,7 @@ export class Router {
     // Update navigation active states
     updateNavigation(viewName) {
         this.updateActiveNav(viewName);
+        updateToolbarTitle(viewName);
     }
 
     // Update sidebar active state

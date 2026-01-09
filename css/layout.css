@@ -114,7 +114,8 @@ body {
 /* Toolbar */
 .toolbar {
     background-color: var(--bg-white);
-    display: flex;
+    display: grid;
+    grid-template-columns: minmax(500px, auto) 1fr auto;
     flex-shrink: 0;
     justify-content: space-between;
     align-items: center;
@@ -124,12 +125,12 @@ body {
     z-index: 10;
 }
 
-.toolbar h1 {
+.toolbar-title {
     font-size: var(--font-size-title);
     color: var(--text-primary);    
 }
 
-.toolbar p {
+.toolbar-tagline {
     font-size: 0.9em;
     opacity: 0.9;
     margin: 0;
@@ -138,7 +139,9 @@ body {
 /* Search Container */
 .search-container {
     flex: 1;
+    width: 100%;
     max-width: 400px;
+    justify-self: left;
 }
 
 .search-input {

@@ -1,15 +1,38 @@
-/* Button Styles */
+/* Button Types */
+/*--------------*/ 
+
+/* Button */
 .btn {
-    padding: 10px 20px;
-    border-radius: var(--radius-sm);
+    display: inline-flex;
     font-size: var(--font-size-base);
     font-weight: 600;
+    padding: 10px 20px;
+    border-radius: var(--radius-sm);
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
     transition: all var(--transition-fast);
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
 }
+
+/* Small Button */
+.btn-small {
+    display: inline-flex;
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    border-radius: var(--radius-sm);
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    gap: 6px;
+    min-width: 75px;
+}
+
+
+/* Button Styles */
+/*--------------*/ 
+
+/* Theme Buttons Colors */
 
 .btn-primary {
     background: var(--btn-primary-bg);
@@ -29,35 +52,8 @@
     background: var(--btn-secondary-hover);
 }
 
-.back-btn {
-    background: var(--btn-primary-bg);
-    color: var(--btn-primary-text);
-    border: none;
-    padding: 10px 20px;
-    border-radius: var(--radius-sm);
-    cursor: pointer;
-    margin-bottom: var(--spacing-xl);
-    font-size: var(--font-size-base);
-}
 
-.back-btn:hover {
-    background: var(--btn-primary-hover);
-}
-
-/* Small Buttons */
-.btn-small {
-    padding: 5px 10px;
-    font-size: var(--font-size-sm);
-    border-radius: var(--radius-sm);
-    font-weight: 500;
-    cursor: pointer;
-    transition: all var(--transition-fast);
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-}
-
-/* Action Buttons colors */
+/* Action Buttons Colors */
 
 .btn-add {
     background: var(--btn-act-add-bg);
@@ -78,6 +74,10 @@
     background: var(--btn-act-cancel-bg);
     color: var(--btn-act-cancel-text);
 }
+
+/* Specialty Button Types */
+/*------------------------*/ 
+
 
 /* Toggle Buttons */
 .btn-toggle {
@@ -100,7 +100,6 @@
     color: white;
     border-color: var(--botanical-green);
 }
-
 
 /* Alert Action Buttons */
 .alert-btn {

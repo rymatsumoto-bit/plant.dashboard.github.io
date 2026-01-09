@@ -19,7 +19,8 @@ export function formatDate(dateString) {
     return date.toLocaleDateString('en-GB', { 
         year: 'numeric', 
         month: 'short', 
-        day: '2-digit' 
+        day: '2-digit',
+        timeZone: 'UTC'
     });
 }
 

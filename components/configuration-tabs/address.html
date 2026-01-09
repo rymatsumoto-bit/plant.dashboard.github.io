@@ -1,14 +1,17 @@
 <div class="configuration-content-grid">
+
     <!-- Left Panel: Address List -->
     <div class="card">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-lg);">
-            <h1 style="margin-bottom: 0; border: none; padding: 0;">List</h1>
-            <button class="btn-small btn-primary" onclick="showNewAddressForm()">
-                + CREATE
-            </button>
+        <div class="card-title">
+            <h1>List</h1>
+            <div class="card-title-btn">
+                <button class="btn-small btn-add" onclick="showNewAddressForm()">
+                    NEW
+                </button>
+            </div>
         </div>
         
-        <ul class="habitat-list" id="address-list">
+        <ul id="address-list" class="configuration-list">
             <!-- Addresses will be dynamically loaded here -->
             <li class="loading-inline">
                 <div class="loading-spinner"></div>
@@ -19,8 +22,16 @@
     
     <!-- Right Panel: Address Form -->
     <div class="card">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-lg);">
-            <h1 style="margin-bottom: 0; border: none; padding: 0;">Address Details</h1>
+        <div class="card-title">
+            <h1>Address Details</h1>
+            <div class="card-title-btn">
+                <button class="btn btn-small btn-edit" id="habitat-edit-btn">
+                    EDIT
+                </button>
+                <button class="btn btn-small btn-delete" id="habitat-delete-btn">
+                    DELETE
+                </button>
+            </div>  
         </div>
         
         <form id="address-form" style="margin-top: var(--spacing-lg);">
@@ -90,6 +101,7 @@
     </div>
 </div>
 
+    
 <script>
     // Placeholder for new address form
     function showNewAddressForm() {
