@@ -43,10 +43,14 @@ function loadPlantInventory() {
         return;
     }
     
+    document.getElementById('kpi-plant-count').textContent = plants.length;
+
     plantList.innerHTML = plants.map((plant, index) => `
         <div class="table-row">
             <div class="plant-name-cell">
-                <div class="plant-name-icon">🌿</div>
+                <div class="plant-name-icon">
+                    <img src="${`assets/images/icons/plants/${plant.plant_icon}.svg`}" alt="${plant.plant_icon || 'plant'}" class="plant-icon-svg">
+                </div>
                 <div class="plant-name-text">
                     <div class="name">${plant.plant_name || 'Unnamed Plant'}</div>
                     <div class="species">${plant.species || 'Unknown Species'}</div>
@@ -62,7 +66,9 @@ function loadPlantInventory() {
                     <div class="species">${plant.last_activity_label || '-'}</div>
                 </div>
             </div>
-            <div class="menu-dots">⋯</div>
+            <div class="plant-detail-btn">
+                <img src="assets/images/icons/nav-detail.svg" alt="detail">
+            </div>
         </div>
     `).join('');
 }
