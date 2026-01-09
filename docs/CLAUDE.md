@@ -7,15 +7,53 @@
 **This document is the authoritative specification for the project.**
 
 ### For AI Assistants:
-1. **Never rewrite this entire file**
-2. **Only propose exact replacements** for specific sections using clear before/after markers
-3. **Wait for human approval** before considering any changes applied
-4. **All project chats must follow these rules** - this ensures consistency across conversations
+1. **All project chats must follow these rules** - this ensures consistency across conversations
+2. **Never rewrite this entire file**
+3. **Only propose exact replacements** for specific sections using clear before/after markers
+4. **Wait for human approval** before considering any changes applied
+
+#### Context Continuity
+- This is an ongoing project with multiple conversation threads
+- Always reference and build upon previous decisions and files
+- Maintain consistency across all artifacts and documentation
+
+#### Working with Project Files
+**IMPORTANT:** The project owner maintains all working files (HTML, CSS, JS). The project folder is connected to GitHub to have all refreshed files. 
+
+**Instructions:**
+1. **Reference uploaded files** for current code state - do not rely on code snippets in CLAUDE.md
+2. **Use the folder structure** (shown in "Current File Structure" section) when building future code
+3. **Request file uploads** if you need to see current code before making modifications
+4. **Generate new code** following the established folder structure and naming conventions
+5. **Supabase table schema** use the SCHEMA.md file
 
 ### For Project Owner:
 - You maintain the authoritative version
 - Review all proposed changes before applying
 - Update this file as the single source of truth
+
+### Code Generation Protocol
+**To optimize token usage, follow this two-step process:**
+
+1. **First Response - Summary Only:**
+   - When asked about code changes, creation, or modifications, provide ONLY a summary/plan
+   - Describe what files would be affected
+   - Outline what changes would be made
+   - Explain the approach and logic
+   - **Do NOT generate actual code**
+
+2. **Second Response - Code Generation:**
+   - Wait for explicit request: "Please generate the code" or similar
+   - Only then provide the actual code implementation
+   - Follow the established folder structure and conventions
+
+**Exception:** Only skip the summary step if the user explicitly requests code immediately (e.g., "write the code for...").
+
+### Development Philosophy
+- Start with functional prototypes
+- Iterate based on real usage
+- Keep implementation simple initially
+- Add complexity only when needed
 
 ---------------
 
@@ -220,6 +258,7 @@ plant-care-dashboard/
 ├── assets/                             # Static assets
 │   ├── images/
 │   │   └── icons/                      # Storage of icons
+│   │   │   └── plants/                 # Icons for plant types
 │   └── fonts/                          
 │
 └── docs/
@@ -707,48 +746,6 @@ Lighting location data (zip code/GPS) will be used to:
 - Progressive disclosure: subsections reveal based on user selections
 - Visual indicators for habitat characteristics in the list view
 - Edit/delete actions for existing habitats
-
----------------
-
-## Notes for AI Assistants
-
-### Context Continuity
-- This is an ongoing project with multiple conversation threads
-- Always reference and build upon previous decisions and files
-- Maintain consistency across all artifacts and documentation
-
-### Working with Project Files
-**IMPORTANT:** The project owner maintains all working files (HTML, CSS, JS). The project folder is connected to GitHub to have all refreshed files. 
-
-**Instructions:**
-1. **Reference uploaded files** for current code state - do not rely on code snippets in CLAUDE.md
-2. **Use the folder structure** (shown in "Current File Structure" section) when building future code
-3. **Request file uploads** if you need to see current code before making modifications
-4. **Generate new code** following the established folder structure and naming conventions
-5. **Supabase table schema** use the SCHEMA.md file
-
-### Code Generation Protocol
-**To optimize token usage, follow this two-step process:**
-
-1. **First Response - Summary Only:**
-   - When asked about code changes, creation, or modifications, provide ONLY a summary/plan
-   - Describe what files would be affected
-   - Outline what changes would be made
-   - Explain the approach and logic
-   - **Do NOT generate actual code**
-
-2. **Second Response - Code Generation:**
-   - Wait for explicit request: "Please generate the code" or similar
-   - Only then provide the actual code implementation
-   - Follow the established folder structure and conventions
-
-**Exception:** Only skip the summary step if the user explicitly requests code immediately (e.g., "write the code for...").
-
-### Development Philosophy
-- Start with functional prototypes
-- Iterate based on real usage
-- Keep implementation simple initially
-- Add complexity only when needed
 
 ---------------
 

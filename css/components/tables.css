@@ -23,7 +23,7 @@
     padding: 20px 25px;
     border-top: 1px solid #f3f4f6;
     align-items: center;
-    transition: background 0.2s;
+    transition: 0.2s;
 }
 
 .table-row:hover {
@@ -41,7 +41,6 @@
 .plant-name-icon {
     width: 36px;
     height: 36px;
-    background: #e5e7eb;
     border-radius: 8px;
     display: flex;
     align-items: center;
@@ -78,10 +77,16 @@
     opacity: 1;
 }
 
-.menu-dots {
+.plant-detail-btn {
+    width: 36px;
+    height: 36px;
     cursor: pointer;
-    font-size: 20px;
-    font-weight: 600;
-    text-align: center;
+    align-items: center;
+}
+
+.plant-detail-btn img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
