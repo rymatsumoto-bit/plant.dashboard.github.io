@@ -174,6 +174,24 @@ export async function getPlantInventory() {
     return data;
 }
 
+/**
+ * Get plant types
+ */
+export async function getPlantTypes() {
+    const { data, error } = await supabase
+        .from('plant_type_lookup')
+        .select('*')
+        .eq('is_active', true)
+        .order('species');;
+    
+    if (error) throw error;
+       
+    return data.map(p => ({
+        ...p,
+        plant_type: `${p.species} (${p.category})`
+    }));
+}
+
 
 // ============================================
 // ACTIVITY QUERIES
@@ -228,6 +246,26 @@ export async function addPlantActivity(activityData) {
             quantifier: activityData.quantifier || null,
             unit: activityData.unit || null,
             details: activityData.notes || null
+        }])
+        .select();
+    
+    if (error) throw error;
+    return data;
+}
+
+
+/**
+ * Add new plant
+ */
+export async function addPlant(plantData) {
+    const { data, error } = await supabase
+        .from('plant')
+        .insert([{
+            plant_name: plantData.plant_name,
+            plant_type_id: plantData.plant_type_id,
+            habitat_id: plantData.habitat_id,
+            acquisition_date: plantData.acquisition_date,
+            source: plantData.source_name
         }])
         .select();
     

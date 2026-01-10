@@ -3,7 +3,10 @@
 // ============================================
 
 import { loadHTML, logError, formatDate } from '../utils.js';
-import { getPlantInventory } from '../services/supabase.js';
+import { openModal, populateDropdown } from '../modals/prompt-modal.js';
+import { getPlantInventory, getPlantTypes, getHabitats } from '../services/supabase.js';
+import { addPlant } from '../services/supabase.js';
+import { showNotification, capitalize } from '../utils.js';
 
 let plants = [];
 
@@ -21,6 +24,10 @@ export async function initializeInventory() {
         
         // Setup filters
         setupInventoryFilters();
+
+        // Setup event listeners
+        setupInventoryListeners();
+
     }  catch (error) {
             logError(error, 'loading inventory');
         }
@@ -49,7 +56,10 @@ function loadPlantInventory() {
         <div class="table-row">
             <div class="plant-name-cell">
                 <div class="plant-name-icon">
-                    <img src="${`assets/images/icons/plants/${plant.plant_icon}.svg`}" alt="${plant.plant_icon || 'plant'}" class="plant-icon-svg">
+                    <img
+                        src="${`assets/images/icons/plants/${plant.plant_icon}.svg`}" alt="${plant.plant_icon || 'plant'}" class="plant-icon-svg"
+                        onerror="this.onerror=null; this.src='assets/images/icons/plants/default.svg';"
+                    />
                 </div>
                 <div class="plant-name-text">
                     <div class="name">${plant.plant_name || 'Unnamed Plant'}</div>
@@ -74,9 +84,6 @@ function loadPlantInventory() {
 }
 
 
-
-
-
 /**
  * Setup inventory filters
  */
@@ -95,3 +102,62 @@ export function filterPlants(criteria) {
     // TODO: Implement filtering logic
 }
 
+/**
+ * Setup inventory listeners
+ */
+function setupInventoryListeners() {
+
+    // New Plant Button
+    const newPlantBtn = document.getElementById('new-plant-btn');
+    if (newPlantBtn) {
+        newPlantBtn.addEventListener('click', async () => {
+            // Open modal first
+            const modal = await openModal({
+                title: 'Create New Plant',
+                contentUrl: 'components/modals/new-plant.html',
+                size: 'medium',
+                buttons: [
+                    { label: 'SAVE', type: 'primary', action: 'submit' },
+                    { label: 'CANCEL', type: 'secondary', action: 'close' }
+                ],
+                onSubmit: async (data, modal) => {
+                    try {
+                        await addPlant(data);
+                        showNotification('Plant created successfully!', 'success');
+                        plants = await getPlantInventory();
+                        loadPlantInventory();
+                        modal.querySelector('[data-action="close"]').click();
+                    } catch (error) {
+                        console.error('Error logging activity:', error);
+                        showNotification('Failed to log activity', 'error');
+                    }
+                }
+            });
+            
+            // After modal opens, load dropdown data
+            try {
+                // Fetch data from Supabase
+                const [plantTypes, habitats] = await Promise.all([
+                    getPlantTypes(),
+                    getHabitats()
+                ]);
+                
+                // Populate dropdowns
+                populateDropdown('plant-type', plantTypes, 'plant_type_id', 'plant_type');
+                populateDropdown('habitat-select', habitats, 'habitat_id', 'habitat_name');
+                
+                // Set today's date as default
+                const dateInput = modal.querySelector('#acquisition-date');
+                if (dateInput) {
+                    dateInput.valueAsDate = new Date();
+                }
+                
+            } catch (error) {
+                console.error('Error loading form data:', error);
+                showNotification('Error loading form data', 'error');
+            }
+        });
+    }
+
+    console.log('Inventory filters ready');
+}
