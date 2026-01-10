@@ -175,6 +175,29 @@ User Input (Web) → Supabase ← Python Analysis Engine
 
 ---------------
 
+## Database Schema Evolution
+
+### Planned Additions
+
+**Plant Lifecycle Tracking:**
+- `plant.acquisition_timezone` - Timezone context for acquisition date
+- `plant.previous_plant_id` - Links returned plants to their previous records
+- `plant.use_historical_data` - User preference for forecasting calculations
+- Lifecycle activity types: ACQUIRED, DECEASED, GIVEN_AWAY, RETURNED
+
+**Plant-Habitat Movement History:**
+- New table: `plant_habitat_history` - Tracks when plants moved between habitats
+- Enables time-based environmental analysis
+- Current habitat denormalized in `plant.habitat_id` for performance
+
+**Rationale:**
+- Preserve complete plant history for data integrity
+- Give users control over forecasting behavior
+- Enable accurate environmental correlation with historical care data
+- Support complex real-world scenarios (plants moving, being given away, returning)
+
+---------------
+
 ## Project Files
 
 ### Documentation
@@ -643,6 +666,9 @@ export function showEmptyState(elementId) { }
 ⏳ Data export functionality  
 ⏳ Mobile responsive optimization  
 ⏳ Toast notification system
+⏳ Plant lifecycle management (deceased, given away, returned)
+⏳ Plant-habitat movement tracking and history
+⏳ Historical data toggle for forecasting (use full history vs. current ownership only)
 
 
 
@@ -657,6 +683,7 @@ export function showEmptyState(elementId) { }
 5. **Design Approach:** Modular components that can be developed and tested independently
 6. **Data Input Architecture:** Web forms write directly to Supabase for user-facing inputs (plant profiles, care logging, alert actions). Python backend reads from Supabase for forecasting and alert generation, creating a clean separation between user interaction and intelligence layer.
 7. **User Settings Storage:** Currently using browser localStorage for single-user simplicity. Future multi-user implementation will migrate to Supabase-based user preferences table with authentication. Timezone context stored with activities (`user_timezone` field) to support accurate forecasting and weather data alignment.
+8. **Plant Lifecycle & Historical Data:** Plants can have complex lifecycles (given away, returned). System maintains complete historical chain via `previous_plant_id` linkage. User controls whether forecasting algorithms use full historical data or only current ownership period. Plant-habitat movements tracked over time to enable accurate environmental analysis of historical care activities.
 
 ---------------
 
@@ -806,6 +833,110 @@ CREATE TABLE user_preferences (
 ```
 
 **Timeline:** Implement when second user is added or cross-device sync is required.
+
+### Plant Lifecycle & Historical Data Management
+
+**Acquisition Tracking:**
+- Acquisition date stored in both `plant` table and `plant_activity_history`
+- `plant` table: stores "effective" acquisition date based on user preference
+- Activity history: stores complete lifecycle timeline with timezone context
+- Acquisition timezone captured for accurate date calculations
+
+**Lifecycle Activity Types:**
+- `ACQUIRED` - Initial acquisition or re-acquisition after return
+- `DECEASED` - Plant died
+- `GIVEN_AWAY` - Plant given to another person
+- `RETURNED` - Plant returned to collection after being given away
+
+**Returned Plants - Data Continuity:**
+When a plant is given away and later returned:
+1. Original plant record marked `is_active = false` with `GIVEN_AWAY` activity
+2. New plant record created with `RETURNED` activity
+3. Link maintained via `previous_plant_id` field to preserve historical relationship
+4. User controls whether forecasting uses:
+   - **Full history** (all data from original and current records)
+   - **Current ownership only** (data from return date forward)
+
+**Database Schema Requirements:**
+```sql
+-- Plant table additions
+ALTER TABLE plant 
+ADD COLUMN acquisition_timezone TEXT DEFAULT 'America/New_York',
+ADD COLUMN previous_plant_id UUID REFERENCES plant(plant_id),
+ADD COLUMN use_historical_data BOOLEAN DEFAULT false;
+
+-- Activity type additions
+INSERT INTO plant_activity_type_lookup 
+(activity_type_code, activity_label, activity_category) 
+VALUES 
+('ACQUIRED', 'Acquired', 'lifecycle'),
+('DECEASED', 'Deceased', 'lifecycle'),
+('GIVEN_AWAY', 'Given Away', 'lifecycle'),
+('RETURNED', 'Returned', 'lifecycle');
+```
+
+**Python Forecasting Integration:**
+```python
+def get_plant_care_history(plant_id, use_historical=False):
+    if use_historical and plant.previous_plant_id:
+        # Fetch data from both current and all previous plant records
+        return get_complete_plant_history(plant_id)
+    else:
+        # Fetch data from current acquisition date only
+        return get_care_since_acquisition(plant_id, plant.acquisition_date)
+```
+
+---
+
+### Plant-Habitat Movement History
+
+**Challenge:** Plants can be moved between habitats over time. Forecasting and environmental analysis require knowing which habitat a plant was in at any given point in history.
+
+**Solution:** Track plant-habitat relationships over time with date ranges.
+
+**Database Schema:**
+```sql
+CREATE TABLE plant_habitat_history (
+    plant_habitat_history_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    plant_id UUID NOT NULL REFERENCES plant(plant_id),
+    habitat_id UUID NOT NULL REFERENCES habitat(habitat_id),
+    moved_date DATE NOT NULL,
+    moved_timezone TEXT DEFAULT 'UTC',
+    moved_out_date DATE,  -- NULL if still in this habitat
+    is_current BOOLEAN DEFAULT true,
+    notes TEXT,
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Index for efficient queries
+CREATE INDEX idx_plant_habitat_current ON plant_habitat_history(plant_id, is_current);
+```
+
+**Implementation Approach:**
+1. When plant is moved to new habitat:
+   - Previous record: set `moved_out_date` and `is_current = false`
+   - New record: insert with `moved_date` and `is_current = true`
+2. Current habitat stored in `plant.habitat_id` for quick access (denormalized)
+3. Historical habitats queryable for environmental analysis
+
+**Use Cases:**
+- Python forecasting can determine which habitat's environmental conditions applied during any care activity
+- Answer questions like: "Was this plant getting enough light when I last fertilized it 3 months ago?"
+- Track if plant health changes correlate with habitat moves
+
+**Python Example:**
+```python
+def get_habitat_at_date(plant_id, target_date):
+    """Returns which habitat the plant was in on a specific date"""
+    return query("""
+        SELECT habitat_id FROM plant_habitat_history
+        WHERE plant_id = ? 
+        AND moved_date <= ?
+        AND (moved_out_date IS NULL OR moved_out_date > ?)
+    """, plant_id, target_date, target_date)
+```
+
+**Timeline:** Implement before environmental forecasting features that require historical habitat context.
 
 ---------------
 

@@ -1,0 +1,34 @@
+<!-- New Plant Form -->
+<form id="new-plant-form">
+    <div class="form-group">
+        <label for="plant-name">Plant Name</label>
+        <input id="plant-name" type="text" name="plant_name">
+    </div>
+
+    <div class="form-group">
+        <label for="plant-type">Plant Type *</label>
+        <select id="plant-type" name="plant_type_id" required>
+            <option value="">Select plant type...</option>
+            <!-- Options will be loaded dynamically -->
+        </select>
+    </div>
+    
+    <div class="form-group">
+        <label for="habitat-select">Habitat *</label>
+        <select id="habitat-select" name="habitat_id" required>
+            <option value="">Select habitat...</option>
+            <!-- Options will be loaded dynamically -->
+        </select>
+    </div>
+    
+    <div class="form-group">
+        <label for="acquisition-date">Acquisition Date *</label>
+        <input type="date" id="acquisition-date" name="acquisition_date" required>
+    </div>
+    
+    <div class="form-group">
+        <label for="source-name">Source</label>
+        <input id="source-name" type="text" name="source_name" required>
+    </div>
+
+</form>

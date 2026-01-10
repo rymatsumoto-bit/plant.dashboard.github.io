@@ -274,8 +274,6 @@ export function populateDropdown(selectId, items, valueKey, labelKey) {
 }
 
 
-
-
 // Also make available globally for inline handlers if needed
 if (typeof window !== 'undefined') {
     window.openModal = openModal;

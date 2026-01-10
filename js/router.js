@@ -36,6 +36,7 @@ export class Router {
             });
         });
         console.log('openModal function:', typeof openModal);
+        
         // New Activity button
         const newActivityBtn = document.getElementById('new-activity-btn');
         if (newActivityBtn) {
