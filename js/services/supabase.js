@@ -192,6 +192,20 @@ export async function getPlantTypes() {
     }));
 }
 
+/**
+ * Get all plants
+ */
+export async function getPlantDetails(plantId) {
+    const { data, error } = await supabase
+        .from('plant_detail_view')
+        .select('*')
+        .eq('plant_id',plantId)
+        .single();
+    
+    if (error) throw error;
+    return data;
+}
+
 
 // ============================================
 // ACTIVITY QUERIES

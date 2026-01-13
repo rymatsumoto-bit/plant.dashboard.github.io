@@ -6,6 +6,7 @@ import { loadHTML, logError, formatDate } from '../utils.js';
 import { openModal, populateDropdown } from '../modals/prompt-modal.js';
 import { getPlantInventory, getPlantTypes, getHabitats } from '../services/supabase.js';
 import { addPlant } from '../services/supabase.js';
+import { initializePlantDetail } from './inventory/plant-details.js';
 import { showNotification, capitalize } from '../utils.js';
 
 let plants = [];
@@ -53,7 +54,7 @@ function loadPlantInventory() {
     document.getElementById('kpi-plant-count').textContent = plants.length;
 
     plantList.innerHTML = plants.map((plant, index) => `
-        <div class="table-row">
+        <div class="table-row" data-plant-id="${plant.plant_id}">
             <div class="plant-name-cell">
                 <div class="plant-name-icon">
                     <img
@@ -103,7 +104,7 @@ export function filterPlants(criteria) {
 }
 
 /**
- * Setup inventory listeners
+ * Setup inventory view listeners
  */
 function setupInventoryListeners() {
 
@@ -159,5 +160,43 @@ function setupInventoryListeners() {
         });
     }
 
+    // Plant Detail Button
+    const detailButtons = document.querySelectorAll('.plant-detail-btn');
+    
+    detailButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            const row = e.target.closest('.table-row');
+            if (!row) return;
+            const plantId = row.dataset.plantId;
+            navigateToPlantDetail(plantId);
+        });
+    });
+
     console.log('Inventory filters ready');
+}
+
+/**
+ * Navigate to plant detail view
+ */
+async function navigateToPlantDetail(plantId) {
+    console.log('Navigating to plant detail:', plantId);
+
+    try {
+        const response = await fetch('components/inventory/plant-detail.html');
+
+        if (!response.ok) {
+            throw new Error('Failed to load plant detail view');
+        }
+
+        const html = await response.text();
+
+        const container = document.getElementById('view-container');
+        container.innerHTML = html;
+
+        initializePlantDetail(plantId);
+
+    } catch (error) {
+        console.error('Error loading plant detail:', error);
+        showNotification('Failed to load plant details', 'error');
+    }
 }
