@@ -1,0 +1,32 @@
+/* Chunks */
+
+/* Goes outside and above a card */
+.chunk-title {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    margin-bottom: var(--spacing-md);
+    font-size: var(--font-size-xl);
+    font-weight: 600;
+    align-items: center;
+}
+
+.chunk-container-1-1 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-xl);
+    margin-bottom: var(--spacing-xl);
+}
+
+.chunk-container-2-1 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-xl);
+    margin-bottom: var(--spacing-xl);
+}
+
+.chunk-container-1-2 {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: var(--spacing-xl);
+    margin-bottom: var(--spacing-xl);
+}

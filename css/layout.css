@@ -196,16 +196,3 @@ v
 }
 
 
-
-/* Card Titles */
-/* Goes outside and above a card */
-
-.section-title {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    margin-bottom: var(--spacing-md);
-    font-size: var(--font-size-xl);
-    font-weight: 600;
-    align-items: center;
-}
-
