@@ -159,6 +159,10 @@ A solution that combines plant historical data and environment information, enha
 - Integrates external data sources (NOAA weather API)
 - Generates forecasts and care recommendations
 - Writes alerts and predictions back to Supabase
+- Calculates plant status based on multiple factors
+- Generates alerts (proactive care reminders, reactive environmental warnings, health pattern detection)
+- Respects alert suppression periods (done/dismissed alerts)
+- Integrates user-created reminders into alert logic
 
 ### Data Flow
 ```
@@ -668,6 +672,8 @@ export function showEmptyState(elementId) { }
 ✅ Inventory view with plant grid  
 ✅ Form validation and submission  
 ✅ Add new activity
+✅ Alert action framework (snooze functionality)
+✅ Create "new plant" form
 
 
 ### In Progress
@@ -685,6 +691,10 @@ export function showEmptyState(elementId) { }
 ⏳ Plant lifecycle management (deceased, given away, returned)
 ⏳ Plant-habitat movement tracking and history
 ⏳ Historical data toggle for forecasting (use full history vs. current ownership only)
+⏳ Plant status calculation system with factor mapping
+⏳ Alert generation engine (calculated + user-created)
+⏳ Alert suppression logic (prevent regeneration after done/dismiss)
+⏳ Status factor display in UI (show which factors contribute to status)
 
 
 
@@ -700,6 +710,7 @@ export function showEmptyState(elementId) { }
 6. **Data Input Architecture:** Web forms write directly to Supabase for user-facing inputs (plant profiles, care logging, alert actions). Python backend reads from Supabase for forecasting and alert generation, creating a clean separation between user interaction and intelligence layer.
 7. **User Settings Storage:** Currently using browser localStorage for single-user simplicity. Future multi-user implementation will migrate to Supabase-based user preferences table with authentication. Timezone context stored with activities (`user_timezone` field) to support accurate forecasting and weather data alignment.
 8. **Plant Lifecycle & Historical Data:** Plants can have complex lifecycles (given away, returned). System maintains complete historical chain via `previous_plant_id` linkage. User controls whether forecasting algorithms use full historical data or only current ownership period. Plant-habitat movements tracked over time to enable accurate environmental analysis of historical care activities.
+9. **Status & Alert Architecture:** Plant status calculated daily via Python based on configurable factors (stored in lookup table for flexibility). Each factor contributes to severity score. Alert system supports both calculated alerts (from forecasting/monitoring) and user-created reminders. Alerts track user actions (done/dismiss) and include suppression logic to prevent immediate regeneration. User reminders integrated with calculated alerts to avoid duplication.
 
 ---------------
 
@@ -789,6 +800,131 @@ Lighting location data (zip code/GPS) will be used to:
 - Progressive disclosure: subsections reveal based on user selections
 - Visual indicators for habitat characteristics in the list view
 - Edit/delete actions for existing habitats
+
+---------------
+
+## Plant Status & Alert System
+
+### Plant Status Calculation
+
+Plant status is calculated **daily via Python backend** based on multiple factors that contribute to an overall severity score.
+
+**Status Levels:**
+- **HEALTHY** (severity: 0) - All factors within ideal range
+- **ATTENTION** (severity: 1) - Few mild factors outside ideal range  
+- **WARNING** (severity: 2) - Multiple mild factors or a critical factor outside ideal range
+- **URGENT** (severity: 3) - Multiple parameters overdue or critical issue
+- **DECEASED** (severity: 4) - Plant has died (historical record)
+
+**Status Factor System:**
+- Each factor contributes to the severity score
+- Factor-to-severity mapping stored in lookup table for flexibility
+- Factors can be added/modified as the model evolves
+- Initial factor: **Days since last watering** (adaptive per plant based on historical frequency)
+
+**Status Display Requirements:**
+- When status is non-healthy, UI must show which specific factors are contributing
+- Example: "ATTENTION: Watering overdue by 2 days, Low humidity"
+
+**Database Schema Additions Needed:**
+```sql
+-- Factor configuration table
+CREATE TABLE status_factor_lookup (
+    factor_code TEXT PRIMARY KEY,
+    factor_name TEXT,
+    severity_contribution INTEGER,  -- How much this adds to severity score
+    is_active BOOLEAN DEFAULT TRUE
+);
+
+-- Track which factors triggered current status
+CREATE TABLE plant_status_factors (
+    plant_id UUID REFERENCES plant(plant_id),
+    status_history_id UUID REFERENCES plant_status_history(plant_status_history_id),
+    factor_code TEXT REFERENCES status_factor_lookup(factor_code),
+    factor_value TEXT,  -- e.g., "5 days overdue"
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+```
+
+### Alert System
+
+Alerts are reminders that can be **calculated by the system** or **manually created by users**.
+
+**Alert Categories:**
+
+1. **Care Activity Alerts** (Proactive)
+   - Watering due, Fertilizing due, Repotting reminder
+   - Generated based on forecasting algorithms
+   - Example: "Monstera needs water in 2 days"
+
+2. **Environmental Alerts** (Reactive)
+   - Temperature extremes, Light insufficient, Humidity low
+   - Generated when habitat conditions are outside plant requirements
+   - Example: "Living Room habitat too cold (58°F)"
+
+3. **Health Alerts** (Critical)
+   - Overwatering risk, Growth stagnation, Pest detected
+   - Generated from pattern detection in activity history
+   - Example: "Watered 3x this week - reduce frequency"
+
+4. **Reminder Alerts** (User-Scheduled)
+   - User-created future reminders
+   - Must be incorporated into calculated alerts to avoid duplicates
+   - Example: "Remind me to water in 3 days"
+
+**Alert Actions:**
+- **Mark as Done** - Logs corresponding activity, dismisses alert, updates plant status
+- **Snooze** - Hides alert until snooze_until date (already implemented ✓)
+- **Dismiss** - Ignores alert without logging activity
+
+**Alert State Management:**
+- Calculated alerts must track user actions (done/dismissed)
+- When alert is marked done/dismissed, system prevents regeneration for a period
+- Period duration depends on alert type (e.g., watering: don't alert again for X days)
+- User-created reminders checked against calculated alerts to prevent duplicates
+
+**Database Schema for Alerts:**
+```sql
+CREATE TABLE plant_alerts (
+    alert_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    plant_id UUID REFERENCES plant(plant_id),
+    alert_type TEXT,  -- 'WATERING_DUE', 'TEMP_LOW', 'PEST_DETECTED', etc.
+    alert_category TEXT,  -- 'CARE', 'ENVIRONMENTAL', 'HEALTH', 'REMINDER'
+    severity TEXT,  -- 'LOW', 'MEDIUM', 'HIGH'
+    title TEXT,
+    message TEXT,
+    due_date DATE,
+    source TEXT DEFAULT 'CALCULATED',  -- 'CALCULATED' or 'USER_CREATED'
+    is_snoozed BOOLEAN DEFAULT FALSE,
+    snooze_until DATE,
+    is_dismissed BOOLEAN DEFAULT FALSE,
+    dismissed_at TIMESTAMPTZ,
+    suppress_until DATE,  -- Prevent regeneration until this date
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    resolved_at TIMESTAMPTZ,
+    resolved_action TEXT  -- 'MARKED_DONE', 'DISMISSED', NULL
+);
+
+-- Index for active alerts query
+CREATE INDEX idx_active_alerts ON plant_alerts(plant_id, is_dismissed, is_snoozed) 
+WHERE is_dismissed = FALSE;
+```
+
+**Python Processing Flow:**
+1. Daily cron job runs `generate_alerts.py`
+2. For each plant:
+   - Forecast next care dates (watering, fertilizing, etc.)
+   - Check environmental conditions against habitat data
+   - Analyze activity patterns for health issues
+   - Check for existing user reminders
+3. Create new alerts only if:
+   - No existing alert of same type for this plant
+   - Not within suppress_until period from previous dismiss/done
+   - Not duplicating a user-created reminder
+4. Write alerts to database
+5. Calculate and update plant status based on active alerts and factors
+
+**Timeline:** Implement status and alert system in Phase 2 after basic forecasting is operational.
 
 ---------------
 
