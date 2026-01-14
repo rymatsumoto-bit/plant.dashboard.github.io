@@ -284,6 +284,7 @@
 | modified_at | timestamp with time zone | NO | now() |
 | acquisition_date | date | NO |  |
 | source | text | NO |  |
+| user_timezone | text | NO | 'America/New_York'::text |
 
 ### Primary Key
 - plant_id
@@ -291,7 +292,7 @@
 ### Foreign Keys
 - habitat_id → habitat.habitat_id
 - plant_type_id → plant_type_lookup.plant_type_id
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | ## plant_activity_history
 
 ### Columns
@@ -334,6 +335,22 @@
 - activity_type_code
 
 ### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| ## plant_detail_view
+
+### Columns
+| Column | Type | Nullable | Default |
+| --- | --- | --- | --- |
+| plant_id | uuid | YES |  |
+| plant_name | text | YES |  |
+| plant_category | text | YES |  |
+| species | text | YES |  |
+| habitat | text | YES |  |
+| status_code | text | YES |  |
+| status_label | text | YES |  |
+| status_icon | text | YES |  |
+
+### Primary Key\n- (none)\n
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | ## plant_inventory_view
 
 ### Columns
@@ -407,9 +424,9 @@
 | is_active | boolean | NO | true |
 | created_at | timestamp with time zone | NO | now() |
 | modified_at | timestamp with time zone | NO | now() |
-| common_name | text | NO |  |
+| common_name | text | YES |  |
 
 ### Primary Key
 - plant_type_id
 
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
