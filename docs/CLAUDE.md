@@ -223,6 +223,7 @@ plant-care-dashboard/
 │   │   ├── buttons.css                 # Button styles
 │   │   ├── cards.css                   # Card components
 │   │   ├── charts.css                  # Chart styles
+│   │   ├── chunks.css                  # Styles of sections of the dashboard
 │   │   ├── empty-state.css             # Style for emtpy state
 │   │   ├── forms.css                   # Forms styles
 │   │   ├── loading.css                 # Style for loading data

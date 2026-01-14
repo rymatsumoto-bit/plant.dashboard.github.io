@@ -10,11 +10,27 @@
     align-items: center;
 }
 
+.chunk-container {
+    display: grid;
+    gap: var(--spacing-xl);
+    margin-bottom: var(--spacing-xl);
+    align-items: start;
+}
+
+.chunk-container-single-column {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-xl);
+    margin-bottom: var(--spacing-xl);
+    align-items: start;
+}
+
 .chunk-container-1-1 {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: var(--spacing-xl);
     margin-bottom: var(--spacing-xl);
+    align-items: start;
 }
 
 .chunk-container-2-1 {
@@ -22,6 +38,7 @@
     grid-template-columns: 1fr 1fr;
     gap: var(--spacing-xl);
     margin-bottom: var(--spacing-xl);
+    align-items: start;
 }
 
 .chunk-container-1-2 {
@@ -29,4 +46,5 @@
     grid-template-columns: 1fr 2fr;
     gap: var(--spacing-xl);
     margin-bottom: var(--spacing-xl);
+    align-items: start;
 }
