@@ -279,6 +279,21 @@ plant-care-dashboard/
 │       ├── supabase.js                 # Database queries and operations
 │       └── storage.js                  # localStorage/sessionStorage helpers
 │
+├── python/                             # Python related folders
+│   ├── config/
+│   │   └── supabase.py                 # Supabase URL + service ke
+│   ├── data/                           # Local data
+│   │   └── cache/                      # Temp local data
+│   ├── scripts/                        # Local data
+│   │   ├── test_connection.py          # First script: "can I read Supabase?"
+│   │   ├── metrics.py                  # Simple metrics
+│   │   ├── forecasts.py                # Forecasting logic
+│   │   └── alerts.py                   # Alert generation
+│   └── utils/                          # Utility codes
+│       ├── supabase_client.py          # Supabase connection logic
+│       ├── dates.py                    # Date helpers
+│       └── weather.py                  # Weather API integration
+│
 ├── assets/                             # Static assets
 │   ├── images/
 │   │   └── icons/                      # Storage of icons
