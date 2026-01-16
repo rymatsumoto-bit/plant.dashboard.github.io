@@ -21,8 +21,8 @@ body {
 .sidebar-header {
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin-bottom: var(--spacing-sm);
+    gap: 5px;
+    margin-bottom: var(--spacing-xs);
 }
 
 .sidebar-header .logo {

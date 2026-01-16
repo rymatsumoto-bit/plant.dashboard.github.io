@@ -186,7 +186,7 @@ User Input (Web) → Supabase ← Python Analysis Engine
 **Plant Lifecycle Tracking:**
 - `plant.acquisition_timezone` - Timezone context for acquisition date
 - `plant.previous_plant_id` - Links returned plants to their previous records
-- `plant.use_historical_data` - User preference for forecasting calculations
+- `plant.use_historical_data` - User preference for forecasting calculations. This is only valid for plants that have been returned. Basically asking if the history of the previous period (before return) should be used.
 - Lifecycle activity types: ACQUIRED, DECEASED, GIVEN_AWAY, RETURNED
 
 **Plant-Habitat Movement History:**
@@ -254,6 +254,8 @@ plant-care-dashboard/
 │   │   ├── address.html                # Content for address configuration
 │   │   └── habitat.html                # Content for habitat configuration
 │   └── modals/                         # Reusable modal componentes
+│       └── activity/                   # Modal componentes of each type of activity
+│       │   └── watering.html           # Modal for watering activity
 │       ├── prompt-modal.html           # Modal shell/container
 │       ├── light-artificial.html       # Form content for artifical light details
 │       ├── light-outdoor.html          # Form content for outdoor light details
@@ -267,6 +269,8 @@ plant-care-dashboard/
 │   ├── components/
 │   │   └── breadcrumb.js               # Breadcrumb component logic
 │   ├── modals/
+│   │   ├── activity/                   # loading view of activities
+│   │   │   ├── watering.js             # watering
 │   │   ├── light-modal.js              # loading view of light details
 │   │   └── prompt-modal.js             # Modal logic and management
 │   ├── views/
@@ -575,6 +579,10 @@ The `openModal()` function is available globally via `window.openModal` for use 
 - Can be used across multiple views
 - Manage their own state and behavior
 
+**modals/*.js** - Configuration of modal
+- Defines modal structures and behaviours
+- Can be called from anywhere
+
 
 ### Import Conventions
 ```javascript
@@ -677,14 +685,15 @@ export function showEmptyState(elementId) { }
 
 
 ### In Progress
-🔄 Create "new plant" form
+🔄 Python forecasting algorithm development  
+🔄 Alert generation engine (calculated + user-created)
+🔄 Alert suppression logic (prevent regeneration after done/dismiss)
 
 ### Pending
 ⏳ Plant detail component  
 ⏳ Add/Edit plant forms  
 ⏳ Add/Edit location forms  
 ⏳ User timezone selection in Settings (localStorage implementation)
-⏳ Python forecasting algorithm development  
 ⏳ Data export functionality  
 ⏳ Mobile responsive optimization  
 ⏳ Toast notification system
@@ -692,8 +701,6 @@ export function showEmptyState(elementId) { }
 ⏳ Plant-habitat movement tracking and history
 ⏳ Historical data toggle for forecasting (use full history vs. current ownership only)
 ⏳ Plant status calculation system with factor mapping
-⏳ Alert generation engine (calculated + user-created)
-⏳ Alert suppression logic (prevent regeneration after done/dismiss)
 ⏳ Status factor display in UI (show which factors contribute to status)
 
 
