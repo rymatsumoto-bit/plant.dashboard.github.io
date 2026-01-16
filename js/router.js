@@ -2,15 +2,13 @@
 // ROUTER.JS - View Loading and Navigation
 // ============================================
 
-import { updateToolbarTitle } from './components/toolbar.js';
+import { initializeToolbar } from './components/toolbar.js';
 import { initializeDashboard } from './views/dashboard.js';
 import { initializeReports } from './views/reports.js';
 import { initializeInventory } from './views/inventory.js';
 import { initializeConfiguration } from './views/configuration.js';
 import { initializeSettings } from './views/settings.js';
-import { openModal, populateDropdown } from './modals/prompt-modal.js';
-import { getActivityTypes, getActivePlants, addPlantActivity } from './services/supabase.js';
-import { showNotification, capitalize } from './utils.js';
+import { capitalize } from './utils.js';
 
 export class Router {
     constructor() {
@@ -23,6 +21,7 @@ export class Router {
     init() {
         this.setupNavigation();
         this.loadInitialView();
+        initializeToolbar();
     }
 
     // Setup navigation event listeners
@@ -35,59 +34,7 @@ export class Router {
                 sessionStorage.setItem('currentView', view);
             });
         });
-        console.log('openModal function:', typeof openModal);
         
-        // New Activity button
-        const newActivityBtn = document.getElementById('new-activity-btn');
-        if (newActivityBtn) {
-            newActivityBtn.addEventListener('click', async () => {
-                // Open modal first
-                const modal = await openModal({
-                    title: 'Log New Activity',
-                    contentUrl: 'components/modals/new-activity.html',
-                    size: 'medium',
-                    buttons: [
-                        { label: 'LOG ACTIVITY', type: 'primary', action: 'submit' },
-                        { label: 'CANCEL', type: 'secondary', action: 'close' }
-                    ],
-                    onSubmit: async (data, modal) => {
-                        try {
-                            await addPlantActivity(data);
-                            showNotification('Activity logged successfully!', 'success');
-                            modal.querySelector('[data-action="close"]').click();
-                            this.loadView(this.currentView);
-                        } catch (error) {
-                            console.error('Error logging activity:', error);
-                            showNotification('Failed to log activity', 'error');
-                        }
-                    }
-                });
-                
-                // After modal opens, load dropdown data
-                try {
-                    // Fetch data from Supabase
-                    const [activityTypes, plants] = await Promise.all([
-                        getActivityTypes(),
-                        getActivePlants()
-                    ]);
-                    
-                    // Populate dropdowns
-                    populateDropdown('activity-type', activityTypes, 'activity_type_code', 'activity_label');
-                    populateDropdown('plant-select', plants, 'plant_id', 'plant_name');
-                    
-                    // Set today's date as default
-                    const dateInput = modal.querySelector('#activity-date');
-                    if (dateInput) {
-                        dateInput.valueAsDate = new Date();
-                    }
-                    
-                } catch (error) {
-                    console.error('Error loading form data:', error);
-                    showNotification('Error loading form data', 'error');
-                }
-            });
-        }
-
         // Browser back/forward buttons
         window.addEventListener('popstate', (event) => {
             if (event.state && event.state.view) {
@@ -125,6 +72,9 @@ export class Router {
             
             const html = await response.text();
             this.viewContainer.innerHTML = html;
+            
+            // Update toolbar title
+            this.updateToolbarTitle(viewName);
             
             // Update navigation state
             this.updateNavigation(viewName);
@@ -183,10 +133,36 @@ export class Router {
         `;
     }
 
+    // Update toolbar title based on current view
+    updateToolbarTitle(viewName) {
+        const toolbarTitle = document.getElementById('toolbar-title');
+        const toolbarTagline = document.getElementById('toolbar-tagline');
+        
+        if (!toolbarTitle) return;
+        
+        const viewTitles = {
+            'dashboard': 'Dashboard',
+            'reports': 'Reports',
+            'inventory': 'Inventory',
+            'configuration': 'Configuration',
+            'settings': 'Settings'
+        };
+        
+        const viewTaglines = {
+            'dashboard': 'Your plant care overview',
+            'reports': 'Analytics and insights',
+            'inventory': 'Manage all your plants',
+            'configuration': 'Manage habitat and environmental settings for your plants',
+            'settings': 'Configure your Plant Hub preferences'
+        };
+
+        toolbarTitle.textContent = viewTitles[viewName] || capitalize(viewName);
+        toolbarTagline.textContent = viewTaglines[viewName] || capitalize(viewName);
+    }
+
     // Update navigation active states
     updateNavigation(viewName) {
         this.updateActiveNav(viewName);
-        updateToolbarTitle(viewName);
     }
 
     // Update sidebar active state

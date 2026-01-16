@@ -175,6 +175,23 @@ export async function getPlantInventory() {
 }
 
 /**
+ * Get all active plants for dropdown
+ */
+export async function getActivePlants() {
+    const { data, error } = await supabase
+        .from('plant_inventory_view')
+        .select('plant_id, plant_name, species')
+        .order('plant_name');
+    
+    if (error) throw error;
+    // Concatenate in JS
+    return data.map(data  => ({
+        ...data,
+        full_plant_name: `${data.plant_name} . . . (${data.species})`
+    }));
+}
+
+/**
  * Get plant types
  */
 export async function getPlantTypes() {
@@ -188,7 +205,7 @@ export async function getPlantTypes() {
        
     return data.map(p => ({
         ...p,
-        plant_type: `${p.species} (${p.category})`
+        plant_type: `${p.species}  (${p.category})`
     }));
 }
 
@@ -224,21 +241,6 @@ export async function getActivityTypes() {
     if (error) throw error;
     return data;
 }
-
-/**
- * Get all active plants for dropdown
- */
-export async function getActivePlants() {
-    const { data, error } = await supabase
-        .from('plant')
-        .select('plant_id, plant_name')
-        .eq('is_active', true)
-        .order('plant_name');
-    
-    if (error) throw error;
-    return data;
-}
-
 
 
 

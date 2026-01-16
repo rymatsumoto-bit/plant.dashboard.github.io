@@ -347,10 +347,11 @@
 | habitat | text | YES |  |
 | status_code | text | YES |  |
 | status_label | text | YES |  |
+| severity | integer | YES |  |
 | status_icon | text | YES |  |
 
 ### Primary Key\n- (none)\n
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | ## plant_inventory_view
 
 ### Columns
@@ -387,6 +388,9 @@
 | source | text | NO | 'system'::text |
 | confidence_score | numeric | YES |  |
 | created_at | timestamp with time zone | NO | now() |
+| calculated_severity | integer | NO |  |
+| effective_severity | integer | NO |  |
+| status_override_reason | text | YES |  |
 
 ### Primary Key
 - plant_status_history_id
@@ -394,7 +398,7 @@
 ### Foreign Keys
 - plant_id → plant.plant_id
 - status_code → plant_status_lookup.status_code
-                                                                                                                                                                                                                                                                                                                                                                                            |
+                                                                                                                                                                                                                                                              |
 | ## plant_status_lookup
 
 ### Columns
@@ -425,8 +429,9 @@
 | created_at | timestamp with time zone | NO | now() |
 | modified_at | timestamp with time zone | NO | now() |
 | common_name | text | YES |  |
+| watering_interval_days | smallint | NO |  |
 
 ### Primary Key
 - plant_type_id
 
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
