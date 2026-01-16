@@ -335,6 +335,30 @@
 - activity_type_code
 
 ### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| ## plant_category_lookup
+
+### Columns
+| Column | Type | Nullable | Default |
+| --- | --- | --- | --- |
+| plant_category_id | uuid | NO | gen_random_uuid() |
+| category_name | text | NO |  |
+| description | text | YES |  |
+| water_min_days | integer | NO |  |
+| water_max_days | integer | NO |  |
+| light_min_fc | integer | NO |  |
+| light_max_fc | integer | NO |  |
+| humidity_min | integer | NO |  |
+| humidity_max | integer | NO |  |
+| soil_type | text | NO |  |
+| sensitivity | integer | NO |  |
+| is_active | boolean | NO | true |
+| created_at | timestamp with time zone | NO | now() |
+| modified_at | timestamp with time zone | NO | now() |
+
+### Primary Key
+- plant_category_id
+
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                  |
 | ## plant_detail_view
 
 ### Columns
@@ -430,8 +454,11 @@
 | modified_at | timestamp with time zone | NO | now() |
 | common_name | text | YES |  |
 | watering_interval_days | smallint | NO |  |
+| plant_category_id | uuid | NO |  |
 
 ### Primary Key
 - plant_type_id
 
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+### Foreign Keys
+- plant_category_id → plant_category_lookup.plant_category_id
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
