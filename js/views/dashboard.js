@@ -2,28 +2,43 @@
 // DASHBOARD.JS - Dashboard View Logic
 // ============================================
 
+import { getDataMetrics } from '../services/data-metrics.js';
 import { showNotification } from '../utils.js';
+
+let dataMetrics = [];
 
 /**
  * Initialize dashboard view
  */
-export function initializeDashboard() {
+export async function initializeDashboard() {
+    try {
+        
+        dataMetrics = await getDataMetrics();
+        console.log('Dashboard view initialized');
+        
+        // Load dashboard data
+        loadDashboardData();
+        
+        // Setup event listeners
+        setupDashboardEventListeners();
+
+    }  catch (error) {
+            logError(error, 'initializing Dashboard view');
+        }
+
     console.log('Dashboard view initialized');
-    
-    // Load dashboard data
-    loadDashboardData();
-    
-    // Setup event listeners
-    setupDashboardEventListeners();
 }
 
 /**
  * Load dashboard data
  */
 function loadDashboardData() {
-    // TODO: Load plant alerts from database
-    // TODO: Load statistics
-    // TODO: Render dashboard widgets
+
+    // Get KPIs
+    document.getElementById('kpi-plant-count').textContent = dataMetrics.plant_active_total_count;
+    document.getElementById('kpi-plant-healthy-perc').textContent = `${dataMetrics.plant_healthy_percentage}%`;
+    document.getElementById('kpi-alerts-count').textContent = dataMetrics.alert_total_count;
+
     console.log('Loading dashboard data...');
 }
 
