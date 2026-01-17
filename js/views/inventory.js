@@ -6,10 +6,12 @@ import { loadHTML, logError, formatDate } from '../utils.js';
 import { openModal, populateDropdown } from '../modals/prompt-modal.js';
 import { getPlantInventory, getPlantTypes, getHabitats } from '../services/supabase.js';
 import { addPlant } from '../services/supabase.js';
+import { getDataMetrics } from '../services/data-metrics.js';
 import { initializePlantDetail } from './inventory/plant-details.js';
 import { showNotification, capitalize } from '../utils.js';
 
 let plants = [];
+let dataMetrics = [];
 
 /**
  * Initialize inventory view
@@ -18,6 +20,7 @@ export async function initializeInventory() {
     try {
         
         plants = await getPlantInventory();
+        dataMetrics = await getDataMetrics();
         console.log('Inventory view initialized');
         
         // Load plant inventory
@@ -51,7 +54,10 @@ function loadPlantInventory() {
         return;
     }
     
-    document.getElementById('kpi-plant-count').textContent = plants.length;
+    // Get KPIs
+    document.getElementById('kpi-plant-count').textContent = dataMetrics.plant_active_total_count;
+    document.getElementById('kpi-plant-healthy-perc').textContent = `${dataMetrics.plant_healthy_percentage}%`;
+    document.getElementById('kpi-alerts-count').textContent = dataMetrics.alert_total_count;
 
     plantList.innerHTML = plants.map((plant, index) => `
         <div class="table-row" data-plant-id="${plant.plant_id}">
