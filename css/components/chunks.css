@@ -1,4 +1,7 @@
-/* Chunks */
+/**
+ * CHUNKS
+ * pieces of containers to segregate content
+ */
 
 /* Goes outside and above a card */
 .chunk-title {
@@ -20,7 +23,7 @@
 .chunk-container-single-column {
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--spacing-xl);
+    gap: var(--spacing-md);
     margin-bottom: var(--spacing-xl);
     align-items: start;
 }
