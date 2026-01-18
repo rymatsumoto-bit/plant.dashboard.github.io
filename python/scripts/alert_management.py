@@ -200,6 +200,7 @@ class AlertManager:
         alert_data = {
             'plant_id': plant_id,
             'alert_type': 'WATERING_DUE',
+            'alert_label': 'WATERING',
             'alert_category': 'CARE',
             'severity': alert_severity,
             'title': title,

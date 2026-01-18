@@ -3,9 +3,11 @@
 // ============================================
 
 import { getDataMetrics } from '../services/data-metrics.js';
-import { showNotification } from '../utils.js';
+import { getAlertsActive } from '../services/supabase.js';
+import { logError } from '../utils.js';
 
 let dataMetrics = [];
+let dataAlerts = [];
 
 /**
  * Initialize dashboard view
@@ -14,17 +16,18 @@ export async function initializeDashboard() {
     try {
         
         dataMetrics = await getDataMetrics();
+        dataAlerts = await getAlertsActive();
         console.log('Dashboard view initialized');
         
         // Load dashboard data
-        loadDashboardData();
+        loadKPIs();
         
-        // Setup event listeners
-        setupDashboardEventListeners();
+        // Load list of alerts
+        loadAlertsList();
 
-    }  catch (error) {
-            logError(error, 'initializing Dashboard view');
-        }
+    } catch (error) {
+        logError(error, 'initializing Dashboard view');
+    }
 
     console.log('Dashboard view initialized');
 }
@@ -32,7 +35,7 @@ export async function initializeDashboard() {
 /**
  * Load dashboard data
  */
-function loadDashboardData() {
+function loadKPIs() {
 
     // Get KPIs
     document.getElementById('kpi-plant-count').textContent = dataMetrics.plant_active_total_count;
@@ -43,36 +46,64 @@ function loadDashboardData() {
 }
 
 /**
- * Setup dashboard event listeners
+ * Render Alerts List
  */
-function setupDashboardEventListeners() {
-    // TODO: Setup alert action buttons
-    // TODO: Setup quick action buttons
+function loadAlertsList() {
+    const alertsList = document.getElementById('dashboard-alerts-list');
+
+    if (!alertsList) {
+        alertsList.warn('dashboard-alert-list element not found');
+        return;
+    }
+
+    if (dataAlerts.length === 0) {
+        alertsList.innerHTML = '<div class="empty-state">NO ALERTS</div>';
+        return;
+    }
+
+    alertsList.innerHTML = dataAlerts.map((data) => `
+        <div data-alert-id="${data.alert_id}" class="dash-alert-item">
+            <div class="dash-alert-plant">
+                <div class="dash-alert-plant-icon" severity="${data.alert_severity}"></div>
+                <div class="dash-alert-plant-info">
+                    <div class="name">${data.plant_name}</div>
+                    <div class="date">${data.target_date}</div>
+                </div>
+            </div>
+            <div class="dash-alert-badge" alert-label="${data.alert_label}">${data.alert_label}</div>
+        </div>
+    `).join('');
+
+    attachAlertsListListeners();
+
+}
+
+
+/**
+ * Setup event listeners for Alerts List
+ */
+function attachAlertsListListeners() {
+    const alertItem = document.querySelectorAll('.dash-alert-item');
+    alertItem.forEach(item => {
+        item.addEventListener('click', (e) => {
+            const row = e.target.closest('.dash-alert-item');
+            if (!row) return;
+            const alertId = row.dataset.alertId
+            console.log(alertId);
+        // FUNCTION THAT WILL BE TRIGGERED WHEN CLICKING ON AN ALERT
+        })
+    });
     console.log('Dashboard event listeners ready');
 }
 
 /**
- * Handle snooze alert action
+ * Show loading state
  */
-export function handleSnooze(plantId, actionType) {
-    console.log(`Snoozing ${actionType} for plant ${plantId}`);
-    showNotification(`Alert snoozed for 3 days`, 'info');
-    // TODO: Implement snooze logic
-}
-
-/**
- * Handle mark as done action
- */
-export function handleMarkAsDone(plantId, actionType) {
-    console.log(`Marking ${actionType} as done for plant ${plantId}`);
-    showNotification(`${actionType} marked as complete`, 'success');
-    // TODO: Implement mark as done logic
-}
-
-/**
- * Refresh dashboard data
- */
-export function refreshDashboard() {
-    console.log('Refreshing dashboard...');
-    loadDashboardData();
+function showLoadingState(container) {
+    container.innerHTML = `
+        <div class="loading-container">
+            <div class="loading-spinner"></div>
+            <span class="loading-text">Loading...</span>
+        </div>
+    `;
 }

@@ -243,6 +243,21 @@ export async function getActivityTypes() {
 }
 
 
+// ============================================
+// ALERTS QUERIES
+// ============================================
+
+/**
+ * Get active alerts
+ */
+export async function getAlertsActive() {
+    const { data, error } = await supabase
+        .from('alerts_active_view')
+        .select('*');
+    
+    if (error) throw error;
+    return data;
+}
 
 
 // ============================================
