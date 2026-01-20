@@ -16,6 +16,27 @@ This document records all significant decisions made during the project. Each de
 
 ---
 
+## [2026-01-18] Past Activity Input Treatment
+
+**Decision:** What happens to calculations when user adds activity that is in the past
+
+**Context:**  
+Because the user has the ability to change the date for an activity (this is geared towards when user forgot to add details for a day or two), the result of the calculation can change.
+
+**Reasoning:**
+
+**Implementation:**
+
+**Alternatives Considered:**
+
+**Related Documents:**
+- FEATURES.md: Alert Management System
+- DATA-SCHEMA.md: alerts table
+
+**Status:** Active
+
+---
+
 ## [2024-12-29] Alert Management: Snooze & Dismiss Functionality
 
 **Decision:** Alerts can be snoozed for 3 days or dismissed permanently

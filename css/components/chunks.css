@@ -7,7 +7,6 @@
 .chunk-title {
     display: grid;
     grid-template-columns: 1fr auto;
-    margin-bottom: var(--spacing-md);
     font-size: var(--font-size-xl);
     font-weight: 600;
     align-items: center;
@@ -24,7 +23,6 @@
     display: grid;
     grid-template-columns: 1fr;
     gap: var(--spacing-md);
-    margin-bottom: var(--spacing-xl);
     align-items: start;
 }
 

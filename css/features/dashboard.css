@@ -1,45 +1,28 @@
-/* Dashboard Feature Styles */
+/* Dashboard Content */
 
-/* Alert List (Attention Dashboard) */
-.alert-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: var(--spacing-lg);
+/* Dashboard Alerts List Container */
+#dashboard-alerts-list {
+    max-height: 450px; /* Adjust based on card height minus padding */
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: var(--spacing-sm); /* Space for scrollbar */
 }
 
-.alert-item {
-    background: var(--bg-card);
-    padding: var(--spacing-lg) 25px;
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-md);
-    border-left: 4px solid var(--danger-accent);
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-md);
+/* Optional: Style the scrollbar */
+#dashboard-alerts-list::-webkit-scrollbar {
+    width: 8px;
 }
 
-.alert-item.warning {
-    border-left-color: var(--warning-accent);
+#dashboard-alerts-list::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+    border-radius: var(--radius-sm);
 }
 
-.alert-info {
-    flex: 1;
+#dashboard-alerts-list::-webkit-scrollbar-thumb {
+    background: var(--bg-secondary);
+    border-radius: var(--radius-sm);
 }
 
-.alert-plant-name {
-    font-size: 1.2em;
-    font-weight: 600;
-    color: var(--text-primary);
-    margin-bottom: var(--spacing-xs);
-}
-
-.alert-reason {
-    color: var(--text-light);
-    font-size: 0.95em;
-}
-
-.alert-actions {
-    display: flex;
-    gap: var(--spacing-sm);
-    margin-top: var(--spacing-xs);
+#dashboard-alerts-list::-webkit-scrollbar-thumb:hover {
+    background: var(--sage-mist);
 }
