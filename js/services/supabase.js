@@ -20,6 +20,54 @@ export function getSupabase() {
     return supabase;
 }
 
+
+
+// ============================================
+// AUTHENTICATION
+// ============================================
+
+/**
+ * Sign in with email/password
+ */
+export async function signIn(email, password) {
+    const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+    });
+    if (error) throw error;
+    return data;
+}
+
+/**
+ * Sign out
+ */
+export async function signOut() {
+    const { error } = await supabase.auth.signOut();
+    if (error) throw error;
+}
+
+/**
+ * Get current user
+ */
+export async function getCurrentUser() {
+    const { data: { user } } = await supabase.auth.getUser();
+    return user;
+}
+
+/**
+ * Get current user ID (helper)
+ */
+export async function getCurrentUserId() {
+    const user = await getCurrentUser();
+    return user?.id;
+}
+
+
+
+
+
+
+
 // ============================================
 // HABITAT QUERIES
 // ============================================
@@ -269,6 +317,7 @@ export async function getAlertsActive() {
  * Add new plant activity
  */
 export async function addPlantActivity(activityData) {
+    const userId = await getCurrentUserId();
     const { data, error } = await supabase
         .from('plant_activity_history')
         .insert([{
@@ -277,7 +326,8 @@ export async function addPlantActivity(activityData) {
             activity_date: activityData.activity_date,
             quantifier: activityData.quantifier || null,
             unit: activityData.unit || null,
-            details: activityData.notes || null
+            details: activityData.notes || null,
+            user_id: userId
         }])
         .select();
     
@@ -290,6 +340,7 @@ export async function addPlantActivity(activityData) {
  * Add new plant
  */
 export async function addPlant(plantData) {
+    const userId = await getCurrentUserId();
     const { data, error } = await supabase
         .from('plant')
         .insert([{
@@ -297,7 +348,8 @@ export async function addPlant(plantData) {
             plant_type_id: plantData.plant_type_id,
             habitat_id: plantData.habitat_id,
             acquisition_date: plantData.acquisition_date,
-            source: plantData.source_name
+            source: plantData.source_name,
+            user_id: userId
         }])
         .select();
     

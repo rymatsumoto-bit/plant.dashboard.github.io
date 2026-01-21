@@ -13,7 +13,7 @@ import { capitalize } from './utils.js';
 export class Router {
     constructor() {
         this.viewContainer = document.getElementById('view-container');
-        this.navItems = document.querySelectorAll('.nav-item');
+        this.navItems = document.querySelectorAll('.nav-item');        
         this.currentView = null;
     }
 
