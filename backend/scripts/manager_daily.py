@@ -5,7 +5,6 @@ MANAGER_DAILY.PY - Orchestrator of Daily Routines
 
 import os
 import sys
-import uvicorn
 from datetime import datetime, date
 from typing import List, Dict, Optional, Tuple
 import uuid
@@ -31,8 +30,6 @@ class DailyBatch:
         self.supabase = get_client()
         self.daily_batch_id = uuid.uuid4()
         self.daily_batch_timestamp = datetime.now()
-        
-        
         # Batch stats tracking
         self.stats= {
             "started": 0,

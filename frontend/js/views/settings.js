@@ -23,14 +23,29 @@ function loadUserPreferences() {
     console.log('Loading user preferences...');
 
     document.getElementById("run-status").addEventListener("click", async () => {
-        try {
-            const response = await fetch("https://plant-dashboard-github-io.onrender.com/status");
-            const data = await response.json();
-            console.log(data);  // log in console for debugging
-            document.getElementById("status-output").innerText = JSON.stringify(data, null, 2);
-        } catch (err) {
-            console.error("Error calling backend:", err);
+    const output = document.getElementById("status-output");
+    output.innerText = "Loading...";
+    
+    try {
+        //const response = await fetch("http://localhost:10000/status");
+        const response = await fetch("https://plant-dashboard-github-io.onrender.com/status", {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+            mode: "cors"  // Explicit CORS mode
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
         }
+        
+        const data = await response.json();
+        console.log(data);
+        output.innerText = JSON.stringify(data, null, 2);
+        
+    } catch (err) {
+        console.error("Error calling backend:", err);
+        output.innerText = `Error: ${err.message}`;
+    }
     });
 
 }
