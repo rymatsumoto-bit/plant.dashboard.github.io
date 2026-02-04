@@ -61,6 +61,10 @@ class DailyBatch:
         print(f"{'='*60}\n")
         
         try:
+            # CALLS FOR FACTOR  CALCULATION
+            factor_calculator = FactorsCalculator(run_id=self.daily_batch_id, supabase=self.supabase)
+            run_routine(self, "Plant Factor Calculation", factor_calculator.run)
+
             # CALLS FOR FACTOR CONTRIBUTION CALCULATION
             factor_contribution_calculator = FactorsContributionCalculator(run_id=self.daily_batch_id, supabase=self.supabase)
             run_routine(self, "Plant Factor Contribution Calculation", factor_contribution_calculator.run)
