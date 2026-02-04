@@ -5,6 +5,7 @@ MANAGER_DAILY.PY - Orchestrator of Daily Routines
 
 import os
 import sys
+import uvicorn
 from datetime import datetime, date
 from typing import List, Dict, Optional, Tuple
 import uuid

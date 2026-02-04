@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 import os
+import uvicorn
 
 # Load environment variables from .env
 load_dotenv()
@@ -35,3 +36,10 @@ def get_status():
 #    """
     batch_run = DailyBatch  # your function in scripts/status_calculation.py
     batch_run.run
+
+
+if __name__ == "__main__":
+    # Use Render's port, or default to 10000 for local testing
+    port = int(os.environ.get("PORT", 10000))
+    # 'app' must match your FastAPI variable name: app = FastAPI()
+    uvicorn.run("app:app", host="0.0.0.0", port=port)
