@@ -2,7 +2,7 @@
 // NEW-ACTIVITY.CONTROLLER.JS - new-activity modal logic
 // ============================================
 
-import { openModal, populateDropdown } from '../modals/prompt-modal.js';
+import { openModal, populateDropdown } from './prompt-modal.js';
 import { getActivityTypes, getActivePlants, addPlantActivity } from '../services/supabase.js';
 import { showNotification } from '../utils.js';
 
