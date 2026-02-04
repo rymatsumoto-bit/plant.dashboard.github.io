@@ -16,7 +16,7 @@ app = FastAPI(title="Plant Dashboard API")
 origins = [
     "http://127.0.0.1:5501",      # local dev
     "http://localhost:5501",       # in case browser uses localhost
-    "https://rymatsumoto-bit.github.io/plant.dashboard.github.io/"  # production frontend
+    "https://rymatsumoto-bit.github.io/plant.dashboard.github.io"  # production frontend
 ]
 
 # Optional: allow frontend calls from GitHub Pages (CORS)
@@ -40,8 +40,12 @@ def get_status():
 #    Calls your Python script to calculate plant status
 #    Returns a JSON response
 #    """
-    batch_run = DailyBatch  # your function in scripts/status_calculation.py
-    batch_run.run
+    try:
+        batch_run = DailyBatch()  # your function in scripts/status_calculation.py
+        stats = batch_run.run()
+        return {"status": "success", "stats": stats}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
 
 
 if __name__ == "__main__":
