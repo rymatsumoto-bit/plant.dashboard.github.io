@@ -1,0 +1,5 @@
+fastapi==0.111.1            # API framework
+uvicorn[standard]==0.23.2   # Development server for FastAPI
+python-dotenv==1.0.0        # Load .env environment variables
+supabase==1.0.0             # Supabase Python client (if used)
+requests==2.32.0            # Optional: if your scripts call external APIs
