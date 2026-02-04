@@ -27,11 +27,11 @@ def root():
     return {"message": "Backend is running"}
 
 # Example endpoint to run your status calculation
-@app.get("/status")
-def get_status():
-    """
-    Calls your Python script to calculate plant status
-    Returns a JSON response
-    """
-    result = calculate_status()  # your function in scripts/status_calculation.py
-    return result
+#@app.get("/status")
+#def get_status():
+#    """
+#    Calls your Python script to calculate plant status
+#    Returns a JSON response
+#    """
+#    result = calculate_status()  # your function in scripts/status_calculation.py
+#    return result

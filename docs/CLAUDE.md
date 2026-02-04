@@ -117,18 +117,14 @@ A solution that combines plant historical data and environment information, enha
 - CSS3
 - JavaScript (Vanilla JS)
 
-### Data Processing
+### Backend
 - Python (for forecasting algorithms)
-- To be integrated via Pyodide or API
-
-### Visualization
-- HTML5
-- CSS3
-- JavaScript (Vanilla JS)
+- Render (FastAPI)
+- Daily batches: Render cron
 
 ### Storage
-- localStorage / sessionStorage (for web-based solution)
 - Supabase
+- localStorage / sessionStorage (for web-based solution)
 
 ---
 
@@ -147,99 +143,108 @@ All project files (HTML, CSS, JS, PY, MD) are maintained in the project folder a
 ### Current File Structure
 ```
 plant-care-dashboard/
-├── index.html                          # Main application shell
 │
-├── css/
-│   ├── main.css                        # Import all css files, to be the single reference in all html files
-│   ├── reset.css                       # CSS reset
-│   ├── variables.css                   # Design tokens (colors, spacing, etc.)
-│   ├── base.css                        # Base styles and utilities
-│   ├── layout.css                      # Layout structure (sidebar, main content)
-│   ├── components/
-│   │   ├── alerts.css                  # Alerts related elements
-│   │   ├── buttons.css                 # Button styles
-│   │   ├── cards.css                   # Card components
-│   │   ├── charts.css                  # Chart styles
-│   │   ├── chunks.css                  # Styles of sections of the dashboard
-│   │   ├── empty-state.css             # Style for emtpy state
-│   │   ├── forms.css                   # Forms styles
-│   │   ├── loading.css                 # Style for loading data
-│   │   ├── modal.css                   # Modal styling
-│   │   ├── tables.css                  # Table and list styles
-│   │   └── charts.css                  # Chart components (placeholder)
-│   ├── features/
-│   │   ├── dashboard.css               # Dashboard-specific styles
-│   │   ├── inventory.css               # Inventory feature styles
-│   │   ├── reports.css                 # Reports feature styles
-│   │   ├── configuration.css           # Configuration feature styles
-│   │   └── settings.css                # Settings feature styles
-│   └── responsive.css                  # Media queries
+├── frontend/                              # First level views
+│   ├── index.html                          # Main application shell
+│   │
+│   ├── css/
+│   │   ├── main.css                        # Import all css files, to be the single reference in all html files
+│   │   ├── reset.css                       # CSS reset
+│   │   ├── variables.css                   # Design tokens (colors, spacing, etc.)
+│   │   ├── base.css                        # Base styles and utilities
+│   │   ├── layout.css                      # Layout structure (sidebar, main content)
+│   │   ├── components/
+│   │   │   ├── alerts.css                  # Alerts related elements
+│   │   │   ├── buttons.css                 # Button styles
+│   │   │   ├── cards.css                   # Card components
+│   │   │   ├── charts.css                  # Chart styles
+│   │   │   ├── chunks.css                  # Styles of sections of the dashboard
+│   │   │   ├── empty-state.css             # Style for emtpy state
+│   │   │   ├── forms.css                   # Forms styles
+│   │   │   ├── loading.css                 # Style for loading data
+│   │   │   ├── modal.css                   # Modal styling
+│   │   │   ├── tables.css                  # Table and list styles
+│   │   │   └── charts.css                  # Chart components (placeholder)
+│   │   ├── features/
+│   │   │   ├── dashboard.css               # Dashboard-specific styles
+│   │   │   ├── inventory.css               # Inventory feature styles
+│   │   │   ├── reports.css                 # Reports feature styles
+│   │   │   ├── configuration.css           # Configuration feature styles
+│   │   │   └── settings.css                # Settings feature styles
+│   │   └── responsive.css                  # Media queries
+│   │
+│   ├── views/                              # First level views
+│   │   ├── dashboard.html                  # Main dashboard view
+│   │   ├── reports.html                    # Reports view
+│   │   ├── inventory.html                  # Plant inventory
+│   │   ├── configuration.html              # Plant parameter configuration
+│   │   └── settings.html                   # System configuration
+│   │
+│   ├── components/                         # Reusable UI components
+│   │   ├── configuration-tabs/             # Tabs under configuration view
+│   │   │   ├── address.html                # Content for address configuration
+│   │   │   └── habitat.html                # Content for habitat configuration
+│   │   └── modals/                         # Reusable modal componentes
+│   │       └── activity/                   # Modal componentes of each type of activity
+│   │       │   └── watering.html           # Modal for watering activity
+│   │       ├── prompt-modal.html           # Modal shell/container
+│   │       ├── light-artificial.html       # Form content for artifical light details
+│   │       ├── light-outdoor.html          # Form content for outdoor light details
+│   │       ├── light-window.html           # Form content for window light details
+│   │       └── new-activity.html           # Form content for new activity log
+│   │
+│   ├── js/                                 # JavaScript modules
+│   │   ├── app.js                          # Main entry point
+│   │   ├── router.js                       # View loading and navigation
+│   │   ├── utils.js                        # Utility functions
+│   │   ├── components/
+│   │   │   └── breadcrumb.js               # Breadcrumb component logic
+│   │   ├── modals/
+│   │   │   ├── activity/                   # loading view of activities
+│   │   │   │   └── watering.js             # watering
+│   │   │   ├── light-modal.js              # loading view of light details
+│   │   │   └── prompt-modal.js             # Modal logic and management
+│   │   ├── views/
+│   │   │   ├── dashboard.js                # Dashboard-specific logic
+│   │   │   ├── reports.js                  # Reports-specific logic
+│   │   │   ├── inventory.js                # Inventory-specific logic
+│   │   │   ├── configuration.js            # Configuration orchestrator (main)
+│   │   │   ├── configuration/              # Configuration sub-modules
+│   │   │   │   ├── habitat-manager.js      # Habitat CRUD and rendering
+│   │   │   │   ├── address-manager.js      # Address CRUD and rendering
+│   │   │   │   └── shared-utils.js         # Shared configuration utilities
+│   │   │   └── settings.js                 # Settings-specific logic
+│   │   └── services/
+│   │       ├── supabase.js                 # Database queries and operations
+│   │       └── storage.js                  # localStorage/sessionStorage helpers
+│   │
+│   └── assets/                             # Static assets
+│		├── images/
+│		│   └── icons/                      # Storage of icons
+│		│   │   ├── activity/               # Icons for different activities
+│		│   │   └── plants/                 # Icons for plant types
+│		└── fonts/                          
 │
-├── views/                              # First level views
-│   ├── dashboard.html                  # Main dashboard view
-│   ├── reports.html                    # Reports view
-│   ├── inventory.html                  # Plant inventory
-│   ├── configuration.html              # Plant parameter configuration
-│   └── settings.html                   # System configuration
-│
-├── components/                         # Reusable UI components
-│   ├── configuration-tabs/             # Tabs under configuration view
-│   │   ├── address.html                # Content for address configuration
-│   │   └── habitat.html                # Content for habitat configuration
-│   └── modals/                         # Reusable modal componentes
-│       └── activity/                   # Modal componentes of each type of activity
-│       │   └── watering.html           # Modal for watering activity
-│       ├── prompt-modal.html           # Modal shell/container
-│       ├── light-artificial.html       # Form content for artifical light details
-│       ├── light-outdoor.html          # Form content for outdoor light details
-│       ├── light-window.html           # Form content for window light details
-│       └── new-activity.html           # Form content for new activity log
-│
-├── js/                                 # JavaScript modules
-│   ├── app.js                          # Main entry point
-│   ├── router.js                       # View loading and navigation
-│   ├── utils.js                        # Utility functions
-│   ├── components/
-│   │   └── breadcrumb.js               # Breadcrumb component logic
-│   ├── modals/
-│   │   ├── activity/                   # loading view of activities
-│   │   │   └── watering.js             # watering
-│   │   ├── light-modal.js              # loading view of light details
-│   │   └── prompt-modal.js             # Modal logic and management
-│   ├── views/
-│   │   ├── dashboard.js                # Dashboard-specific logic
-│   │   ├── reports.js                  # Reports-specific logic
-│   │   ├── inventory.js                # Inventory-specific logic
-│   │   ├── configuration.js            # Configuration orchestrator (main)
-│   │   ├── configuration/              # Configuration sub-modules
-│   │   │   ├── habitat-manager.js      # Habitat CRUD and rendering
-│   │   │   ├── address-manager.js      # Address CRUD and rendering
-│   │   │   └── shared-utils.js         # Shared configuration utilities
-│   │   └── settings.js                 # Settings-specific logic
-│   └── services/
-│       ├── supabase.js                 # Database queries and operations
-│       └── storage.js                  # localStorage/sessionStorage helpers
-│
-├── python/                             # Python related folders
+├── backend/                             # Python related folders
+│   ├── .env
+│   ├── requirements.txt
+│   ├── app.py
+│   │
 │   ├── config/
 │   │   └── supabase.py                 # Supabase URL + service ke
+│   │
 │   ├── data/                           # Local data
 │   │   └── cache/                      # Temp local data
+│   │
 │   ├── scripts/                        # Local data
 │   │   ├── status_calculation.py       # Driver of calculation of plant status
 │   │   ├── factor_watering.py          # Calculation of watering factors to status
 │   │   └── alert_management.py         # Alert management (creation, updates)
+│   │
 │   └── utils/                          # Utility codes
 │       ├── supabase_client.py          # Supabase connection logic
 │       ├── dates.py                    # Date helpers
 │       └── weather.py                  # Weather API integration
-│
-├── assets/                             # Static assets
-│   ├── images/
-│   │   └── icons/                      # Storage of icons
-│   │   │   ├── activity/               # Icons for different activities
-│   │   │   └── plants/                 # Icons for plant types
-│   └── fonts/                          
 │
 └── docs/
     ├── CLAUDE.md                       # This file
