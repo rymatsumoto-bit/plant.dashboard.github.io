@@ -13,10 +13,16 @@ from scripts.manager_daily import DailyBatch
 
 app = FastAPI(title="Plant Dashboard API")
 
+origins = [
+    "http://127.0.0.1:5501",      # local dev
+    "http://localhost:5501",       # in case browser uses localhost
+    "https://rymatsumoto-bit.github.io/plant.dashboard.github.io/"  # production frontend
+]
+
 # Optional: allow frontend calls from GitHub Pages (CORS)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://plant-dashboard-github-io.onrender.com"],  # replace "*" with your frontend URL in production
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
