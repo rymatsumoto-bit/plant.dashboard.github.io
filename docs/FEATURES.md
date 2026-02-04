@@ -308,10 +308,9 @@ function validateActivity(data) {
 - [ ] Visual timeline representation
 - [ ] Quick-log activity from detail page
 
-**Alerts:**
-- [ ] Current active alerts for this plant
-- [ ] Alert history (snoozed, dismissed, completed)
-- [ ] Alert action buttons
+**Schedule Items:**
+- [ ] Current active schedule items for this plant
+- [ ] Action buttons: dismiss or mark as done. 'Mark as done' will be interpreted as adding an activity for the factor in question.
 
 **Navigation:**
 - [ ] Back to inventory button
@@ -347,7 +346,7 @@ function validateActivity(data) {
 ### User Stories
 
 **As a plant owner, I want to:**
-- See summary statistics (total plants, alerts, recent activities)
+- See summary statistics (total plants, schdedule, recent activities)
 - View upcoming care tasks in a calendar or timeline
 - Access quick actions (log activity, view alerts)
 - Navigate to main sections easily
