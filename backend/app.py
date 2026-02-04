@@ -8,7 +8,7 @@ import os
 load_dotenv()
 
 # Import your existing Python logic
-from scripts.status_calculation import calculate_status
+#from scripts.status_calculation import calculate_status
 
 app = FastAPI(title="Plant Dashboard API")
 
