@@ -341,6 +341,7 @@ export async function addPlantActivity(activityData) {
  */
 export async function addPlant(plantData) {
     const userId = await getCurrentUserId();
+    /** OLD STYLE
     const { data, error } = await supabase
         .from('plant')
         .insert([{
@@ -352,7 +353,18 @@ export async function addPlant(plantData) {
             user_id: userId
         }])
         .select();
-    
+     */
+    const { data, error } = await supabase.rpc(
+        'create_new_plant',
+        {
+            p_plant_name: plantData.plant_name,
+            p_acquisition_date: plantData.acquisition_date,
+            p_source: plantData.source_name,
+            p_plant_type_id: plantData.plant_type_id,
+            p_habitat_id: plantData.habitat_id
+        }
+    );
+
     if (error) throw error;
     return data;
 }
