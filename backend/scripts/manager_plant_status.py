@@ -1,93 +1,45 @@
 """
-MANAGER_PLANT_STATUS.PY - Orchestrator of all status for the plants
-
+STATUS_CALCULATION.PY - Main Status Orchestrator
+Calculates plant status
+Version 1.0.0
+09 Feb 2026
 """
-import sys
-from typing import List, Dict
-from factors import registry
+import pandas as pd
+import numpy as np
+import uuid
 
-class StatusCalculator:
-    """Main orchestrator for plant status calculation"""
+def run(factor_contribution_df, status_factor_contribution_map_df, run_id):
+    print(f"\nManaging watering due factor for run {run_id}...\n")
+
+    """
+    Calculates plant statys
     
-    def __init__(self, run_id, supabase):
+    Phase 1 Logic:
+    - Weighted average of the severity of each factor contribution
+    Args:
+        plant_factor_contribution_df
+            - plant_id: str
+            - factor_code: str
+            - severity: int
+        status_factor_contribution_map_df
+            - factor_code: str
+            - weight: float (the sum of the weights in the table is 1)
+    Returns:
+        plant_status_df
+            - plant_status_id: str        
+            - plant_id: str
+            - plant_status_code: str
+    """
 
-        self.supabase = supabase
-        self.run_id = run_id
-        
-    def run(self):
-        """
-        Main entry point - calculates all status all active plants
-        
-        Returns:
-            
-        """
-        print(f"\n{'='*60}")
-        print(f"STATUS CALCULATION STARTED")
-        print(f"Run ID: {self.run_id}")
-        print(f"{'='*60}\n")
-        
-        # Factor stats tracking
-        stats = {
-            'processed': 0,
-            'errors': 0,
-            'skipped': 0
-        }
-
-        try:
-            # Fetch all active plants
-            plants = self._fetch_active_plants()
-            print(f"Found {len(plants)} active plants to process\n")
-            
-            # Define the list of factors to be called
-            list_factors_calculation = {
-                "watering_due"
-            }
-
-            for factor in list_factors_calculation:
-                try:
-                    if factor in registry:
-                        print(f"Calculating {factor}.")
-                        registry[factor].run(run_id=self.run_id, supabase=self.supabase)
-                        stats['processed'] += 1
-                    else:
-                        print(f"Warning: {factor} is not a valid factor.")
-                        stats['skipped'] += 1
-                except Exception as e:
-                    print(f"❌ Error in factor calculation: {str(e)}")
-                    raise  # stop entire batch on failure
-
-        except Exception as e:
-            print(f"\n❌ Fatal error in factor calculation: {str(e)}")
-            
-        # Print summary
-        print(f"\n{'='*60}")
-        print(f"FACTOR CALCULATION COMPLETE")
-        print(f"Processed: {stats['processed']} | Skipped {stats['skipped']}")
-        print(f"{'='*60}\n")
-        
-        return stats
+    # Step 01: join tables and calculate the weighted average
+    plant_status_df = (factor_contribution_df.merge(status_factor_contribution_map_df, on='factor_code', how='left')
+                .assign(weighted_sev = lambda x: x['severity'] * x['weight'])
+                .groupby('plant_id')['weighted_sev']
+                .sum()
+                .reset_index())
+    print(f"  ✅ Step 01")
     
-    def _fetch_active_plants(self) -> List[Dict]:
-        """Fetch all active plants from database"""
-        print("  🔍 Fetching active plants...")
-        response = (self.supabase
-                   .table('plant')
-                   .select('plant_id')
-                   .eq('is_active', True)
-                   .execute())
-        return response.data
+    ## Add status id
+    plant_status_df['plant_status_id'] = [uuid.uuid4() for _ in range(len(plant_status_df))]
     
-def main():
-    """Main execution function"""
-    calculator = StatusCalculator(run_id='test-batch', supabase=None)
-    stats = calculator.run()
-    
-    # Exit with error code if there were errors
-    if stats['errors'] > 0:
-        sys.exit(1)
-    else:
-        sys.exit(0)
-
-
-if __name__ == "__main__":
-    main()
+    return plant_status_df
