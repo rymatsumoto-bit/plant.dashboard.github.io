@@ -1,7 +1,10 @@
 # backend/app.py
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 from dotenv import load_dotenv
+from datetime import datetime
+from typing import Optional
 import os
 import uvicorn
 
@@ -9,7 +12,7 @@ import uvicorn
 load_dotenv()
 
 # Import your existing Python logic
-from scripts.manager_daily import DailyBatch
+from scripts.manager_new_activity import NewActivity
 
 app = FastAPI(title="Plant Dashboard API")
 
@@ -28,25 +31,56 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# ============================================
+# PYDANTIC MODELS
+# ============================================
+class PlantActivity(BaseModel):
+    plant_id: str
+    activity_type_code: str  # "watering", "fertilizing", etc.
+    activity_date: Optional[str] = None
+    notes: Optional[str] = None
+    quantifier: Optional[float] = None
+
+# ============================================
+# ENDPOINTS
+# ============================================
+
 # Health check endpoint
 @app.get("/")
 def root():
     return {"message": "Backend is running"}
 
-# Example endpoint to run your status calculation
-@app.get("/status")
-def get_status():
-#    """
-#    Calls your Python script to calculate plant status
-#    Returns a JSON response
-#    """
+# NEW: Plant activity endpoint (watering, fertilizing, etc.)
+@app.post("/api/new-activity")
+async def log_activity(activity: PlantActivity):
+    """
+    Logs a new activity (watering, fertilizing, etc.) for a plant
+    Triggers factor calculations, status updates, and schedule management
+    """
     try:
-        batch_run = DailyBatch()  # your function in scripts/status_calculation.py
-        stats = batch_run.run()
-        return {"status": "success", "stats": stats}
+        print(f"Received activity: {activity.dict()}")
+        
+        # Create NewActivity instance and run the orchestrator
+        new_activity = NewActivity()
+        stats = new_activity.run(
+            plant_id=activity.plant_id,
+            activity_type_code=activity.activity_type_code
+        )
+        
+        return {
+            "status": "success",
+            "message": f"{activity.activity_type_code.capitalize()} activity logged and processed successfully",
+            "logged_at": datetime.now().isoformat(),
+            "stats": stats,
+            "data": activity.dict()
+        }
+        
     except Exception as e:
-        return {"status": "error", "message": str(e)}
-
+        print(f"Error processing activity: {str(e)}")
+        raise HTTPException(
+            status_code=500, 
+            detail=f"Failed to process activity: {str(e)}"
+        )
 
 if __name__ == "__main__":
     # Use Render's port, or default to 10000 for local testing

@@ -11,10 +11,10 @@ import uuid
 import pandas as pd
 import numpy as np
 from utils.supabase_client import get_client
-from factors import registry as factor_registry
-from factors_contribution import registry as factor_contribution_registry
-import backend.scripts.manager_plant_status as manager_plant_status
-from backend.scripts.manager_schedule import create_schedule
+from scripts.factors import registry as factor_registry
+from scripts.factors_contribution import registry as factor_contribution_registry
+import scripts.manager_plant_status as manager_plant_status
+from scripts.manager_schedule import create_schedule
 
 
 # Add parent directory to path for imports
@@ -69,7 +69,7 @@ class NewActivity:
             plant_data_df = (self.supabase
                 .table('plant')
                 .select('plant_id, plant_type_id, habitat_id, acquisition_date, user_timezone')
-                .eq('plant_id',{plant_id})
+                .eq('plant_id',plant_id)
                 .eq('is_active',True)
                 .execute())
 
@@ -77,8 +77,8 @@ class NewActivity:
             activity_data_df = (self.supabase
                 .table('plant_activity_history')
                 .select('plant_id, activity_date, quantifier')
-                .eq('plant_id',{plant_id})
-                .eq('activity_type_code', {activity_type_code})
+                .eq('plant_id',plant_id)
+                .eq('activity_type_code',activity_type_code)
                 .order('plant_id', desc=False)
                 .order('activity_date', desc=False)
                 .execute())
@@ -87,7 +87,7 @@ class NewActivity:
             factor_contribution_data_df = (self.supabase
                 .table('plant_factor_contribution_active')
                 .select('plant_id, factor_code, severity')
-                .eq('plant_id',{plant_id})
+                .eq('plant_id',plant_id)
                 .execute())
             
             # GET CURRENT FACTOR CONTRIBUTION WEIGHT (for status calculations)
@@ -103,8 +103,16 @@ class NewActivity:
                 "fertilizing": ["fertilizing_due"]
             }
 
+             # Get the factors for this specific activity type
+            factors_to_calculate = list_factors_calculation.get(activity_type_code, [])
+            
+            if not factors_to_calculate:
+                print(f"Warning: No factors defined for activity type '{activity_type_code}'")
+                self.stats['errors'] += 1
+                return self.stats
+        
             # CALCULATE FACTOR and CONTRIBUTION for EACH COMPONENT
-            for factor in list_factors_calculation:
+            for factor in factors_to_calculate:
                 try:
                     # CALCULATE FACTOR
                     if factor in factor_registry:
@@ -123,27 +131,29 @@ class NewActivity:
 
                     # CALCULATE FACTOR CONTRIBUTION
                     if factor in factor_contribution_registry:
-                        print(f"Calculating {factor}.")
+                        print(f"Calculating {factor} contribution.")
                         plant_single_factor_contribution_df = factor_contribution_registry[factor].run(
                             plant_factor_df,
                             run_id=self.batch_id,
                             supabase=self.supabase
                         )
                         plant_factor_contribution_df = pd.concat([plant_factor_contribution_df,plant_single_factor_contribution_df], ignore_index=True)
+
+                        # ADJUST TABLE OF FACTORS CONTRIBUTIONS
+                        ## Remove previous factor contribution
+                        factor_contribution_data_df = factor_contribution_data_df[factor_contribution_data_df['factor_code'] != factor]
+                        ## Add new factor contribution
+                        factor_contribution_df = pd.concat([factor_contribution_data_df,plant_factor_contribution_df], ignore_index=True)
+
                         self.stats['completed'] += 1
                     else:
                         print(f"Warning: {factor} is not a valid factor contribution.")
                         self.stats['errors'] += 1
 
-                    # ADJUST TABLE OF FACTORS CONTRIBUTIONS
-                    ## Remove previous factor contribution
-                    factor_contribution_data_df = factor_contribution_data_df[factor_contribution_data_df['factor_code'] != '{factor}']
-                    ## Add new factor contribution
-                    factor_contribution_df = pd.concat([factor_contribution_data_df,plant_factor_contribution_df], ignore_index=True)
-
                 except Exception as e:
                     print(f"❌ Error in factor calculation: {str(e)}")
                     raise  # stop entire batch on failure
+
 
             # CALCULATE STATUS
             try:
