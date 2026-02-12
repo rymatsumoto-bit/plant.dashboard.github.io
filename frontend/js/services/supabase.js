@@ -292,15 +292,15 @@ export async function getActivityTypes() {
 
 
 // ============================================
-// ALERTS QUERIES
+// SCHEDULE QUERIES
 // ============================================
 
 /**
- * Get active alerts
+ * Get active schedule items
  */
-export async function getAlertsActive() {
+export async function getScheduleActive() {
     const { data, error } = await supabase
-        .from('alerts_active_view')
+        .from('schedule_view')
         .select('*');
     
     if (error) throw error;

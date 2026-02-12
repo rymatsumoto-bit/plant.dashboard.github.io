@@ -3,11 +3,11 @@
 // ============================================
 
 import { getDataMetrics } from '../services/data-metrics.js';
-import { getAlertsActive } from '../services/supabase.js';
+import { getScheduleActive } from '../services/supabase.js';
 import { logError } from '../utils.js';
 
 let dataMetrics = [];
-let dataAlerts = [];
+let dataSchedule = [];
 
 /**
  * Initialize dashboard view
@@ -16,14 +16,14 @@ export async function initializeDashboard() {
     try {
         
         dataMetrics = await getDataMetrics();
-        dataAlerts = await getAlertsActive();
+        dataSchedule = await getScheduleActive();
         console.log('Dashboard view initialized');
         
         // Load dashboard data
         loadKPIs();
         
-        // Load list of alerts
-        loadAlertsList();
+        // Load list of schedule items
+        loadScheduleList();
 
     } catch (error) {
         logError(error, 'initializing Dashboard view');
@@ -40,57 +40,57 @@ function loadKPIs() {
     // Get KPIs
     document.getElementById('kpi-plant-count').textContent = dataMetrics.plant_active_total_count;
     document.getElementById('kpi-plant-healthy-perc').textContent = `${dataMetrics.plant_healthy_percentage}%`;
-    document.getElementById('kpi-alerts-count').textContent = dataMetrics.alert_total_count;
+    document.getElementById('kpi-schedule-count').textContent = dataMetrics.schedule_total_count;
 
     console.log('Loading dashboard data...');
 }
 
 /**
- * Render Alerts List
+ * Render Schedule List
  */
-function loadAlertsList() {
-    const alertsList = document.getElementById('dashboard-alerts-list');
+function loadScheduleList() {
+    const scheduleList = document.getElementById('dashboard-schedule-list');
 
-    if (!alertsList) {
-        alertsList.warn('dashboard-alert-list element not found');
+    if (!scheduleList) {
+        scheduleList.warn('dashboard-schedule-list element not found');
         return;
     }
 
-    if (dataAlerts.length === 0) {
-        alertsList.innerHTML = '<div class="empty-state">NO ALERTS</div>';
+    if (dataSchedule.length === 0) {
+        scheduleList.innerHTML = '<div class="empty-state">NO ITEMS</div>';
         return;
     }
 
-    alertsList.innerHTML = dataAlerts.map((data) => `
-        <div data-alert-id="${data.alert_id}" class="dash-alert-item">
-            <div class="dash-alert-plant">
-                <div class="dash-alert-plant-icon" severity="${data.alert_severity}"></div>
-                <div class="dash-alert-plant-info">
+    scheduleList.innerHTML = dataSchedule.map((data) => `
+        <div data-schedule-id="${data.schedule_id}" class="dash-schedule-item">
+            <div class="dash-schedule-plant">
+                <div class="dash-schedule-plant-icon" severity="${data.schedule_severity}"></div>
+                <div class="dash-schedule-plant-info">
                     <div class="name">${data.plant_name}</div>
-                    <div class="date">${data.target_date}</div>
+                    <div class="date">${data.schedule_date}</div>
                 </div>
             </div>
-            <div class="dash-alert-badge" alert-label="${data.alert_label}">${data.alert_label}</div>
+            <div class="dash-schedule-badge" schedule-label="${data.schedule_label}">${data.schedule_label}</div>
         </div>
     `).join('');
 
-    attachAlertsListListeners();
+    attachScheduleListListeners();
 
 }
 
 
 /**
- * Setup event listeners for Alerts List
+ * Setup event listeners for Schedule List
  */
-function attachAlertsListListeners() {
-    const alertItem = document.querySelectorAll('.dash-alert-item');
-    alertItem.forEach(item => {
+function attachScheduleListListeners() {
+    const scheduleItem = document.querySelectorAll('.dash-schedule-item');
+    scheduleItem.forEach(item => {
         item.addEventListener('click', (e) => {
-            const row = e.target.closest('.dash-alert-item');
+            const row = e.target.closest('.dash-schedule-item');
             if (!row) return;
-            const alertId = row.dataset.alertId
-            console.log(alertId);
-        // FUNCTION THAT WILL BE TRIGGERED WHEN CLICKING ON AN ALERT
+            const scheduleId = row.dataset.scheduleId
+            console.log(scheduleId);
+        // FUNCTION THAT WILL BE TRIGGERED WHEN CLICKING ON AN SCHEDULE ITEM
         })
     });
     console.log('Dashboard event listeners ready');

@@ -44,6 +44,7 @@ def run(plant_factor_df, run_id):
     print(f"  ✅ Step 01")
 
     # Step 02: Calculate days
+    plant_factor_df['factor_date'] = pd.to_datetime(plant_factor_df['factor_date'])
     plant_factor_df['days_overdue'] = (today - plant_factor_df['factor_date']).dt.days
     print(f"  ✅ Step 02")
 
@@ -64,7 +65,7 @@ def run(plant_factor_df, run_id):
     ]
     severity = [0,0,1,2,3]
     print(f"  ✅ Step 03")
-
+    
     # Step 04: Assign severity
     plant_factor_df['severity'] = np.select(severity_conditions,severity,default=0)
     print(f"  ✅ Step 04")
@@ -73,7 +74,7 @@ def run(plant_factor_df, run_id):
     ## Keep only needed data
     keep_cols = ['plant_factor_id', 'plant_id', 'factor_code', 'severity']
     plant_factor_df = plant_factor_df[keep_cols]
-    plant_factor_df['plant_factor_contribution_id'] = [uuid.uuid4() for _ in range(len(plant_factor_df))]
+    plant_factor_df['plant_factor_contribution_id'] = [str(uuid.uuid4()) for _ in range(len(plant_factor_df))]
     ## Replace NaT/NaN with None so Supabase receives a SQL NULL
     plant_factor_contribution_df = plant_factor_df.where(pd.notnull(plant_factor_df), None)
     print(f"  ✅ Step 05")
