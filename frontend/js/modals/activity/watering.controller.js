@@ -29,6 +29,8 @@ export async function openNewWateringModal() {
                     quantifier: data.quantifier || null
                 };
 
+                console.log('Activity data to save:', activityData);
+
                 // STEP 1: Save activity to Supabase first
                 await addPlantActivity(activityData);
                 

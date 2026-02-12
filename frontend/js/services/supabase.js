@@ -322,7 +322,7 @@ export async function addPlantActivity(activityData) {
         .from('plant_activity_history')
         .insert([{
             plant_id: activityData.plant_id,
-            activity_type_code: activityData.activity_type,
+            activity_type_code: activityData.activity_type_code,
             activity_date: activityData.activity_date,
             quantifier: activityData.quantifier || null,
             unit: activityData.unit || null,

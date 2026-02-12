@@ -58,8 +58,6 @@ async def log_activity(activity: PlantActivity):
     Triggers factor calculations, status updates, and schedule management
     """
     try:
-        print(f"Received activity: {activity.dict()}")
-        
         # Create NewActivity instance and run the orchestrator
         new_activity = NewActivity()
         stats = new_activity.run(

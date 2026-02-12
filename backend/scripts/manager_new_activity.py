@@ -110,7 +110,7 @@ class NewActivity:
                 print(f"Warning: No factors defined for activity type '{activity_type_code}'")
                 self.stats['errors'] += 1
                 return self.stats
-        
+            print(f"Received activity: {activity_data_df}")
             # CALCULATE FACTOR and CONTRIBUTION for EACH COMPONENT
             for factor in factors_to_calculate:
                 try:
