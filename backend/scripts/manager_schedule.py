@@ -65,14 +65,14 @@ def create_schedule(plant_factor_df, factor_lookup_df, today_date, run_id):
 
     # Step 04: Create data to upload
     ## Get calculated values
-    keep_cols = ['plant_factor_id','plant_id','factor_code''factor_date','factor_category','schedule_severity']
+    keep_cols = ['plant_factor_id','plant_id','factor_code','factor_date','factor_category','schedule_severity']
     rename_map = {
         'factor_category': 'schedule_label',
         'factor_date': 'schedule_date'
         }
     schedule_df = schedule_df[keep_cols].rename(columns=rename_map)
     ## Create factor id
-    schedule_df['schedule_id'] = [uuid.uuid4() for _ in range(len(schedule_df))]
+    schedule_df['schedule_id'] = [str(uuid.uuid4()) for _ in range(len(schedule_df))]
     ## Replace NaT/NaN with None so Supabase receives a SQL NULL
     schedule_df = schedule_df.where(pd.notnull(schedule_df), None)
     print(f"  ✅ Step 04")

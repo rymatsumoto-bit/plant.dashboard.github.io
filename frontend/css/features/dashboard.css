@@ -1,7 +1,7 @@
 /* Dashboard Content */
 
-/* Dashboard Alerts List Container */
-#dashboard-alerts-list {
+/* Dashboard Schedule List Container */
+#dashboard-schedule-list {
     max-height: 450px; /* Adjust based on card height minus padding */
     overflow-y: auto;
     overflow-x: hidden;
@@ -9,20 +9,20 @@
 }
 
 /* Optional: Style the scrollbar */
-#dashboard-alerts-list::-webkit-scrollbar {
+#dashboard-schedule-list::-webkit-scrollbar {
     width: 8px;
 }
 
-#dashboard-alerts-list::-webkit-scrollbar-track {
+#dashboard-schedule-list::-webkit-scrollbar-track {
     background: var(--bg-primary);
     border-radius: var(--radius-sm);
 }
 
-#dashboard-alerts-list::-webkit-scrollbar-thumb {
+#dashboard-schedule-list::-webkit-scrollbar-thumb {
     background: var(--bg-secondary);
     border-radius: var(--radius-sm);
 }
 
-#dashboard-alerts-list::-webkit-scrollbar-thumb:hover {
+#dashboard-schedule-list::-webkit-scrollbar-thumb:hover {
     background: var(--sage-mist);
 }

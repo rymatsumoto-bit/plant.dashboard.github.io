@@ -9,7 +9,7 @@ from datetime import datetime, date
 from typing import List, Dict, Optional, Tuple
 import uuid
 import pandas as pd
-import numpy as np
+import json
 from utils.supabase_client import get_client
 from scripts.factors import registry as factor_registry
 from scripts.factors_contribution import registry as factor_contribution_registry
@@ -31,7 +31,7 @@ class NewActivity:
     def __init__(self):
 
         self.supabase = get_client()
-        self.batch_id = uuid.uuid4()
+        self.batch_id = str(uuid.uuid4())
         self.batch_timestamp = datetime.now()
         # Batch stats tracking
         self.stats= {
@@ -57,7 +57,7 @@ class NewActivity:
         print(f"{'='*60}\n")
         
         # Create factor data
-        cols = ['plant_id','factor_code','factor_date','factor_float','confidence_score','start_date','end_date']
+        cols = ['plant_id','factor_code','factor_date','factor_float','confidence_score']
         plant_factor_df = pd.DataFrame(columns=cols)
 
         # Create factor contribution data
@@ -66,15 +66,29 @@ class NewActivity:
 
         try:
             # GET PLANT DETAIL
-            plant_data_df = (self.supabase
+            plant_data = (self.supabase
                 .table('plant')
                 .select('plant_id, plant_type_id, habitat_id, acquisition_date, user_timezone')
                 .eq('plant_id',plant_id)
                 .eq('is_active',True)
                 .execute())
+            plant_data_df = pd.DataFrame(plant_data.data)
+            plant_data_df['acquisition_date'] = pd.to_datetime(plant_data_df['acquisition_date'])
+
+            # GET PLANT TYPE
+            plant_type = (self.supabase
+                .table('plant_type_lookup')
+                .select('plant_type_id, watering_interval_days')
+                .eq('is_active',True)
+                .execute())
+            plant_type_df = pd.DataFrame(plant_type.data)
+            plant_type_df['watering_interval_days'] = pd.to_numeric(plant_type_df['watering_interval_days'])
+
+            # MERGE PLANT TYPE DATA INTO PLANT DETAIL
+            plant_data_df = plant_data_df.merge(plant_type_df, on='plant_type_id', how='left')
 
             # GET ACTIVITY
-            activity_data_df = (self.supabase
+            activity_data = (self.supabase
                 .table('plant_activity_history')
                 .select('plant_id, activity_date, quantifier')
                 .eq('plant_id',plant_id)
@@ -82,20 +96,27 @@ class NewActivity:
                 .order('plant_id', desc=False)
                 .order('activity_date', desc=False)
                 .execute())
+            activity_data_df = pd.DataFrame(activity_data.data)
+            activity_data_df['activity_date'] = pd.to_datetime(activity_data_df['activity_date'])
+            activity_data_df['quantifier'] = pd.to_numeric(activity_data_df['quantifier'], errors='coerce')
 
             # GET ALL CURRENT FACTOR CONTRIBUTIONS (for status calculations)
-            factor_contribution_data_df = (self.supabase
+            factor_contribution_data = (self.supabase
                 .table('plant_factor_contribution_active')
                 .select('plant_id, factor_code, severity')
                 .eq('plant_id',plant_id)
                 .execute())
+            factor_contribution_data_df = pd.DataFrame(factor_contribution_data.data)
+            factor_contribution_data_df['severity'] = pd.to_numeric(factor_contribution_data_df['severity'], errors='coerce')
             
             # GET CURRENT FACTOR CONTRIBUTION WEIGHT (for status calculations)
-            factor_lookup_df = (self.supabase
+            factor_lookup = (self.supabase
                 .table('factor_lookup')
-                .select('factor_code, weight')
+                .select('factor_code, factor_category, weight')
                 .eq('is_active',True)
                 .execute())
+            factor_lookup_df = pd.DataFrame(factor_lookup.data)
+            factor_lookup_df['weight'] = pd.to_numeric(factor_lookup_df['weight'], errors='coerce')
 
             # Define the list of factors to be called
             list_factors_calculation = {
@@ -110,7 +131,7 @@ class NewActivity:
                 print(f"Warning: No factors defined for activity type '{activity_type_code}'")
                 self.stats['errors'] += 1
                 return self.stats
-            print(f"Received activity: {activity_data_df}")
+            
             # CALCULATE FACTOR and CONTRIBUTION for EACH COMPONENT
             for factor in factors_to_calculate:
                 try:
@@ -134,8 +155,7 @@ class NewActivity:
                         print(f"Calculating {factor} contribution.")
                         plant_single_factor_contribution_df = factor_contribution_registry[factor].run(
                             plant_factor_df,
-                            run_id=self.batch_id,
-                            supabase=self.supabase
+                            run_id=self.batch_id
                         )
                         plant_factor_contribution_df = pd.concat([plant_factor_contribution_df,plant_single_factor_contribution_df], ignore_index=True)
 
@@ -161,8 +181,7 @@ class NewActivity:
                 plant_status_df = manager_plant_status.run(
                     factor_contribution_df,
                     factor_lookup_df,
-                    run_id=self.batch_id,
-                    supabase=self.supabase
+                    run_id=self.batch_id
                 )
                 self.stats['completed'] += 1
             except Exception as e:
@@ -184,26 +203,33 @@ class NewActivity:
                 raise  # stop entire batch on failure
 
 
+            # PREPARE DATA TO UPLOAD
+            self.batch_timestamp = self.batch_timestamp.isoformat()
+            plant_factor_df = json.loads(plant_factor_df.to_json(orient="records", date_format="iso"))
+            plant_factor_contribution_df = json.loads(plant_factor_contribution_df.to_json(orient="records", date_format="iso"))
+            plant_status_df = json.loads(plant_status_df.to_json(orient="records", date_format="iso"))
+            schedule_df = json.loads(schedule_df.to_json(orient="records", date_format="iso"))
+
             # EXECUTE IN SUPAPBASE
             response = self.supabase.rpc(
                 "run_new_activity",
                 {
                     "p_batch_id": self.batch_id,
                     "p_batch_timestamp": self.batch_timestamp,
-                    "p_plant_factor": plant_factor_df.to_dict("records"),
-                    "p_plant_factor_contribution": plant_factor_contribution_df.to_dict("records"),
-                    "p_plant_status": plant_status_df.to_dict("records"),
-                    "p_schedule": schedule_df.to_dict("records")
+                    "p_plant_factor": plant_factor_df,
+                    "p_plant_factor_contribution": plant_factor_contribution_df,
+                    "p_plant_status": plant_status_df,
+                    "p_schedule": schedule_df
                 }
             ).execute()
                     
         except Exception as e:
-            print(f"\n❌ Fatal error in daily batch: {str(e)}")
+            print(f"\n❌ Fatal error in new activity: {str(e)}")
             self.stats["errors"] += 1
             
         # Print summary
         print(f"\n{'='*60}")
-        print(f"DAILY BATCH COMPLETED")
+        print(f"NEW ACTIVITY COMPLETED")
         print(f"Stats: {self.stats}")
         print(f"{'='*60}\n")
         

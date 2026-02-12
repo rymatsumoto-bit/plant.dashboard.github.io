@@ -1,11 +1,11 @@
 /**
- * ALERTS
- * css for alert related elements
+ * SCHEDULE
+ * css for schedule related elements
  */
 
 
 /* Dashboard List Components */
-.dash-alert-item {
+.dash-schedule-item {
     display: inline-flex;
     padding: 15px;
     background: var(--bg-primary);
@@ -16,44 +16,44 @@
     transition: all var(--transition-fast);
 }
 
-.dash-alert-item:hover {
+.dash-schedule-item:hover {
     transform: translateY(1px);
     box-shadow: 0 8px 20px rgba(216, 216, 216, 0.50);
 }
 
-.dash-alert-plant {
+.dash-schedule-plant {
     display: flex;
     align-items: center;
     gap: 12px;
 }
 
-.dash-alert-plant-icon {
+.dash-schedule-plant-icon {
     width: 30px;
     height: 30px;
     border-radius: 50%;
 }
 
-.dash-alert-plant-icon[severity="LOW"] {
+.dash-schedule-plant-icon[severity="0"] {
     background: var(--success-accent);
 }
-.dash-alert-plant-icon[severity="MEDIUM"] {
+.dash-schedule-plant-icon[severity="1"] {
     background: var(--warning-accent);
 }
-.dash-alert-plant-icon[severity="HIGH"] {
+.dash-schedule-plant-icon[severity="2"] {
     background: var(--danger-accent);
 }
 
-.dash-alert-plant-info .name {
+.dash-schedule-plant-info .name {
     font-weight: 500;
     font-size: 14px;
 }
 
-.dash-alert-plant-info .date {
+.dash-schedule-plant-info .date {
     font-size: 12px;
     color: #666;
 }
 
-.dash-alert-badge {
+.dash-schedule-badge {
     color: white;
     padding: 6px 14px;
     border-radius: 20px;
@@ -61,6 +61,6 @@
     font-weight: 500;
 }
 
-.dash-alert-badge[alert-label="WATERING"] {
+.dash-schedule-badge[schedule-label="WATERING"] {
     background: #47bbff;
 }

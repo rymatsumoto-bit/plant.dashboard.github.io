@@ -49,7 +49,6 @@ def run(plants_data_df, activity_data_df, run_id):
     """
 
     # Step 01: calculate days between each watering per plant
-    print(f"Received activity data: {activity_data_df}")
     
     activity_history_df = activity_data_df.sort_values(['plant_id', 'activity_date'])
     activity_history_df['days_since_last'] = activity_history_df.groupby('plant_id')['activity_date'].diff().dt.days
@@ -112,10 +111,11 @@ def run(plants_data_df, activity_data_df, run_id):
     ### Converts plant_id UUID as string
     ### Use %Y-%m-%d for 'DATE' columns (removes the time component)
     plant_factor_df['factor_date'] = plant_factor_df['factor_date'].dt.strftime('%Y-%m-%d')
+    plant_factor_df['factor_date'] = pd.to_datetime(plant_factor_df['factor_date'])
     ## Add factor code
     plant_factor_df['factor_code'] = 'watering_due'
     ## Create factor id
-    plant_factor_df['plant_factor_id'] = [uuid.uuid4() for _ in range(len(plant_factor_df))]
+    plant_factor_df['plant_factor_id'] = [str(uuid.uuid4()) for _ in range(len(plant_factor_df))]
     ## Replace NaT/NaN with None so Supabase receives a SQL NULL
     plant_factor_df = plant_factor_df.where(pd.notnull(plant_factor_df), None)
     print(f"  ✅ Step 06")

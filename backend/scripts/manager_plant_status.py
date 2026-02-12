@@ -28,18 +28,37 @@ def run(factor_contribution_df, status_factor_contribution_map_df, run_id):
         plant_status_df
             - plant_status_id: str        
             - plant_id: str
-            - plant_status_code: str
+            - plant_status_code: int
     """
 
     # Step 01: join tables and calculate the weighted average
-    plant_status_df = (factor_contribution_df.merge(status_factor_contribution_map_df, on='factor_code', how='left')
-                .assign(weighted_sev = lambda x: x['severity'] * x['weight'])
-                .groupby('plant_id')['weighted_sev']
-                .sum()
-                .reset_index())
+    plant_status_df = factor_contribution_df.merge(status_factor_contribution_map_df, on='factor_code', how='left')
     print(f"  ✅ Step 01")
     
-    ## Add status id
-    plant_status_df['plant_status_id'] = [uuid.uuid4() for _ in range(len(plant_status_df))]
+    # Step 02: Custom function to handle weights per group
+    def w_avg(group, values, weights):
+        d = group[values]
+        w = group[weights]
+        if w.sum() == 0:
+            return 0
+        return (d * w).sum() / w.sum()
+    print(f"  ✅ Step 02")
+
+    # Step 03: calculates weighted averages
+    weighted_series = plant_status_df.groupby('plant_id').apply(w_avg, 'severity', 'weight')
+    print(f"  ✅ Step 03")
+
+    # Step 04: Convert Series to DataFrame and name the column
+    # We name it 'weighted_sev' temporarily to process it
+    plant_status_df = weighted_series.reset_index(name='status_code')    
+    print(f"  ✅ Step 04")
+
+    # Step 05: Create 'severity' as a rounded integer
+    plant_status_df['status_code'] = plant_status_df['status_code'].round(0).astype(int)
+    print(f"  ✅ Step 05")
+
+    ## Step 06: Add status id
+    plant_status_df['plant_status_id'] = [str(uuid.uuid4()) for _ in range(len(plant_status_df))]
+    print(f"  ✅ Step 05")
     
     return plant_status_df
