@@ -5,6 +5,7 @@
 import { openModal, populateDropdown } from '../prompt-modal.js';
 import { getActivePlants, addPlantActivity } from '../../services/supabase.js';
 import { showNotification } from '../../utils.js';
+import { getCurrentUserId } from '../../services/supabase.js';
 import { getApiUrl, API_CONFIG } from '../../services/api.js';
 
 export async function openNewWateringModal() {
@@ -20,19 +21,23 @@ export async function openNewWateringModal() {
         ],
         onSubmit: async (data, modal) => {
             try {
+                const user_id = await getCurrentUserId()
                 // Prepare activity data
                 const activityData = {
                     plant_id: data.plant_id,
                     activity_type_code: 'watering',
                     activity_date: data.activity_date,
+                    quantifier: data.quantifier,
+                    unit: '%',
+                    result: data.result || null,
                     notes: data.notes || null,
-                    quantifier: data.quantifier || null
+                    user_id: user_id
                 };
 
                 console.log('Activity data to save:', activityData);
 
                 // STEP 1: Save activity to Supabase first
-                await addPlantActivity(activityData);
+                // await addPlantActivity(activityData);
                 
                 // STEP 2: Call Python backend to trigger calculations
                 const response = await fetch(getApiUrl(API_CONFIG.ENDPOINTS.NEW_ACTIVITY), {

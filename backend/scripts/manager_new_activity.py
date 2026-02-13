@@ -41,7 +41,7 @@ class NewActivity:
         }
 
 
-    def run(self, plant_id, activity_type_code):
+    def run(self, activityData):
         """
         Main entry point
         Returns:
@@ -56,6 +56,19 @@ class NewActivity:
         print(f"Start Time: {self.batch_timestamp}")
         print(f"{'='*60}\n")
         
+        # Create new activity data
+        new_activity_df = pd.DataFrame([{
+            "plant_id": activityData.plant_id,
+            "activity_type_code": activityData.activity_type_code,
+            "activity_date": activityData.activity_date,
+            "quantifier": activityData.quantifier,
+            "unit": activityData.unit,
+            "notes": activityData.notes,
+            "result": activityData.result
+        }])
+
+        user_id = activityData.user_id
+
         # Create factor data
         cols = ['plant_id','factor_code','factor_date','factor_float','confidence_score','start_date','end_date']
         plant_factor_df = pd.DataFrame(columns=cols)
@@ -63,6 +76,10 @@ class NewActivity:
         # Create factor contribution data
         cols = ['plant_id','plant_factor_id','factor_code','severity']
         plant_factor_contribution_df = pd.DataFrame(columns=cols)
+
+        # Get variables
+        plant_id = activityData.plant_id
+        activity_type_code = activityData.activity_type_code
 
         try:
             # GET PLANT DETAIL
@@ -74,7 +91,7 @@ class NewActivity:
                 .execute())
 
             # GET ACTIVITY
-            activity_data_df = (self.supabase
+            activity_response = (self.supabase
                 .table('plant_activity_history')
                 .select('plant_id, activity_date, quantifier')
                 .eq('plant_id',plant_id)
@@ -82,7 +99,10 @@ class NewActivity:
                 .order('plant_id', desc=False)
                 .order('activity_date', desc=False)
                 .execute())
-
+            activity_response_df = pd.DataFrame(activity_response.data)
+            ## Append new activity
+            activity_data_df = pd.concat([new_activity_df, activity_response_df], join='inner', ignore_index=True)
+            
             # GET ALL CURRENT FACTOR CONTRIBUTIONS (for status calculations)
             factor_contribution_data_df = (self.supabase
                 .table('plant_factor_contribution_active')
@@ -190,6 +210,8 @@ class NewActivity:
                 {
                     "p_batch_id": self.batch_id,
                     "p_batch_timestamp": self.batch_timestamp,
+                    "p_user_id": user_id,
+                    "p_new_activity": new_activity_df.to_dict("records"),
                     "p_plant_factor": plant_factor_df.to_dict("records"),
                     "p_plant_factor_contribution": plant_factor_contribution_df.to_dict("records"),
                     "p_plant_status": plant_status_df.to_dict("records"),
@@ -198,25 +220,16 @@ class NewActivity:
             ).execute()
                     
         except Exception as e:
-            print(f"\n❌ Fatal error in daily batch: {str(e)}")
+            print(f"\n❌ Fatal error in new activity: {str(e)}")
             self.stats["errors"] += 1
             
         # Print summary
         print(f"\n{'='*60}")
-        print(f"DAILY BATCH COMPLETED")
+        print(f"NEW ACTIVITY COMPLETED")
         print(f"Stats: {self.stats}")
         print(f"{'='*60}\n")
         
         return self.stats
-
-
-
-
-
-
-
-
-
 
 
 

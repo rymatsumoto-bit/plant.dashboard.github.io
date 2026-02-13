@@ -37,10 +37,13 @@ app.add_middleware(
 class PlantActivity(BaseModel):
     plant_id: str
     activity_type_code: str  # "watering", "fertilizing", etc.
-    activity_date: Optional[str] = None
-    notes: Optional[str] = None
+    activity_date: str
     quantifier: Optional[float] = None
-
+    unit: Optional[str] = None
+    notes: Optional[str] = None
+    result: Optional[str] = None
+    user_id: str
+    
 # ============================================
 # ENDPOINTS
 # ============================================
@@ -52,7 +55,7 @@ def root():
 
 # NEW: Plant activity endpoint (watering, fertilizing, etc.)
 @app.post("/api/new-activity")
-async def log_activity(activity: PlantActivity):
+async def new_activity(activityData: PlantActivity):
     """
     Logs a new activity (watering, fertilizing, etc.) for a plant
     Triggers factor calculations, status updates, and schedule management
@@ -60,17 +63,14 @@ async def log_activity(activity: PlantActivity):
     try:
         # Create NewActivity instance and run the orchestrator
         new_activity = NewActivity()
-        stats = new_activity.run(
-            plant_id=activity.plant_id,
-            activity_type_code=activity.activity_type_code
-        )
+        stats = new_activity.run(activityData = activityData)
         
         return {
             "status": "success",
-            "message": f"{activity.activity_type_code.capitalize()} activity logged and processed successfully",
+            "message": f"{activityData.activity_type_code.capitalize()} activity logged and processed successfully",
             "logged_at": datetime.now().isoformat(),
             "stats": stats,
-            "data": activity.dict()
+            "data": activityData.dict()
         }
         
     except Exception as e:
