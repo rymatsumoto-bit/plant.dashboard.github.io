@@ -13,7 +13,8 @@ load_dotenv()
 # Supabase Configuration
 # Replace these with your actual credentials
 SUPABASE_URL = os.getenv("SUPABASE_URL")
-SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_KEY")
+SUPABASE_KEY = os.getenv("SUPABASE_KEY")
+SUPABASE_SERVICE_KEY = os.getenv("SUPABASE_SERVICE_KEY")
 
 def get_client() -> Client:
     """
@@ -37,7 +38,7 @@ def get_client() -> Client:
         )
     
     try:
-        supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
+        supabase = create_client(SUPABASE_URL, SUPABASE_SERVICE_KEY)
         print(f"✓ Supabase client created successfully!")
         return supabase
     except Exception as e:
