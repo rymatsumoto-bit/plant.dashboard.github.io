@@ -13,7 +13,6 @@ load_dotenv()
 # Supabase Configuration
 # Replace these with your actual credentials
 SUPABASE_URL = os.getenv("SUPABASE_URL")
-SUPABASE_KEY = os.getenv("SUPABASE_KEY")
 SUPABASE_SERVICE_KEY = os.getenv("SUPABASE_SERVICE_KEY")
 
 def get_client() -> Client:
@@ -30,11 +29,11 @@ def get_client() -> Client:
         response = supabase.table("plants").select("*").execute()
     """
 
-    if not SUPABASE_URL or not SUPABASE_KEY:
+    if not SUPABASE_URL or not SUPABASE_SERVICE_KEY:
         raise ValueError(
             f"Missing Supabase credentials. "
             f"SUPABASE_URL: {'✓' if SUPABASE_URL else '✗'}, "
-            f"SUPABASE_SERVICE_KEY: {'✓' if SUPABASE_KEY else '✗'}"
+            f"SUPABASE_SERVICE_KEY: {'✓' if SUPABASE_SERVICE_KEY else '✗'}"
         )
     
     try:
