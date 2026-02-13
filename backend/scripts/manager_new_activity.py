@@ -113,6 +113,10 @@ class NewActivity:
                 .order('plant_id', desc=False)
                 .order('activity_date', desc=False)
                 .execute())
+            activity_data_df = pd.DataFrame(activity_data_df.data)
+            ## Add new activity
+            activity_data_df = pd.concat([new_activity_df, activity_data_df], join='inner', ignore_index=True)
+            activity_data_df['activity_date'] = pd.to_datetime(activity_data_df['activity_date'])
 
             # GET ALL CURRENT FACTOR CONTRIBUTIONS (for status calculations)
             factor_contribution_data = (self.supabase
@@ -219,6 +223,7 @@ class NewActivity:
 
             # PREPARE DATA TO UPLOAD
             self.batch_timestamp = self.batch_timestamp.isoformat()
+            new_activity_df = json.loads(new_activity_df.to_json(orient="records", date_format="iso")) 
             plant_factor_df = json.loads(plant_factor_df.to_json(orient="records", date_format="iso"))
             plant_factor_contribution_df = json.loads(plant_factor_contribution_df.to_json(orient="records", date_format="iso"))
             plant_status_df = json.loads(plant_status_df.to_json(orient="records", date_format="iso"))
@@ -230,10 +235,12 @@ class NewActivity:
                 {
                     "p_batch_id": self.batch_id,
                     "p_batch_timestamp": self.batch_timestamp,
-                    "p_plant_factor": plant_factor_df.to_dict("records"),
-                    "p_plant_factor_contribution": plant_factor_contribution_df.to_dict("records"),
-                    "p_plant_status": plant_status_df.to_dict("records"),
-                    "p_schedule": schedule_df.to_dict("records")
+                    "p_user_id": user_id,
+                    "p_new_activity": new_activity_df,
+                    "p_plant_factor": plant_factor_df,
+                    "p_plant_factor_contribution": plant_factor_contribution_df,
+                    "p_plant_status": plant_status_df,
+                    "p_schedule": schedule_df
                 }
             ).execute()
                     
