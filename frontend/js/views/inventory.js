@@ -57,7 +57,7 @@ function loadPlantInventory() {
     // Get KPIs
     document.getElementById('kpi-plant-count').textContent = dataMetrics.plant_active_total_count;
     document.getElementById('kpi-plant-healthy-perc').textContent = `${dataMetrics.plant_healthy_percentage}%`;
-    document.getElementById('kpi-alerts-count').textContent = dataMetrics.alert_total_count;
+    document.getElementById('kpi-schedule-count').textContent = dataMetrics.alert_total_count;
 
     plantList.innerHTML = plants.map((plant, index) => `
         <div class="table-row" data-plant-id="${plant.plant_id}">
