@@ -236,10 +236,15 @@ plant-care-dashboard/
 │   ├── data/                           # Local data
 │   │   └── cache/                      # Temp local data
 │   │
-│   ├── scripts/                        # Local data
-│   │   ├── status_calculation.py       # Driver of calculation of plant status
-│   │   ├── factor_watering.py          # Calculation of watering factors to status
-│   │   └── alert_management.py         # Alert management (creation, updates)
+│   ├── scripts/                       # python codes
+│   │   ├── factors/                   # calculations for each factor
+│   │   │   └── watering_due.py        # factor calculation for a watering due date
+│   │   ├── factors_contribution/      # factor contribution for the overall plant status
+│   │   │   └── watering_due.py        # 
+│   │   ├── manager_plant_factor_contribution.py   # Driver of calculation of factor contribution for plant status
+│   │   ├── manager_plant_factor.py                # Driver of calculation of each factor
+│   │   ├── manager_plant_status.py                # Driver of calculation of plant status
+│   │   └── manager_schedule.py                    # Driver to manage schedule items
 │   │
 │   └── utils/                          # Utility codes
 │       ├── supabase_client.py          # Supabase connection logic
@@ -290,7 +295,8 @@ plant-care-dashboard/
 6. **Data Input Architecture:** Web forms write directly to Supabase for user-facing inputs (plant profiles, care logging, alert actions). Python backend reads from Supabase for forecasting and alert generation, creating a clean separation between user interaction and intelligence layer.
 7. **User Settings Storage:** Currently using browser localStorage for single-user simplicity. Future multi-user implementation will migrate to Supabase-based user preferences table with authentication. Timezone context stored with activities (`user_timezone` field) to support accurate forecasting and weather data alignment.
 8. **Plant Lifecycle & Historical Data:** Plants can have complex lifecycles (given away, returned). System maintains complete historical chain via `previous_plant_id` linkage. User controls whether forecasting algorithms use full historical data or only current ownership period. Plant-habitat movements tracked over time to enable accurate environmental analysis of historical care activities.
-9. **Status & Alert Architecture:** Plant status calculated daily via Python based on configurable factors (stored in lookup table for flexibility). Each factor contributes to severity score. Alert system supports both calculated alerts (from forecasting/monitoring) and user-created reminders. Alerts track user actions (done/dismiss) and include suppression logic to prevent immediate regeneration. User reminders integrated with calculated alerts to avoid duplication.
+9. **Status Architecture:** Plant status calculated daily via Python based on configurable factors (stored in lookup table for flexibility). Each factor contributes to severity score. An new event might trigger the recalculation (or not) of factors, factor contribution, and status.
+10. **Schedule Architecture:** Each new activity might trigger the creation of a new schedule item or not.
 
 ---
 

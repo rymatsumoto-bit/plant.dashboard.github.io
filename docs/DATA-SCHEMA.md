@@ -46,8 +46,8 @@
 | --- | --- | --- | --- |
 | batch_id | uuid | NO | gen_random_uuid() |
 | batch_type | text | NO |  |
-| created_at | timestamp with time zone | NO | now() |
-| ended_at | timestamp with time zone | YES |  |
+| created_at | timestamp with time zone | NO |  |
+| ended_at | timestamp with time zone | YES | now() |
 | user_id | uuid | YES | auth.uid() |
 
 ### Primary Key
@@ -70,6 +70,26 @@
 - direction_code
 
 ### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| ## factor_lookup
+
+### Columns
+| Column | Type | Nullable | Default |
+| --- | --- | --- | --- |
+| factor_code | text | NO |  |
+| factor_name | text | NO |  |
+| factor_category | text | NO |  |
+| weight | numeric | YES | 1.0 |
+| thresholds | jsonb | YES |  |
+| description | text | YES |  |
+| user_message_template | text | YES |  |
+| is_active | boolean | NO | true |
+| created_at | timestamp with time zone | NO | now() |
+| modified_at | timestamp with time zone | NO | now() |
+
+### Primary Key
+- factor_code
+
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | ## habitat
 
 ### Columns
@@ -339,10 +359,10 @@
 | activity_id | uuid | NO | gen_random_uuid() |
 | plant_id | uuid | NO |  |
 | activity_type_code | text | NO |  |
-| activity_date | date | NO | CURRENT_DATE |
-| quantifier | numeric | YES |  |
+| activity_date | date | NO |  |
+| quantifier | double precision | YES |  |
 | unit | text | YES |  |
-| details | text | YES |  |
+| notes | text | YES |  |
 | result | text | YES |  |
 | created_at | timestamp with time zone | NO | now() |
 | user_timezone | text | NO | 'America/New_York'::text |
@@ -354,7 +374,7 @@
 ### Foreign Keys
 - activity_type_code → plant_activity_type_lookup.activity_type_code
 - plant_id → plant.plant_id
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 | ## plant_activity_type_lookup
 
 ### Columns
@@ -445,14 +465,35 @@
 | plant_name | text | YES |  |
 | plant_category | text | YES |  |
 | species | text | YES |  |
+| watering_interval_days | smallint | YES |  |
 | habitat | text | YES |  |
-| status_code | text | YES |  |
+| status_code | smallint | YES |  |
 | status_label | text | YES |  |
 | severity | integer | YES |  |
 | status_icon | text | YES |  |
 
 ### Primary Key\n- (none)\n
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| ## plant_factor
+
+### Columns
+| Column | Type | Nullable | Default |
+| --- | --- | --- | --- |
+| plant_factor_id | uuid | NO | gen_random_uuid() |
+| plant_id | uuid | NO |  |
+| factor_code | text | NO |  |
+| confidence_score | real | YES |  |
+| batch_id | uuid | NO |  |
+| factor_date | date | YES |  |
+| factor_float | double precision | YES |  |
+| start_date | timestamp with time zone | NO | now() |
+| end_date | timestamp with time zone | YES |  |
+| user_id | uuid | YES | auth.uid() |
+
+### Primary Key
+- plant_factor_id
+
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | ## plant_factor_active
 
 ### Columns
@@ -471,6 +512,25 @@
 - plant_factor_id
 
 ### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| ## plant_factor_contribution
+
+### Columns
+| Column | Type | Nullable | Default |
+| --- | --- | --- | --- |
+| plant_id | uuid | NO |  |
+| factor_code | text | NO |  |
+| severity | smallint | NO |  |
+| batch_id | uuid | NO |  |
+| plant_factor_contribution_id | uuid | NO | gen_random_uuid() |
+| start_date | timestamp with time zone | NO | now() |
+| end_date | timestamp with time zone | YES |  |
+| user_id | uuid | YES | auth.uid() |
+| plant_factor_id | uuid | NO |  |
+
+### Primary Key
+- plant_factor_contribution_id
+
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | ## plant_factor_contribution_active
 
 ### Columns
@@ -535,7 +595,7 @@
 | plant_icon | text | YES |  |
 | species | text | YES |  |
 | habitat | text | YES |  |
-| status_code | text | YES |  |
+| status_code | smallint | YES |  |
 | status_label | text | YES |  |
 | status_icon | text | YES |  |
 | last_activity_code | text | YES |  |
@@ -543,7 +603,26 @@
 | last_activity_date | date | YES |  |
 
 ### Primary Key\n- (none)\n
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| ## plant_status
+
+### Columns
+| Column | Type | Nullable | Default |
+| --- | --- | --- | --- |
+| plant_status_id | uuid | NO | gen_random_uuid() |
+| plant_id | uuid | NO |  |
+| status_code | smallint | NO |  |
+| batch_id | uuid | NO |  |
+| start_date | timestamp with time zone | NO | now() |
+| end_date | timestamp with time zone | YES |  |
+| user_id | uuid | YES | auth.uid() |
+
+### Primary Key
+- plant_status_id
+
+### Foreign Keys
+- plant_id → plant.plant_id
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 | ## plant_status_active
 
 ### Columns
@@ -553,14 +632,14 @@
 | plant_id | uuid | NO |  |
 | status_code | text | NO |  |
 | batch_id | uuid | NO |  |
+| user_id | uuid | YES | auth.uid() |
 
 ### Primary Key
 - plant_status_id
 
 ### Foreign Keys
 - plant_id → plant.plant_id
-- status_code → plant_status_lookup.status_code
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | ## plant_status_history
 
 ### Columns
@@ -572,14 +651,14 @@
 | batch_id | uuid | YES |  |
 | start_date | timestamp with time zone | NO | now() |
 | end_date | timestamp with time zone | YES |  |
+| user_id | uuid | YES | auth.uid() |
 
 ### Primary Key
 - plant_status_id
 
 ### Foreign Keys
 - plant_id → plant.plant_id
-- status_code → plant_status_lookup.status_code
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | ## plant_status_history_old
 
 ### Columns
@@ -598,14 +677,13 @@
 
 ### Foreign Keys
 - plant_id → plant.plant_id
-- status_code → plant_status_lookup.status_code
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | ## plant_status_lookup
 
 ### Columns
 | Column | Type | Nullable | Default |
 | --- | --- | --- | --- |
-| status_code | text | NO |  |
+| status_code | smallint | NO |  |
 | status_label | text | NO |  |
 | severity | integer | NO |  |
 | is_active | boolean | NO | true |
@@ -616,7 +694,7 @@
 ### Primary Key
 - status_code
 
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | ## plant_status_view
 
 ### Columns
@@ -649,6 +727,27 @@
 ### Foreign Keys
 - plant_category_id → plant_category_lookup.plant_category_id
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| ## schedule
+
+### Columns
+| Column | Type | Nullable | Default |
+| --- | --- | --- | --- |
+| schedule_id | uuid | NO | gen_random_uuid() |
+| plant_id | uuid | NO |  |
+| schedule_date | date | NO |  |
+| schedule_label | text | NO |  |
+| schedule_severity | smallint | NO |  |
+| batch_id | uuid | NO |  |
+| factor_code | text | NO |  |
+| start_date | timestamp with time zone | NO |  |
+| end_date | timestamp with time zone | YES |  |
+| user_id | uuid | YES | auth.uid() |
+| plant_factor_id | uuid | NO |  |
+
+### Primary Key
+- schedule_id
+
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | ## schedule_active
 
 ### Columns
@@ -659,14 +758,15 @@
 | plant_id | uuid | NO |  |
 | schedule_date | date | NO |  |
 | schedule_status | text | NO |  |
-| schedule_severity | smallint | NO |  |
+| schedule_label | text | NO |  |
 | batch_id | uuid | NO |  |
 | user_id | uuid | YES | auth.uid() |
+| factor_code | text | NO |  |
 
 ### Primary Key
 - schedule_id
 
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | ## schedule_history
 
 ### Columns
@@ -682,11 +782,26 @@
 | user_id | uuid | YES | auth.uid() |
 | start_date | timestamp with time zone | NO | now() |
 | end_date | timestamp with time zone | YES |  |
+| factor_code | text | NO |  |
 
 ### Primary Key
 - schedule_id
 
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| ## schedule_view
+
+### Columns
+| Column | Type | Nullable | Default |
+| --- | --- | --- | --- |
+| schedule_id | uuid | YES |  |
+| schedule_severity | smallint | YES |  |
+| schedule_date | date | YES |  |
+| schedule_label | text | YES |  |
+| plant_id | uuid | YES |  |
+| plant_name | text | YES |  |
+
+### Primary Key\n- (none)\n
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | ## status_factor_contribution_map
 
 ### Columns
@@ -735,6 +850,6 @@
 | role | text | NO |  |
 
 ### Primary Key
-- role, user_id
+- user_id, role
 
 ### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
