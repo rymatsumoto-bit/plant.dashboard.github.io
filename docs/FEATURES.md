@@ -41,7 +41,7 @@ As a [user type], I want [goal] so that [benefit]
 
 ---
 
-## Alert Management System
+## Schedule Management System
 
 **Status:** Planned  
 **Priority:** High  
@@ -50,81 +50,50 @@ As a [user type], I want [goal] so that [benefit]
 ### User Stories
 
 **As a plant owner, I want to:**
-- See alerts for plants needing immediate care
-- Understand why each alert was triggered
-- Snooze alerts when I can't act immediately
-- Dismiss alerts that don't apply to my situation
-- View history of past alerts for each plant
-- Have alerts prioritized by severity
+- See schedule items for plants needing immediate care
+- Understand why each schedule was triggered
+- Dismiss schedule items that don't apply to my situation
+- View history of past schedule items for each plant
+- Have schedule items prioritized by severity
 
 ### Acceptance Criteria
 
 **Display:**
-- [ ] Alerts display on dashboard with plant name, alert type, severity level
+- [ ] Schedule items display on dashboard with plant name, alert type, severity level
 - [ ] Color-coded severity (red: high, yellow: medium, blue: low)
-- [ ] Alert message explains why action is needed
 - [ ] Shows days overdue (if applicable)
 
 **Actions:**
-- [ ] "Snooze" button hides alert for 3 days
-- [ ] "Dismiss" button permanently removes alert
-- [ ] "Mark as Done" logs corresponding activity and removes alert
+- [ ] "Dismiss" button permanently removes schedule item, but user must input a new target date
+- [ ] "Mark as Done" logs corresponding activity and removes schedule item
 - [ ] Action buttons clearly labeled and accessible
 
 **Behavior:**
-- [ ] Snoozed alerts reappear after 3 days
-- [ ] Dismissed alerts never reappear (unless regenerated)
+- [ ] Dismissed items never reappear (unless regenerated)
 - [ ] Marking as done logs activity with current date
-- [ ] Alert count badge updates in real-time
+- [ ] Item count badge updates in real-time
 
 **History:**
-- [ ] Alert history viewable per plant
-- [ ] Shows when alert was created, snoozed, dismissed, or completed
+- [ ] Schedule history viewable per plant
+- [ ] Shows when schedule was created, dismissed, or completed
 - [ ] Filter alerts by type, severity, or status
 
 ### Technical Implementation
 
 **UI Components:**
 - `components/alert-card.html` - Individual alert display
-- `views/actionable-items.html` - Alert dashboard view
-- `components/alert-history.html` - Alert history modal
 
 **Database:**
-- Uses `alerts` table (see DATA-SCHEMA.md)
-- Fields: alert_id, plant_id, alert_type, severity, is_snoozed, snoozed_until, is_dismissed
+- Uses `schedule` table (see DATA-SCHEMA.md)
 
 **JavaScript:**
-- `js/alerts.js` - Alert management functions
-- Functions: snoozeAlert(), dismissAlert(), markAsDone(), getActiveAlerts()
 
 **Business Logic:**
-```javascript
-// Get active alerts
-function getActiveAlerts() {
-  return alerts.filter(a => 
-    !a.is_dismissed && 
-    (!a.snoozed_until || new Date(a.snoozed_until) <= new Date())
-  );
-}
-
-// Snooze alert for 3 days
-function snoozeAlert(alertId) {
-  const alert = alerts.find(a => a.alert_id === alertId);
-  alert.is_snoozed = true;
-  alert.snoozed_until = addDays(new Date(), 3);
-  saveToDatabase(alert);
-}
-```
 
 ### Dependencies
-- [ ] plants table exists and populated
-- [ ] activities table exists for logging
-- [ ] Forecasting algorithm generates alerts (see LOGIC.md)
 
 ### Related Documents
-- DECISIONS.md: [2024-12-29] Alert Management: Snooze & Dismiss
-- DATA-SCHEMA.md: alerts table
-- LOGIC.md: Alert Generation Logic (to be created)
+- DATA-SCHEMA.md: schedule table
 
 ---
 

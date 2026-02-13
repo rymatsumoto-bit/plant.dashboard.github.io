@@ -17,9 +17,9 @@ from scripts.manager_new_activity import NewActivity
 app = FastAPI(title="Plant Dashboard API")
 
 origins = [
-    "http://127.0.0.1:5501",      # local dev
-    "http://localhost:5501",       # in case browser uses localhost
-    "https://rymatsumoto-bit.github.io/plant.dashboard.github.io"  # production frontend
+    "http://127.0.0.1:5501",            # local dev
+    "http://localhost:5501",            # in case browser uses localhost
+    "https://rymatsumoto-bit.github.io" # production frontend
 ]
 
 # Optional: allow frontend calls from GitHub Pages (CORS)
