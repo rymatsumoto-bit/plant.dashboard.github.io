@@ -26,7 +26,7 @@ def run(schedule_df, today_date, run_id):
     """
 
     # Step 01: days from today until schedule date
-    schedule_df['days_until'] = (today_date - schedule_df['schedule']).dt.days
+    schedule_df['days_until'] = (today_date - schedule_df['schedule_date']).dt.days
     print(f"  ✅ Step 01")
 
     # Step 02: Calculate schedule severity
