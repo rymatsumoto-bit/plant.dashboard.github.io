@@ -4,7 +4,6 @@ SEVERITY.PY - Schedule Severity Calculator
 
 import pandas as pd
 import numpy as np
-import uuid
 
 def run(schedule_df, today_date, run_id):
     print(f"\nCalculating schedule severity for run {run_id}...\n")
@@ -26,6 +25,7 @@ def run(schedule_df, today_date, run_id):
     """
 
     # Step 01: days from today until schedule date
+    schedule_df['schedule_date'] = pd.to_datetime(schedule_df['schedule_date'])
     schedule_df['days_until'] = (today_date - schedule_df['schedule_date']).dt.days
     print(f"  ✅ Step 01")
 
