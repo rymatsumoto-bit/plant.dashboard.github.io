@@ -297,6 +297,7 @@ plant-care-dashboard/
 8. **Plant Lifecycle & Historical Data:** Plants can have complex lifecycles (given away, returned). System maintains complete historical chain via `previous_plant_id` linkage. User controls whether forecasting algorithms use full historical data or only current ownership period. Plant-habitat movements tracked over time to enable accurate environmental analysis of historical care activities.
 9. **Status Architecture:** Plant status calculated daily via Python based on configurable factors (stored in lookup table for flexibility). Each factor contributes to severity score. An new event might trigger the recalculation (or not) of factors, factor contribution, and status.
 10. **Schedule Architecture:** Each new activity might trigger the creation of a new schedule item or not.
+11. **Daily Batch:** Only certain routines need to be run on a daily basis.
 
 ---
 
