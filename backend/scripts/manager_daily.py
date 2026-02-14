@@ -89,7 +89,8 @@ class DailyBatch:
             # MERGE
             schedule_severity_calculated_df = schedule_df.merge(schedule_severity_new_df,on='schedule_id',how='left')
             self.stats['completed'] += 1
-
+            
+            print(schedule_severity_calculated_df)
             # FILTER FOR SEVERITY THAT CHANGED
             schedule_severity_update_df = schedule_severity_calculated_df[
                 schedule_severity_calculated_df['schedule_severity_new'] != schedule_severity_calculated_df['schedule_severity']
