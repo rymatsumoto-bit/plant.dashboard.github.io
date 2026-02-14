@@ -290,6 +290,19 @@ export async function getActivityTypes() {
     return data;
 }
 
+/**
+ * Get all activity per plant
+ */
+export async function getPlantActivity(plant_id) {
+    const { data, error } = await supabase
+        .from('plant_activity_history_view')
+        .select('*')
+        .eq('plant_id',plant_id)
+        .order('activity_date', { ascending: false});
+    
+    if (error) throw error;
+    return data;
+}
 
 // ============================================
 // SCHEDULE QUERIES
@@ -301,7 +314,9 @@ export async function getActivityTypes() {
 export async function getScheduleActive() {
     const { data, error } = await supabase
         .from('schedule_view')
-        .select('*');
+        .select('*')
+        .order('schedule_date', { ascending: true })
+        .order('schedule_start_date', { ascending: true });
     
     if (error) throw error;
     return data;
