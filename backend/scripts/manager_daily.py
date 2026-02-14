@@ -32,8 +32,8 @@ class DailyBatch:
         self.supabase = get_client()
         self.batch_id = uuid.uuid4()
         self.batch_timestamp = datetime.now()
-        current_dt = datetime.now(ZoneInfo("America/New_York"))
-        self.today_date = current_dt.date()
+        current_dt = datetime.now(ZoneInfo("America/New_York")).date()
+        self.today_date = pd.Timestamp(current_dt)
 
         # Batch stats tracking
         self.stats= {
