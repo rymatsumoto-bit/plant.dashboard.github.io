@@ -6,22 +6,19 @@ MANAGER_DAILY.PY - Orchestrator of Daily Routines
 import os
 import sys
 from datetime import datetime, date
+from typing import List, Dict, Optional, Tuple
 from zoneinfo import ZoneInfo
 import uuid
 import pandas as pd
 import json
 from utils.supabase_client import get_client
-
-
+from schedule.severity import run as schedule_severity_calculator
 
 # Add parent directory to path for imports
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
 sys.path.insert(0, parent_dir)
 sys.path.insert(0, current_dir)
-
-from utils.supabase_client import get_client
-from schedule.severity import run as schedule_severity_calculator
 
 
 class DailyBatch:

@@ -24,17 +24,20 @@ def run(schedule_df, today_date, run_id):
             - schedule_severity
     """
 
+    # Step 00: copy data
+    df = schedule_df.copy()
+
     # Step 01: days from today until schedule date
-    schedule_df['days_until'] = (today_date - schedule_df['schedule_date']).dt.days
+    df['days_until'] = (today_date - df['schedule_date']).dt.days
     print(f"  ✅ Step 01")
 
     # Step 02: Calculate schedule severity
-    schedule_df['schedule_severity_new'] = np.select(
+    df['schedule_severity_new'] = np.select(
         condlist=[
-            schedule_df['days_until'] <=0,   # Condition 1: schedule in the future
-            schedule_df['days_until'].between(1,2, inclusive='both'), # Condition 2: schedule is 2 days old
-            schedule_df['days_until'].between(3,6, inclusive='both'), # Condition 3: schedule is 6 days old
-            schedule_df['days_until'] >= 7  # Condition 4: schedule is more than 7 days old
+            df['days_until'] <=0,   # Condition 1: schedule in the future
+            df['days_until'].between(1,2, inclusive='both'), # Condition 2: schedule is 2 days old
+            df['days_until'].between(3,6, inclusive='both'), # Condition 3: schedule is 6 days old
+            df['days_until'] >= 7  # Condition 4: schedule is more than 7 days old
         ],
         choicelist=[
             0,  # healthy
@@ -50,7 +53,7 @@ def run(schedule_df, today_date, run_id):
     ## Get calculated values
     keep_cols = ['schedule_id','schedule_severity_new']
     rename_map = {'schedule_severity_new': 'schedule_severity'}
-    severity_df = schedule_df[keep_cols].rename(columns=rename_map)
+    severity_df = df[keep_cols].rename(columns=rename_map)
     ## Replace NaT/NaN with None so Supabase receives a SQL NULL
     severity_df = severity_df.where(pd.notnull(severity_df), None)
     print(f"  ✅ Step 03")
