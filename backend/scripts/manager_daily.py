@@ -87,7 +87,11 @@ class DailyBatch:
             print(schedule_df)
             print(schedule_severity_new_df)
             # SELECT ONLY SCHEDULE THAT NEEDS CHANGE
-            schedule_severity_calculated_df = schedule_df.merge(schedule_severity_new_df,on='schedule_id',how='left')
+            schedule_severity_calculated_df = schedule_df.merge(
+                schedule_severity_new_df[['schedule_id', 'schedule_severity']].rename(columns={'schedule_severity': 'schedule_severity_new'}),
+                on='schedule_id',
+                how='left'
+            )
             self.stats['completed'] += 1
 
             # FILTER FOR SEVERITY THAT CHANGED
