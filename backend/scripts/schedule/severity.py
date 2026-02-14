@@ -25,16 +25,15 @@ def run(schedule_df, today_date, run_id):
     """
 
     # Step 01: days from today until schedule date
-    schedule_df['schedule_date'] = pd.to_datetime(schedule_df['schedule_date'])
     schedule_df['days_until'] = (today_date - schedule_df['schedule_date']).dt.days
     print(f"  ✅ Step 01")
 
     # Step 02: Calculate schedule severity
     schedule_df['schedule_severity_new'] = np.select(
         condlist=[
-            schedule_df['days_until']<=0,   # Condition 1: schedule in the future
-            schedule_df['days_until'] <= 2, # Condition 2: schedule is 2 days old
-            schedule_df['days_until'] <= 6, # Condition 3: schedule is 6 days old
+            schedule_df['days_until'] <=0,   # Condition 1: schedule in the future
+            schedule_df['days_until'].between(1,2, inclusive='both'), # Condition 2: schedule is 2 days old
+            schedule_df['days_until'].between(3,6, inclusive='both'), # Condition 3: schedule is 6 days old
             schedule_df['days_until'] >= 7  # Condition 4: schedule is more than 7 days old
         ],
         choicelist=[
