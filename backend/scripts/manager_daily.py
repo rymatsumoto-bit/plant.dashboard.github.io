@@ -86,7 +86,7 @@ class DailyBatch:
 
             # SELECT ONLY SCHEDULE THAT NEEDS CHANGE
             schedule_severity_calculated_df = schedule_df.merge(
-                schedule_severity_new_df[['schedule_id', 'schedule_severity']].rename(columns={'schedule_severity': 'schedule_severity_new'}),
+                schedule_severity_new_df['schedule_id', 'schedule_severity'].rename(columns={'schedule_severity': 'schedule_severity_new'}),
                 on='schedule_id',
                 how='left'
             )
