@@ -92,9 +92,11 @@ class DailyBatch:
             
             print(schedule_severity_calculated_df)
             # FILTER FOR SEVERITY THAT CHANGED
+            # Use .ne() (not equal) or fillna to handle potential Nulls
             schedule_severity_update_df = schedule_severity_calculated_df[
-                schedule_severity_calculated_df['schedule_severity_new'] != schedule_severity_calculated_df['schedule_severity']
-                ][['schedule_id', 'schedule_severity_new']]
+                (schedule_severity_calculated_df['schedule_severity_new'] != schedule_severity_calculated_df['schedule_severity']) &
+                (schedule_severity_calculated_df['schedule_severity_new'].notna())
+            ][['schedule_id', 'schedule_severity_new']]
             self.stats['completed'] += 1
             print(f"\nNew severity filtered\n")
             print(f"  Found {len(schedule_severity_update_df)} schedules with changed severity")
