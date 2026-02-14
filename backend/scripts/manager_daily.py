@@ -6,8 +6,12 @@ MANAGER_DAILY.PY - Orchestrator of Daily Routines
 import os
 import sys
 from datetime import datetime, date
-from typing import List, Dict, Optional, Tuple
+from zoneinfo import ZoneInfo
 import uuid
+import pandas as pd
+import json
+from utils.supabase_client import get_client
+
 
 
 # Add parent directory to path for imports
@@ -17,9 +21,7 @@ sys.path.insert(0, parent_dir)
 sys.path.insert(0, current_dir)
 
 from utils.supabase_client import get_client
-from manager_plant_factor import FactorsCalculator
-from manager_plant_factor_contribution import FactorsContributionCalculator
-from manager_plant_status import StatusCalculator
+from schedule.severity import run as schedule_severity_calculator
 
 
 class DailyBatch:
@@ -28,8 +30,11 @@ class DailyBatch:
     def __init__(self):
 
         self.supabase = get_client()
-        self.daily_batch_id = uuid.uuid4()
-        self.daily_batch_timestamp = datetime.now()
+        self.batch_id = uuid.uuid4()
+        self.batch_timestamp = datetime.now()
+        current_dt = datetime.now(ZoneInfo("America/New_York"))
+        self.today_date = current_dt.date()
+
         # Batch stats tracking
         self.stats= {
             "started": 0,
@@ -41,11 +46,9 @@ class DailyBatch:
     def run(self):
         """
         Main entry point - calls for the daily functions
-
-        'calculate daily factors
-
-        'calls for every factor
         
+        Schedule Severity: updates any changed schedule severity
+
         Returns:
             Dict with counts: {'processed': X, 'updated': Y, 'errors': Z}
         """
@@ -54,26 +57,77 @@ class DailyBatch:
 
         print(f"\n{'='*60}")
         print(f"DAILY BATCH STARTED")
-        print(f"Batch ID: {self.daily_batch_id}")
-        print(f"Start Time: {self.daily_batch_timestamp}")
+        print(f"Batch ID: {self.batch_id}")
+        print(f"Start Time: {self.batch_timestamp}")
         print(f"{'='*60}\n")
         
         try:
-            # CALLS FOR FACTOR  CALCULATION
-            factor_calculator = FactorsCalculator(run_id=self.daily_batch_id, supabase=self.supabase)
-            run_routine(self, "Plant Factor Calculation", factor_calculator.run)
 
-            # CALLS FOR FACTOR CONTRIBUTION CALCULATION
-            factor_contribution_calculator = FactorsContributionCalculator(run_id=self.daily_batch_id, supabase=self.supabase)
-            run_routine(self, "Plant Factor Contribution Calculation", factor_contribution_calculator.run)
-                    
-            # CALLS FOR STATUS CALCULATION
-            status_calculator = StatusCalculator(run_id=self.daily_batch_id, supabase=self.supabase)
-            run_routine(self, "Plant Status Calculation", status_calculator.run)
-                    
+            #########################################
+            ## SCHEDULE SEVERITY
+            #########################################
+
+            print(f"Managing schedule.")
+            # GET CURRENT SCHEDULE
+            schedule_data = (self.supabase
+                .table('schedule')
+                .select('schedule_id, schedule_date, schedule_severity')
+                .is_('end_date','null')
+                .execute())
+            schedule_df = pd.DataFrame(schedule_data.data)
+            self.stats['completed'] += 1
+            print(f"\nGet current schedule\n")
+
+            # CALCULATE SEVERITY
+            schedule_severity_new_df = schedule_severity_calculator(schedule_df,self.today_date,run_id=self.batch_id)
+            self.stats['completed'] += 1
+            print(f"\nCalculate schedule severity\n")
+
+            # SELECT ONLY SCHEDULE THAT NEEDS CHANGE
+            schedule_severity_calculated_df = schedule_df.merge(
+                schedule_severity_new_df[['schedule_id', 'severity']].rename(columns={'severity': 'severity_new'}),
+                on='schedule_id',
+                how='left'
+            )
+            self.stats['completed'] += 1
+
+            # FILTER FOR SEVERITY THAT CHANGED
+            schedule_severity_update_df = schedule_severity_calculated_df[
+                schedule_severity_calculated_df['schedule_severity_new'] != schedule_severity_calculated_df['schedule_severity']
+                ][['schedule_id', 'schedule_severity_new']]
+            self.stats['completed'] += 1
+            print(f"\nNew severity filtered\n")
+            print(f"  Found {len(schedule_severity_update_df)} schedules with changed severity")
+
+            # CLEAN DATA
+            keep_cols = ['schedule_id', 'schedule_severity_new']
+            rename_map = {'schedule_severity_new': 'schedule_severity'}
+            schedule_severity_update_df = schedule_severity_update_df[keep_cols].rename(columns=rename_map)
+
+
+            #########################################
+            ## SUPABASE COMMAND
+            #########################################
+
+            # PREPARE DATA TO UPLOAD
+            self.batch_timestamp = self.batch_timestamp.isoformat()
+            schedule_severity_update_df = json.loads(schedule_severity_update_df.to_json(orient="records", date_format="iso")) 
+
+            # EXECUTE IN SUPAPBASE
+            response = self.supabase.rpc(
+                "run_daily_batch",
+                {
+                    "p_batch_id": self.batch_id,
+                    "p_batch_timestamp": self.batch_timestamp,
+                    "p_user_id": "9be41371-7b73-429d-a369-5cd3bd25269b",
+                    "p_schedule_severity": schedule_severity_update_df
+                }
+            ).execute()
+
         except Exception as e:
-            print(f"\n❌ Fatal error in daily batch: {str(e)}")
-            self.stats["errors"] += 1
+            print(f"❌ Error in managing schedule severity: {str(e)}")
+            raise  # stop entire batch on failure
+
             
         # Print summary
         print(f"\n{'='*60}")

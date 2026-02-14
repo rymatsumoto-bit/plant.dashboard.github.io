@@ -49,8 +49,6 @@ def run(plants_data_df, activity_data_df, run_id):
     """
 
     # Step 01: calculate days between each watering per plant
-    print(f"Received activity data: {activity_data_df}")
-    
     activity_history_df = activity_data_df.sort_values(['plant_id', 'activity_date'])
     activity_history_df['days_since_last'] = activity_history_df.groupby('plant_id')['activity_date'].diff().dt.days
     print(f"  ✅ Step 01")
