@@ -68,13 +68,14 @@ class DailyBatch:
             #########################################
 
             print(f"Managing schedule.")
-            # GET CURRENT SCHEDULE
+            # GET CURRENT SCHEDULE DATA
             schedule_data = (self.supabase
                 .table('schedule')
                 .select('schedule_id, schedule_date, schedule_severity')
                 .is_('end_date','null')
                 .execute())
             schedule_df = pd.DataFrame(schedule_data.data)
+            schedule_df['schedule_date'] = pd.to_datetime(schedule_df['schedule_date']).dt.tz_localize(None)
             self.stats['completed'] += 1
             print(f"\nGet current schedule\n")
 
