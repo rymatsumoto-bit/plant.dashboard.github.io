@@ -79,3 +79,59 @@ def create_schedule(plant_factor_df, factor_lookup_df, today_date, run_id):
     
     print(f"\n  ✅ Scheduling done\n")
     return schedule_df
+
+
+
+def schedule_severity_calculator(schedule_df, today_date, run_id):
+    print(f"\nManaging schedule for run {run_id}...\n")
+
+    """
+    Calculates the severity of each schedule severity based on date
+    
+    Phase 1 Logic:
+    - Create data if factor_code = watering
+    Args:
+        schedule_df
+            - schedule_id
+            - schedule_date
+            - schedule_severity
+    Returns:
+        schedule_df
+            - schedule_id
+            - schedule_severity
+    """
+
+    # Step 01: days until schedule date
+    schedule_df['days_until'] = (today_date - schedule_df['schedule']).dt.days
+    print(f"  ✅ Step 01")
+
+    # Step 02: Calculate schedule severity
+    schedule_df['schedule_severity_new'] = np.select(
+        condlist=[
+            schedule_df['days_until']<=0,   # Condition 1: schedule in the future
+            schedule_df['days_until'] <= 2, # Condition 2: schedule is 2 days old
+            schedule_df['days_until'] <= 6, # Condition 3: schedule is 6 days old
+            schedule_df['days_until'] >= 7  # Condition 4: schedule is more than 7 days old
+        ],
+        choicelist=[
+            0,  # healthy
+            1,  # warning
+            2,  # attention
+            3,  # urgent
+        ],
+        default=0   # healthy
+    )
+    print(f"  ✅ Step 02")
+
+    # Step 03: Create data to return
+    ## Get calculated values
+    keep_cols = ['schedule_id','schedule_severity','schedule_severity_new']
+    schedule_df = schedule_df[keep_cols]
+    ## Create factor id
+    schedule_df['schedule_id'] = [str(uuid.uuid4()) for _ in range(len(schedule_df))]
+    ## Replace NaT/NaN with None so Supabase receives a SQL NULL
+    schedule_df = schedule_df.where(pd.notnull(schedule_df), None)
+    print(f"  ✅ Step 03")
+    
+    print(f"\n  ✅ Schedule severity calculated.\n")
+    return schedule_df
