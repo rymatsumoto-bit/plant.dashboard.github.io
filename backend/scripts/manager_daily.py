@@ -30,7 +30,7 @@ class DailyBatch:
     def __init__(self):
 
         self.supabase = get_client()
-        self.batch_id = uuid.uuid4()
+        self.batch_id = str(uuid.uuid4())
         self.batch_timestamp = datetime.now()
         current_dt = datetime.now(ZoneInfo("America/New_York")).date()
         self.today_date = pd.Timestamp(current_dt)
@@ -81,15 +81,13 @@ class DailyBatch:
 
             # CALCULATE SEVERITY
             schedule_severity_new_df = schedule_severity_calculator(schedule_df,self.today_date,run_id=self.batch_id)
+            schedule_severity_new_df = schedule_severity_new_df.rename(columns={'schedule_severity': 'schedule_severity_new'})
             self.stats['completed'] += 1
-            print(f"\nCalculate schedule severity\n")
-
+            print(f"\nCalculated schedule severity\n")
+            print(schedule_df)
+            print(schedule_severity_new_df)
             # SELECT ONLY SCHEDULE THAT NEEDS CHANGE
-            schedule_severity_calculated_df = schedule_df.merge(
-                schedule_severity_new_df[['schedule_id', 'schedule_severity']].rename(columns={'schedule_severity': 'schedule_severity_new'}),
-                on='schedule_id',
-                how='left'
-            )
+            schedule_severity_calculated_df = schedule_df.merge(schedule_severity_new_df,on='schedule_id',how='left')
             self.stats['completed'] += 1
 
             # FILTER FOR SEVERITY THAT CHANGED
