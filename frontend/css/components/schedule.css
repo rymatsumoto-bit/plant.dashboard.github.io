@@ -37,9 +37,12 @@
     background: var(--success-accent);
 }
 .dash-schedule-plant-icon[severity="1"] {
-    background: var(--warning-accent);
+    background: var(--attention-accent);
 }
 .dash-schedule-plant-icon[severity="2"] {
+    background: var(--warning-accent);
+}
+.dash-schedule-plant-icon[severity="3"] {
     background: var(--danger-accent);
 }
 

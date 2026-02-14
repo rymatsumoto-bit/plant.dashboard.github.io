@@ -1,43 +1,67 @@
 <!-- Title -->
 <div class="chunk-title">
-    Plant Detail
+    <h2>Plant Detail</h2>
     <div class="card-title-btn">
         <button id="plant-detail-back-btn" class="btn-small btn-edit">
             BACK
         </button>
     </div>
 </div>
+<div class="chunk-title">
+    <br>
+</div>
 
 <div class="chunk-container-1-2">
-    <!-- Main Detail Section -->
-     <div class="card">
-        <div class="card-title">
-            <h2>Characteristics</h1>
+    <div class="chunk-container-single-column">
+        <div class="chunk-title">
+            Characteristics
             <div class="card-title-btn">
                 <button class="btn-small btn-add" onclick="showNewAddressForm()">
                 EDIT
                 </button>
             </div>
         </div>
+        <div class="card">
+            <h4>Plant Name</h4>
+            <div id="plant-detail-name"></div>
+            <br>
+            <h4>Category</h4>
+            <div id="plant-detail-category"></div>
+            <br>
+            <h4>Species</h4>
+            <div id="plant-detail-species"></div>
+            <br>
+            <h4>Acquisition Date</h4>
+            <div id="plant-detail-acquisition-date"></div>
+            <br>
+            <h4>Source</h4>
+            <div id="plant-detail-source"></div>
+            <br>
+            <h4>Habitat</h4>
+            <div id="plant-detail-habitat"></div>
+        </div>
 
-        <h4>Plant Name</h4>
-        <div id="plant-detail-name"></div>
-        <br>
-        <h4>Category</h4>
-        <div id="plant-detail-category"></div>
-        <br>
-        <h4>Species</h4>
-        <div id="plant-detail-species"></div>
-        <br>
-        <h4>Habitat</h4>
-        <div id="plant-detail-habitat"></div>
     </div>
 
-    <div section="card">
-        <h3>Status History</h3>
-        <div id="plant-detail-name"></div>
-        <div id="plant-detail-category"></div>
-        <div id="plant-detail-species"></div>
-        <div id="plant-detail-habitat"></div>
+    <div class="chunk-container-single-column">
+        <div class="chunk-title">
+            Activity History
+        </div>
+        <div id="plant-detail-activity" class="table-activity">
+            <div class="table-activity-header">
+                <div>Date</div>
+                <div>Type</div>
+                <div>Qty</div>
+                <div>Unit</div>
+                <div>Notes</div>
+                <div>Results</div>
+            </div>
+            <div class="table-activity-body">
+                <div id="plant-detail-activity-rows"></div>
+            </div>
+        </div>
     </div>
+
+</div>
+
 </div>

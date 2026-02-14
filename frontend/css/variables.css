@@ -51,13 +51,13 @@
     --btn-act-delete-hover: #b96c13;
     
     /* Status Colors */
-    --success-bg: #d4e5a8;
-    --success-text: #4a5a08;
-    --success-accent: #6f7c12;
-    
     --info-bg: #d8f0e8;
     --info-text: #02241f;
     --info-accent: #91c7b1;
+    
+    --attention-bg: #faffb8;
+    --attention-text: #bbc52e;
+    --attention-accent: #eeff00;
     
     --warning-bg: #ffefd9;
     --warning-text: #8b5000;
@@ -66,7 +66,12 @@
     --danger-bg: #ffd4c4;
     --danger-text: #8b2500;
     --danger-accent: #d84315;
-
+    
+    --success-bg: #d4e5a8;
+    --success-text: #4a5a08;
+    --success-accent: #3fa816;
+    
+    
     /* Spacing */
     --spacing-xs: 5px;
     --spacing-sm: 10px;

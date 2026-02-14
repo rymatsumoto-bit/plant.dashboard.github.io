@@ -5,6 +5,7 @@
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     overflow: hidden;
+    cursor: pointer;
 }
 
 .table-header {
@@ -90,3 +91,53 @@
     object-fit: cover;
 }
 
+
+
+/* Activity History Table Components */
+.table-activity {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    cursor: pointer;
+}
+
+.table-activity-header {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr 1fr 1.5fr 1.5fr;
+    padding: 20px 20px;
+    column-gap: 15px;
+    background: #ffffff;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text-primary);
+    padding-right: 35px;
+}
+
+.table-activity-body {
+    overflow-y: auto;
+    scrollbar-width: 5px;
+    scrollbar-gutter: stable;
+    max-height: 400px;
+}
+
+.table-activity-row {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr 1fr 1.5fr 1.5fr;
+    padding: 10px 20px;
+    column-gap: 15px;
+    border-top: 1px solid #f3f4f6;
+    align-items: center;
+    transition: 0.2s;    
+}
+
+.table-activity-row:hover {
+    background: #fafafa;
+}
+
+.table-activity-type-badge {
+    color: white;
+    text-align: center;
+    text-transform: uppercase;
+    border-radius: 20px;
+    font-weight: 600;
+}

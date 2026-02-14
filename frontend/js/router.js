@@ -19,6 +19,7 @@ export class Router {
 
     // Initialize router
     init() {
+        setRouterInstance(this)
         this.setupNavigation();
         this.loadInitialView();
         initializeToolbar();

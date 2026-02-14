@@ -40,7 +40,7 @@ function loadKPIs() {
     // Get KPIs
     document.getElementById('kpi-plant-count').textContent = dataMetrics.plant_active_total_count;
     document.getElementById('kpi-plant-healthy-perc').textContent = `${dataMetrics.plant_healthy_percentage}%`;
-    document.getElementById('kpi-schedule-count').textContent = dataMetrics.schedule_total_count;
+    document.getElementById('kpi-schedule-alert-count').textContent = dataMetrics.schedule_alert_count;
 
     console.log('Loading dashboard data...');
 }
