@@ -12,7 +12,7 @@ import uuid
 import pandas as pd
 import json
 from utils.supabase_client import get_client
-from schedule.severity import run as schedule_severity_calculator
+from scripts.schedule.severity import run as schedule_severity_calculator
 
 # Add parent directory to path for imports
 current_dir = os.path.dirname(os.path.abspath(__file__))
