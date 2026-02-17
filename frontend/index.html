@@ -3,83 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plant Hub Dashboard</title>
-    
-    <!-- CSS Files -->
+    <title>Plant Dashboard - Nurture Your Green Space</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,300&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/main.css">
 </head>
-<body>
-    <div class="sidebar">
-        <div class="sidebar-header">
-            <img src="assets/images/icons/main-logo.svg" alt="Plant Hub Logo" class="logo">
-            <h1>Plant Hub <span class="version">v0.1.2</span></h1>
-        </div>
-        <p class="tagline">A dashboard for plant care</p>
-        
-        <nav class="sidebar-nav">
-        <div class="sidebar-nav-top">
-            <div class="nav-item active" data-view="dashboard">
-                <img src="assets/images/icons/nav-dashboard.svg" alt="" class="nav-icon">
-                <span>Dashboard</span>
+<body class="index-body">
+    <!-- Floating leaves decoration -->
+    <div class="leaf"></div>
+    <div class="leaf"></div>
+    <div class="leaf"></div>
+    <div class="leaf"></div>
+
+    <div class="index-container">
+        <!-- Navigation -->
+        <nav class="index-nav">
+            <div class="index-logo">PlantDash</div>
+            <div class="index-nav-buttons">
+                <a class="index-btn index-btn-outline" id="signin-btn">Sign In</a>
             </div>
-            <div class="nav-item" data-view="reports">
-                <img src="assets/images/icons/nav-reports.svg" alt="" class="nav-icon">
-                <span>Reports</span>
-            </div>
-            <div class="nav-item" data-view="inventory">
-                <img src="assets/images/icons/nav-inventory.svg" alt="" class="nav-icon">
-                <span>Inventory</span>
-            </div>
-            <div class="nav-item" data-view="configuration">
-                <img src="assets/images/icons/nav-configuration.svg" alt="" class="nav-icon">
-                <span>Configuration</span>
-            </div>
-        </div>
-        <div class="sidebar-nav-bottom">
-            <div class="nav-item" data-view="settings">
-                <img src="assets/images/icons/nav-settings.svg" alt="" class="nav-icon">
-                <span>Settings</span>
-            </div>
-            <div class="user-info" id="user-info">
-                <img src="assets/images/icons/nav-user.svg" alt="" class="nav-icon">
-                <div class="user-details">
-                    <div id="user-name" class="user-name">Loading...</div>
-                    <div id="user-email" class="user-email">user@example.com</div>
+        </nav>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Nurture every <em>leaf</em>, one day at a time</h1>
+                <p>Transform your plant care routine with intelligent tracking, personalized reminders, and a thriving community of plant lovers.</p>
+                <div class="hero-cta">
+                    <a href="#signup" class="index-btn index-btn-primary index-btn-large">Start Growing Free</a>
+                    <a href="#features" class="index-btn index-btn-outline index-btn-large">Learn More</a>
                 </div>
             </div>
-        </div>
-        </nav>
+
+            <div class="hero-visual">
+                <div class="plant-card-showcase">
+                    <div class="floating-card card-1">
+                        <span class="plant-icon">🌿</span>
+                        <h3 class="plant-name">Monstera</h3>
+                        <div class="plant-stat">
+                            <span>Health</span>
+                            <div class="stat-bar">
+                                <div class="stat-fill" style="width: 85%;"></div>
+                            </div>
+                        </div>
+                        <div class="plant-stat">
+                            <span>Water in 2 days</span>
+                        </div>
+                    </div>
+
+                    <div class="floating-card card-2">
+                        <span class="plant-icon">🪴</span>
+                        <h3 class="plant-name">Pothos</h3>
+                        <div class="plant-stat">
+                            <span>Health</span>
+                            <div class="stat-bar">
+                                <div class="stat-fill" style="width: 95%;"></div>
+                            </div>
+                        </div>
+                        <div class="plant-stat">
+                            <span>Thriving!</span>
+                        </div>
+                    </div>
+
+                    <div class="floating-card card-3">
+                        <span class="plant-icon">🌵</span>
+                        <h3 class="plant-name">Succulent</h3>
+                        <div class="plant-stat">
+                            <span>Health</span>
+                            <div class="stat-bar">
+                                <div class="stat-fill" style="width: 78%;"></div>
+                            </div>
+                        </div>
+                        <div class="plant-stat">
+                            <span>Water today</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features" id="features">
+            <div class="section-title">
+                <h2>Everything you need to thrive</h2>
+                <p>Powerful tools to keep your plants healthy and happy</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">💧</div>
+                    <h3>Smart Watering</h3>
+                    <p>Never forget to water again. Get personalized reminders based on each plant's unique needs and your local climate.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Growth Tracking</h3>
+                    <p>Watch your garden flourish with photo journals, growth metrics, and health insights over time.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🌞</div>
+                    <h3>Care Guidance</h3>
+                    <p>Get expert tips on light, water, and nutrients tailored to every plant in your collection.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta" id="signup">
+            <div class="cta-content">
+                <h2>Ready to grow together?</h2>
+                <p>Join thousands of plant parents creating their perfect green space</p>
+                <a href="#create-account" class="index-btn index-btn-primary index-btn-large">Create Your Free Account</a>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <p>&copy; 2024 PlantDash. Cultivating green spaces, one plant at a time.</p>
+        </footer>
     </div>
-    
-    <div class="main-content">
-        <!-- toolbar -->
-        <div class="toolbar">
-            <div>
-            <h1 id="toolbar-title" class="toolbar-title">Dashboard</h1>
-            <p id="toolbar-tagline" class="toolbar-tagline">Your plant care overview</p>
-            </div>
-            
-            <div class="search-container">
-                <input type="text" id="search-input" class="search-input" placeholder="Search...">
-            </div>
-            
-            <!-- buttons section -->
-            <div>
-                <button class="btn btn-primary" id="new-activity-watering-btn" title="ADD WATERING">
-                    + WATERING
-                </button>
-                
-                <button class="btn btn-primary" id="new-activity-btn" title="NEW ACTIVITY">
-                    + ACTIVITY
-                </button>
-            </div>
-        </div>
-        
-        <!-- View container -->
-        <div id="view-container" class="view"></div>    
-    </div>
-    
+
     <!-- JavaScript - ES6 Module -->
-    <script type="module" src="js/app.js"></script>
+    <script type="module" src="js/login.js"></script>
+
 </body>
 </html>

@@ -106,7 +106,7 @@ function renderButtons(container, buttons, modal, config) {
 
 /**
  * Get CSS class for button type
- */
+ */ 
 function getButtonClass(type) {
   const classMap = {
     'primary': 'btn-primary',
