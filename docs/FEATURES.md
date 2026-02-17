@@ -59,7 +59,7 @@ As a [user type], I want [goal] so that [benefit]
 ### Acceptance Criteria
 
 **Display:**
-- [ ] Schedule items display on dashboard with plant name, alert type, severity level
+- [ ] Schedule items display on dashboard with plant name, schedule type, severity level
 - [ ] Color-coded severity (red: high, yellow: medium, blue: low)
 - [ ] Shows days overdue (if applicable)
 
@@ -76,12 +76,9 @@ As a [user type], I want [goal] so that [benefit]
 **History:**
 - [ ] Schedule history viewable per plant
 - [ ] Shows when schedule was created, dismissed, or completed
-- [ ] Filter alerts by type, severity, or status
+- [ ] Filter schedule by date, type, or severity
 
 ### Technical Implementation
-
-**UI Components:**
-- `components/alert-card.html` - Individual alert display
 
 **Database:**
 - Uses `schedule` table (see DATA-SCHEMA.md)
@@ -259,7 +256,7 @@ function validateActivity(data) {
 **As a plant owner, I want to:**
 - View comprehensive information about a specific plant
 - See activity history timeline
-- See current and past alerts
+- See current and past schedule item
 - View care recommendations based on plant type
 - Edit plant information from detail page
 
@@ -299,10 +296,9 @@ function validateActivity(data) {
 ### Dependencies
 - [ ] Plant inventory complete
 - [ ] Activity logging complete
-- [ ] Alert system complete
 
 ### Related Documents
-- DATA-SCHEMA.md: plants, activities, alerts tables
+- DATA-SCHEMA.md: plants, activity, schedule
 
 ---
 
@@ -317,49 +313,43 @@ function validateActivity(data) {
 **As a plant owner, I want to:**
 - See summary statistics (total plants, schdedule, recent activities)
 - View upcoming care tasks in a calendar or timeline
-- Access quick actions (log activity, view alerts)
+- Access quick actions (log activity, mark as done/dismiss schedule item)
 - Navigate to main sections easily
 
 ### Acceptance Criteria
 
 **Statistics:**
 - [ ] Total plant count
-- [ ] Active alerts count
+- [ ] Active alerts count (alert is schedule item with non-zero severity)
 - [ ] Activities logged this week
 - [ ] Plants needing attention
 
-**Upcoming Tasks:**
-- [ ] Next 7 days of forecasted care needs
-- [ ] Grouped by activity type
-- [ ] Click task to see plant detail or log activity
+**Upcoming Schedule:**
+- [ ] Sorted by date (earliest to latest)
+- [ ] Colored by severity
+- [ ] Click schedule action item (to be defined)
 
 **Quick Actions:**
 - [ ] "Log Activity" button opens form
-- [ ] "View All Alerts" navigates to actionable items
-- [ ] "Add Plant" button opens form
+- [ ] "View All Schedule" navigates to schedule list
 
 **Navigation:**
 - [ ] Sidebar with main sections
 - [ ] Section icons and labels
-- [ ] Active section highlighted
 
 ### Technical Implementation
 
 **UI Components:**
 - `views/dashboard.html` - Main dashboard
-- `components/stats-card.html` - Statistic display
-- `components/upcoming-tasks.html` - Task list
 
 **JavaScript:**
-- `js/dashboard.js` - Dashboard logic
-- Functions: loadDashboard(), calculateStats(), getForecastedTasks()
+- `js/views/dashboard.js` - Dashboard logic
 
 ### Dependencies
-- [ ] All core data tables exist
-- [ ] Forecasting algorithm operational
+- [ ] 
 
 ### Related Documents
-- LOGIC.md: Forecasting calculations
+- 
 
 ---
 

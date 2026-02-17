@@ -734,15 +734,15 @@
 | --- | --- | --- | --- |
 | schedule_id | uuid | NO | gen_random_uuid() |
 | plant_id | uuid | NO |  |
-| schedule_date | date | NO |  |
+| plant_factor_id | uuid | NO |  || schedule_date | date | NO |  |
 | schedule_label | text | NO |  |
 | schedule_severity | smallint | NO |  |
-| batch_id | uuid | NO |  |
 | factor_code | text | NO |  |
 | start_date | timestamp with time zone | NO |  |
 | end_date | timestamp with time zone | YES |  |
+| batch_id | uuid | NO |  |
 | user_id | uuid | YES | auth.uid() |
-| plant_factor_id | uuid | NO |  |
+
 
 ### Primary Key
 - schedule_id

@@ -17,9 +17,6 @@
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     }
     
-    .alert-list {
-        grid-template-columns: 1fr;
-    }
 }
 
 @media (max-width: 480px) {

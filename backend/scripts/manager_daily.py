@@ -81,13 +81,11 @@ class DailyBatch:
             schedule_severity_new_df = schedule_severity_new_df.rename(columns={'schedule_severity': 'schedule_severity_new'})
             self.stats['completed'] += 1
             print(f"\nCalculated schedule severity\n")
-            print(schedule_df)
-            print(schedule_severity_new_df)
+            
             # MERGE
             schedule_severity_calculated_df = schedule_df.merge(schedule_severity_new_df,on='schedule_id',how='left')
             self.stats['completed'] += 1
             
-            print(schedule_severity_calculated_df)
             # FILTER FOR SEVERITY THAT CHANGED
             # Use .ne() (not equal) or fillna to handle potential Nulls
             schedule_severity_update_df = schedule_severity_calculated_df[
