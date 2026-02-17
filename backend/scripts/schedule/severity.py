@@ -26,7 +26,7 @@ def run(schedule_df, today_date, run_id):
 
     # Step 00: copy data
     df = schedule_df.copy()
-
+    
     # Step 01: days from today until schedule date
     df['days_until'] = (today_date - df['schedule_date']).dt.days
     print(f"  ✅ Step 01")
