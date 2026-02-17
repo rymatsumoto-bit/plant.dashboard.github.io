@@ -4,7 +4,7 @@
 
 import { Router } from './router.js';
 import { openModal } from './modals/prompt-modal.js';
-import { getCurrentUser, signIn, signOut } from './services/supabase.js';
+import { getCurrentUser, signOut } from './services/supabase.js';
 import { getUser, getUserDisplayName, clearUserCache } from './services/user.js';
 
 // Initialize application when DOM is ready
@@ -13,14 +13,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Check if user is authenticated
     const user = await getCurrentUser();
-
-    if (!user) {
-        // Show login screen
-        showLoginScreen();
-        return;
-    }
-
-    // User is authenticated - proceed normally
 
     // Make modal function globally available
     window.openModal = openModal;
@@ -35,30 +27,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.log('✅ Plant Hub Dashboard initialized successfully!');
 });
 
-function showLoginScreen() {
-    const container = document.getElementById('view-container');
-    fetch('components/auth/login.html')
-        .then(r => r.text())
-        .then(html => {
-            container.innerHTML = html;
-            setupLoginForm();
-        });
-}
-
-function setupLoginForm() {
-    document.getElementById('login-form').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-        
-        try {
-            await signIn(email, password);
-            location.reload(); // Reload to initialize app
-        } catch (error) {
-            alert('Login failed: ' + error.message);
-        }
-    });
-}
 
 /**
  * Initialize user display
@@ -104,7 +72,7 @@ async function handleUserSignOut() {
             clearUserCache();
             
             // Redirect to login page
-            window.location.href = '/login.html'; // Or wherever your login page is
+            window.location.href = 'index.html'; // Or wherever your login page is
             
         } catch (error) {
             console.error('❌ Sign out error:', error);
