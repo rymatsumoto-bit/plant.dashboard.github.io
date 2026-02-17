@@ -40,93 +40,34 @@ Predict when each plant needs to be watered next based on historical watering pa
 ### Calculation Steps
 
 1. **Gather Historical Data**
-   - Query last 10 watering events for the plant
-   - Must have minimum 3 waterings for prediction
-   - If < 3 waterings, use species default interval
+   - Query all watering events for the plant
+   - Must have minimum 5 waterings for prediction
+   - If < 5 waterings, use species default interval
 
 2. **Calculate Average Interval**
    - For each pair of consecutive waterings, calculate days between
    - Average all intervals: `avg_interval = sum(intervals) / count(intervals)`
-   - Remove outliers (>2 standard deviations from mean)
 
-3. **Apply Species Factor**
-   - Get species watering frequency from plant_types table
-   - If user pattern differs significantly from species default, use weighted average:
-     - `adjusted_interval = (avg_interval * 0.7) + (species_default * 0.3)`
-   - This allows user patterns to dominate but keeps species knowledge as baseline
-
-4. **Calculate Next Watering Date**
+3. **Calculate Next Watering Date**
    - `next_water_date = last_watered_date + adjusted_interval`
    - Round to nearest day
 
-5. **Generate Alert Threshold**
-   - Create alert when: `days_since_last_water >= (adjusted_interval - 1)`
+4. **Generate Schedule**
+   - Create schedule when there is no active schedule (for the plant / activity type)
    - This gives 1-day buffer before overdue
-
-### Pseudocode
-
-```python
-def calculate_next_watering(plant_id):
-    # Get historical watering data
-    watering_history = get_watering_history(plant_id, limit=10)
-    
-    if len(watering_history) < 3:
-        # Not enough history, use species default
-        plant = get_plant(plant_id)
-        species = get_plant_type(plant.species)
-        return last_watered_date + species.watering_frequency_days
-    
-    # Calculate intervals between waterings
-    intervals = []
-    for i in range(len(watering_history) - 1):
-        days_between = (watering_history[i].date - watering_history[i+1].date).days
-        intervals.append(days_between)
-    
-    # Remove outliers
-    mean = sum(intervals) / len(intervals)
-    std_dev = calculate_std_dev(intervals)
-    filtered_intervals = [x for x in intervals if abs(x - mean) <= 2 * std_dev]
-    
-    # Calculate average interval
-    avg_interval = sum(filtered_intervals) / len(filtered_intervals)
-    
-    # Apply species factor
-    species_default = get_species_watering_frequency(plant.species)
-    adjusted_interval = (avg_interval * 0.7) + (species_default * 0.3)
-    
-    # Calculate next watering date
-    last_watered = watering_history[0].date
-    next_watering = last_watered + timedelta(days=round(adjusted_interval))
-    
-    return next_watering
-
-def should_generate_water_alert(plant_id):
-    next_watering = calculate_next_watering(plant_id)
-    today = date.today()
-    
-    # Alert if today is within 1 day of due date
-    return today >= (next_watering - timedelta(days=1))
-```
 
 ### Assumptions
 - User waters plants on a relatively consistent schedule
-- Historical pattern is better predictor than species default (70/30 weight)
-- 3 waterings minimum needed for pattern detection
-- Outliers (vacation periods, forgetfulness) should be removed
-- Environmental factors constant (to be added in Phase 2)
+- 5 waterings minimum needed for pattern detection
+- Environmental factors constant (to be added in later phase)
 
 ### Constants
-- **Minimum history required**: 3 waterings
-- **Maximum history lookback**: 10 waterings
-- **User pattern weight**: 70%
-- **Species default weight**: 30%
-- **Alert buffer**: 1 day before due
-- **Outlier threshold**: 2 standard deviations
+- **Minimum history required**: 5 waterings
 
 ### Future Improvements (Phase 2+)
 1. **Environmental Factors**
    - Adjust for indoor humidity levels
-   - Adjust for seasonal temperature changes
+   - Adjust for seasonal changes
    - Reduce frequency during rainy periods (outdoor plants)
 
 2. **Machine Learning**
@@ -137,7 +78,7 @@ def should_generate_water_alert(plant_id):
 3. **Plant Health Feedback**
    - If plant shows overwatering symptoms, increase interval
    - If plant shows underwatering symptoms, decrease interval
-   - Learn from user's snooze/dismiss patterns
+   - Learn from user's dismiss patterns
 
 4. **Location-Based Adjustments**
    - Plants in same location may have correlated needs
@@ -178,38 +119,10 @@ Predict when each plant needs fertilizing based on plant species and growth seas
 4. **Generate Next Fertilizing Date**
    - `next_fertilize_date = last_fertilized_date + interval`
 
-5. **Alert Threshold**
-   - Generate alert 3 days before due date
+5. **Schedule Threshold**
    - Fertilizing is less time-critical than watering
 
-### Pseudocode
 
-```python
-def calculate_next_fertilizing(plant_id):
-    fertilize_history = get_fertilizing_history(plant_id, limit=5)
-    
-    if len(fertilize_history) >= 2:
-        # Use historical pattern
-        intervals = calculate_intervals(fertilize_history)
-        avg_interval = sum(intervals) / len(intervals)
-    else:
-        # Use species default
-        plant = get_plant(plant_id)
-        species = get_plant_type(plant.species)
-        avg_interval = species.fertilizing_frequency_days or 45  # default 45 days
-    
-    last_fertilized = fertilize_history[0].date if fertilize_history else plant.acquired_date
-    next_fertilize = last_fertilized + timedelta(days=avg_interval)
-    
-    return next_fertilize
-
-def should_generate_fertilize_alert(plant_id):
-    next_fertilize = calculate_next_fertilizing(plant_id)
-    today = date.today()
-    
-    # Alert 3 days before due
-    return today >= (next_fertilize - timedelta(days=3))
-```
 
 ### Assumptions
 - Fertilizing less time-sensitive than watering
@@ -219,8 +132,7 @@ def should_generate_fertilize_alert(plant_id):
 
 ### Constants
 - **Minimum history required**: 2 fertilizing events
-- **Default fertilizing interval**: 45 days
-- **Alert buffer**: 3 days before due
+- **Default fertilizing interval**: dependent of type of fertilizer
 
 ### Future Improvements
 - Seasonal adjustments (more in summer, less in winter)
@@ -257,42 +169,9 @@ Remind users when plants may need repotting based on time since last repotting a
 3. **Calculate Next Repotting**
    - `next_repot_date = last_repot_date + growth_rate_interval`
 
-4. **Alert Threshold**
-   - Generate informational alert (low severity) 1 month before suggested date
+4. **Schedule Threshold**
    - User can dismiss if not needed
 
-### Pseudocode
-
-```python
-def calculate_next_repotting(plant_id):
-    plant = get_plant(plant_id)
-    species = get_plant_type(plant.species)
-    
-    # Get last repotting or use acquired date
-    repot_history = get_repotting_history(plant_id)
-    last_repot = repot_history[0].date if repot_history else plant.acquired_date
-    
-    # Growth rate determines repotting interval
-    growth_rate = species.growth_rate or 'medium'
-    intervals = {
-        'fast': 365,      # 12 months
-        'medium': 548,    # 18 months
-        'slow': 730       # 24 months
-    }
-    
-    interval = intervals[growth_rate]
-    next_repot = last_repot + timedelta(days=interval)
-    
-    return next_repot
-
-def should_generate_repot_alert(plant_id):
-    next_repot = calculate_next_repotting(plant_id)
-    today = date.today()
-    
-    # Alert 30 days before suggested date
-    # Low severity (informational)
-    return today >= (next_repot - timedelta(days=30))
-```
 
 ### Assumptions
 - Repotting frequency based primarily on species growth rate
@@ -303,7 +182,6 @@ def should_generate_repot_alert(plant_id):
 - **Fast-growing interval**: 12 months
 - **Medium-growing interval**: 18 months
 - **Slow-growing interval**: 24 months
-- **Alert buffer**: 30 days before suggested date
 
 ### Future Improvements
 - Track pot size changes
@@ -312,96 +190,48 @@ def should_generate_repot_alert(plant_id):
 
 ---
 
-## Alert Severity Calculation
+## Schedule Severity Calculation
 
 ### Algorithm Version: 1.0  
-### Last Updated: 2024-12-29  
+### Last Updated: 2026-02-16
 ### Status: Planned
 
 ### Purpose
-Determine severity level (low, medium, high) for each alert type based on how overdue the action is.
+Determine severity level healthy, warning, attention, urgent) for each schedule item based on how overdue the item is.
 
 ### Severity Levels
 
-**Low (Informational)**
-- Action upcoming but not yet due
-- Proactive reminder
+**Healty**
+- Item upcoming but not yet due
 
-**Medium (Attention Needed)**
-- Action is due within alert buffer period
-- Should be addressed soon
+**Warning**
+- Item is just overdue
 
-**High (Urgent)**
-- Action significantly overdue
-- Plant health at risk
+**Attention**
+- Item has been overdue for a little while
 
-### Calculation by Alert Type
+**Urgent**
+- Item is very overdue
 
-#### Watering Alerts
-```python
-def calculate_water_alert_severity(plant_id):
-    next_water = calculate_next_watering(plant_id)
-    days_overdue = (date.today() - next_water).days
-    
-    if days_overdue < -1:
-        return 'low'      # More than 1 day early
-    elif days_overdue <= 2:
-        return 'medium'   # Due or 1-2 days overdue
-    else:
-        return 'high'     # 3+ days overdue
-```
+
+### Calculation by Schedule Type
+
+#### Watering Due
+**Thresholds:**
+- Healthy: not overdue
+- Warning: [1,2] days overdue
+- Attention: [3,6] days overdue
+- Urgent: 7+ days overdue
+
+#### Fertilizing Due
+**Thresholds:**
+- TBD
+
+#### Repotting Due
 
 **Thresholds:**
-- Low: >1 day before due
-- Medium: Due to 2 days overdue
-- High: 3+ days overdue
-
-#### Fertilizing Alerts
-```python
-def calculate_fertilize_alert_severity(plant_id):
-    next_fertilize = calculate_next_fertilizing(plant_id)
-    days_overdue = (date.today() - next_fertilize).days
-    
-    if days_overdue < -3:
-        return 'low'      # More than 3 days early
-    elif days_overdue <= 7:
-        return 'medium'   # Due or up to 1 week overdue
-    else:
-        return 'high'     # More than 1 week overdue
-```
-
 **Thresholds:**
-- Low: >3 days before due
-- Medium: Due to 7 days overdue
-- High: 8+ days overdue
-
-#### Repotting Alerts
-```python
-def calculate_repot_alert_severity(plant_id):
-    next_repot = calculate_next_repotting(plant_id)
-    days_overdue = (date.today() - next_repot).days
-    
-    if days_overdue < -30:
-        return 'low'      # More than 30 days early
-    elif days_overdue <= 60:
-        return 'medium'   # Due or up to 2 months overdue
-    else:
-        return 'high'     # More than 2 months overdue
-```
-
-**Thresholds:**
-- Low: >30 days before due
-- Medium: Due to 60 days overdue
-- High: 61+ days overdue
-
-### Constants by Alert Type
-
-| Alert Type | Low Threshold | Medium Threshold | High Threshold |
-|------------|---------------|------------------|----------------|
-| Water | >1 day early | Due to +2 days | +3 days or more |
-| Fertilize | >3 days early | Due to +7 days | +8 days or more |
-| Repot | >30 days early | Due to +60 days | +61 days or more |
-| Pest | N/A | Always medium | If recurring: high |
+- TBD
 
 ---
 
@@ -417,7 +247,7 @@ Detect recurring pest problems and predict future occurrences.
 ### Approach (Not Yet Implemented)
 
 **Phase 1: Simple Detection**
-- If 2+ pest occurrences within 60 days → generate alert
+- If 2+ pest occurrences within 60 days → generate schedule
 - Suggest preventive treatment
 
 **Phase 2: Pattern Recognition**
@@ -430,98 +260,11 @@ This will be developed in Phase 2 after core features are operational.
 
 ---
 
-## Data Quality Checks
-
-### Algorithm Version: 1.0  
-### Last Updated: 2024-12-29  
-### Status: Planned
-
-### Purpose
-Validate data quality and flag inconsistencies for user review.
-
-### Checks to Implement
-
-**Watering Frequency Anomalies**
-```python
-def detect_watering_anomalies(plant_id):
-    history = get_watering_history(plant_id, limit=10)
-    intervals = calculate_intervals(history)
-    
-    mean = sum(intervals) / len(intervals)
-    std_dev = calculate_std_dev(intervals)
-    
-    # Flag any interval > 3 standard deviations from mean
-    anomalies = [x for x in intervals if abs(x - mean) > 3 * std_dev]
-    
-    if anomalies:
-        # Suggest user review these dates for data entry errors
-        return {
-            'has_anomalies': True,
-            'suspect_dates': get_dates_for_intervals(anomalies),
-            'message': 'Unusual watering pattern detected. Please verify dates.'
-        }
-    
-    return {'has_anomalies': False}
-```
-
-**Impossible Dates**
-- Activity date before plant acquired
-- Activity date in the future
-- Duplicate activities on same date (possible but flagged)
-
-**Missing Data**
-- Plant with no activities for >90 days
-- Alert user: "Update care logs to improve forecasting"
-
----
-
 ## Constants Reference
 
 ### Global Constants
 
-```python
-# Minimum data requirements
-MIN_WATERING_HISTORY = 3
-MIN_FERTILIZING_HISTORY = 2
-MIN_REPOTTING_HISTORY = 1
 
-# Default intervals (days)
-DEFAULT_WATERING_INTERVAL = 7
-DEFAULT_FERTILIZING_INTERVAL = 45
-DEFAULT_REPOTTING_INTERVAL = 548  # 18 months
-
-# Alert buffers (days before due)
-WATER_ALERT_BUFFER = 1
-FERTILIZE_ALERT_BUFFER = 3
-REPOT_ALERT_BUFFER = 30
-
-# Severity thresholds (days overdue)
-WATER_SEVERITY_THRESHOLDS = {
-    'medium': 0,    # Due or later
-    'high': 3       # 3+ days overdue
-}
-
-FERTILIZE_SEVERITY_THRESHOLDS = {
-    'medium': 0,    # Due or later
-    'high': 8       # 8+ days overdue
-}
-
-REPOT_SEVERITY_THRESHOLDS = {
-    'medium': 0,    # Due or later
-    'high': 61      # 61+ days overdue
-}
-
-# Weighting factors
-USER_PATTERN_WEIGHT = 0.7
-SPECIES_DEFAULT_WEIGHT = 0.3
-
-# Outlier detection
-OUTLIER_STD_DEV_THRESHOLD = 2.0
-
-# Data quality
-ANOMALY_STD_DEV_THRESHOLD = 3.0
-STALE_DATA_THRESHOLD = 90  # days
-```
 
 ---
 
