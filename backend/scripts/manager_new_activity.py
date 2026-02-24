@@ -7,6 +7,7 @@ import os
 import sys
 from datetime import datetime, date
 from typing import List, Dict, Optional, Tuple
+from zoneinfo import ZoneInfo
 import uuid
 import pandas as pd
 import json
@@ -33,6 +34,8 @@ class NewActivity:
         self.supabase = get_client()
         self.batch_id = str(uuid.uuid4())
         self.batch_timestamp = datetime.now()
+        current_dt = datetime.now(ZoneInfo("America/New_York")).date()
+        self.today_date = pd.Timestamp(current_dt)
         # Batch stats tracking
         self.stats= {
             "started": 0,
@@ -57,6 +60,7 @@ class NewActivity:
         print(f"{'='*60}\n")
         
         # Create new activity data
+        
         new_activity_df = pd.DataFrame([{
             "plant_id": activityData.plant_id,
             "activity_type_code": activityData.activity_type_code,
@@ -66,7 +70,7 @@ class NewActivity:
             "notes": activityData.notes,
             "result": activityData.result
         }])
-
+        
         user_id = activityData.user_id
 
         # Create factor data
@@ -80,7 +84,7 @@ class NewActivity:
         # Get variables
         plant_id = activityData.plant_id
         activity_type_code = activityData.activity_type_code
-
+        
         try:
             # GET PLANT DETAIL
             plant_data = (self.supabase
@@ -113,29 +117,25 @@ class NewActivity:
                 .order('plant_id', desc=False)
                 .order('activity_date', desc=False)
                 .execute())
-            activity_data_df = pd.DataFrame(activity_data_df.data)
+            
             ## Add new activity
+            if activity_data_df.data:
+                activity_data_df = pd.DataFrame(activity_data_df.data)    
+            else:
+                activity_data_df = pd.DataFrame(columns=['plant_id', 'activity_date', 'quantifier'])
+            
             activity_data_df = pd.concat([new_activity_df, activity_data_df], join='inner', ignore_index=True)
             activity_data_df['activity_date'] = pd.to_datetime(activity_data_df['activity_date'])
 
             # GET ALL CURRENT FACTOR CONTRIBUTIONS (for status calculations)
             factor_contribution_data = (self.supabase
-                .table('plant_factor_contribution_active')
+                .table('plant_factor_contribution')
                 .select('plant_id, factor_code, severity')
-                .eq('plant_id',plant_id)
+                .is_('end_date','null')
                 .execute())
             factor_contribution_data_df = pd.DataFrame(factor_contribution_data.data)
             factor_contribution_data_df['severity'] = pd.to_numeric(factor_contribution_data_df['severity'], errors='coerce')
             
-            # GET CURRENT FACTOR CONTRIBUTION WEIGHT (for status calculations)
-            factor_lookup = (self.supabase
-                .table('factor_lookup')
-                .select('factor_code, factor_category, weight')
-                .eq('is_active',True)
-                .execute())
-            factor_lookup_df = pd.DataFrame(factor_lookup.data)
-            factor_lookup_df['weight'] = pd.to_numeric(factor_lookup_df['weight'], errors='coerce')
-
             # Define the list of factors to be called
             list_factors_calculation = {
                 "watering": ["watering_due"],
@@ -173,6 +173,7 @@ class NewActivity:
                         print(f"Calculating {factor} contribution.")
                         plant_single_factor_contribution_df = factor_contribution_registry[factor].run(
                             plant_factor_df,
+                            today = self.today_date,
                             run_id=self.batch_id
                         )
                         plant_factor_contribution_df = pd.concat([plant_factor_contribution_df,plant_single_factor_contribution_df], ignore_index=True)
@@ -198,8 +199,8 @@ class NewActivity:
                 print(f"Calculating statuses.")
                 plant_status_df = manager_plant_status.run(
                     factor_contribution_df,
-                    factor_lookup_df,
-                    run_id=self.batch_id
+                    run_id=self.batch_id,
+                    supabase=self.supabase
                 )
                 self.stats['completed'] += 1
             except Exception as e:
@@ -211,9 +212,9 @@ class NewActivity:
                 print(f"Managing schedule.")
                 schedule_df = create_schedule(
                     plant_factor_df,
-                    factor_lookup_df,
                     today_date=self.batch_timestamp,
-                    run_id=self.batch_id
+                    run_id=self.batch_id,
+                    supabase = self.supabase
                 )
                 self.stats['completed'] += 1
             except Exception as e:

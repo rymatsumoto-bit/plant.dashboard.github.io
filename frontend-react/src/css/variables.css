@@ -1,0 +1,56 @@
+/*
+======================
+ Color Palette and Design Tokens
+======================
+ */
+
+ :root {
+
+    /*
+    -----------------------
+    Colors
+    -----------------------
+    */
+
+    /* Named Colors */
+    --c-forest-teal: #03312e;
+    --c-botanical-green: #08827A;
+    --c-forest-deep: #1a3a2e;
+    --c-sage: #7a9b76;
+    --c-moss: #4a6b5f;
+    --c-sage-mist: #91c7b1;
+    --c-cream: #f4f1ea;
+    --c-sand: #e8dcc8;
+    --c-terracotta: #c86f56;
+    --c-sunlight: #f4d58d;
+    --c-clay-peach: #EDF0F2;
+    --c-rich-soil: #401d0f;
+
+    /* Primary Colors */
+    --main-theme-primary: #03312e;
+
+    /* Shadow */
+    --shadow: rgba(26, 58, 46, 0.1);
+    --shadow-sm: 0 2px 5px rgba(0,0,0,0.1);
+    --shadow-md: 0 2px 8px rgba(0,0,0,0.1);
+    --shadow-lg: 0 4px 12px rgba(0,0,0,0.15);
+
+
+
+    /*
+    -----------------------
+    Spacing
+    -----------------------
+    */
+
+    --spacing-xs: 5px;
+    --spacing-sm: 10px;
+    --spacing-md: 15px;
+    --spacing-lg: 20px;
+    --spacing-xl: 30px;
+    --spacing-xxl: 40px;
+
+
+
+
+}

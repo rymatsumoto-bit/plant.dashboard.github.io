@@ -7,7 +7,7 @@ import pandas as pd
 import numpy as np
 import uuid
 
-def run(plant_factor_df, run_id):
+def run(plant_factor_df, today, run_id):
     print(f"\nManaging watering due factor contribution for run {run_id}...\n")
 
     """
@@ -28,10 +28,9 @@ def run(plant_factor_df, run_id):
             - plant_factor_id
             - factor_code: str
             - factor_date: date
-            - confidence: float (0.0-1.0)
+        today (date)
     Returns:
         plant_factor_contribution_df
-            - plant_factor_contribution_id: str
             - plant_factor_id
             - plant_id: str
             - factor_code: str
@@ -39,16 +38,12 @@ def run(plant_factor_df, run_id):
 
     """
 
-    # Step 01: Get run date
-    today = pd.Timestamp(date.today())
-    print(f"  ✅ Step 01")
-
-    # Step 02: Calculate days
+    # Step 01: Calculate days
     plant_factor_df['factor_date'] = pd.to_datetime(plant_factor_df['factor_date'])
     plant_factor_df['days_overdue'] = (today - plant_factor_df['factor_date']).dt.days
-    print(f"  ✅ Step 02")
+    print(f"  ✅ Step 01")
 
-    # Step 03: Establish severity thresholds
+    # Step 02: Establish severity thresholds
     """
     Thresholds:
     - HEALTHY: days_overdue <= 0
@@ -64,20 +59,20 @@ def run(plant_factor_df, run_id):
         plant_factor_df['days_overdue'] >=7
     ]
     severity = [0,0,1,2,3]
-    print(f"  ✅ Step 03")
+    print(f"  ✅ Step 02")
     
-    # Step 04: Assign severity
+    # Step 03: Assign severity
     plant_factor_df['severity'] = np.select(severity_conditions,severity,default=0)
-    print(f"  ✅ Step 04")
+    print(f"  ✅ Step 03")
 
-    # Step 05: Create data to return
+    # Step 04: Create data to return
     ## Keep only needed data
     keep_cols = ['plant_factor_id', 'plant_id', 'factor_code', 'severity']
     plant_factor_df = plant_factor_df[keep_cols]
     plant_factor_df['plant_factor_contribution_id'] = [str(uuid.uuid4()) for _ in range(len(plant_factor_df))]
     ## Replace NaT/NaN with None so Supabase receives a SQL NULL
     plant_factor_contribution_df = plant_factor_df.where(pd.notnull(plant_factor_df), None)
-    print(f"  ✅ Step 05")
+    print(f"  ✅ Step 04")
     
     print(f"\n  ✅ Watering due factor contribution finished\n")
 
