@@ -250,6 +250,7 @@ class DailyBatch:
                     "p_batch_timestamp": self.batch_timestamp,
                     "p_user_id": "9be41371-7b73-429d-a369-5cd3bd25269b",
                     "p_schedule_severity": schedule_severity_update_df,
+                    "p_factor_contribution": factor_contribution_update_df,
                     "p_status": status_update_df
                 }
             ).execute()
