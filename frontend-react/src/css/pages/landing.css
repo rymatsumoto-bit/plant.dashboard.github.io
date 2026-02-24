@@ -1,13 +1,19 @@
-.index-body {
+/*
+============================================
+ Components specific for the Landing page
+============================================
+ */
+
+.landing-body {
     font-family: 'DM Sans', sans-serif;
-    background: var(--cream);
-    color: var(--forest-deep);
+    background: var(--c-cream);
+    color: var(--c-forest-deep);
     overflow-x: hidden;
     line-height: 1.6;
 }
 
 /* Organic background texture */
-.index-body::before {
+.landing-body::before {
     content: '';
     position: fixed;
     top: 0;
@@ -22,14 +28,14 @@
     z-index: 0;
 }
 
-.index-container {
+.landing-container {
     position: relative;
     z-index: 2;
 }
 
 
 /* Navigation */
-.index-nav {
+.landing-nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -43,27 +49,28 @@
 }
 
 
-.index-logo {
+.landing-logo {
     font-family: 'Fraunces', serif;
     font-size: 1.8rem;
     font-weight: 700;
-    color: var(--forest-deep);
+    color: var(--c-forest-deep);
     display: flex;
     align-items: center;
     gap: 0.5rem;
 }
 
-.index-logo::before {
+.landing-logo::before {
     content: '🌱';
     font-size: 2rem;
 }
 
-.index-nav-buttons {
+
+.landing-nav-buttons {
     display: flex;
     gap: 1rem;
 }
 
-.index-btn {
+.landing-btn {
     padding: 0.75rem 1.5rem;
     border: none;
     border-radius: 50px;
@@ -76,36 +83,37 @@
     display: inline-block;
 }
 
-.index-btn-outline {
+.landing-btn-outline {
     background: transparent;
-    color: var(--forest-deep);
-    border: 2px solid var(--moss);
+    color: var(--c-forest-deep);
+    border: 2px solid var(--c-moss);
 }
 
-.index-btn-outline:hover {
-    background: var(--moss);
-    color: var(--cream);
+.landing-btn-outline:hover {
+    background: var(--c-moss);
+    color: var(--c-cream);
     transform: translateY(-2px);
     box-shadow: 0 5px 15px var(--shadow);
 }
 
-.index-btn-primary {
-    background: var(--terracotta);
-    color: var(--cream);
+.landing-btn-primary {
+    background: var(--c-terracotta);
+    color: var(--c-cream);
     box-shadow: 0 4px 15px rgba(200, 111, 86, 0.3);
 }
 
-.index-btn-primary:hover {
+.landing-btn-primary:hover {
     background: #b35f46;
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(200, 111, 86, 0.4);
 }
 
 
-.index-btn-large {
+.landing-btn-large {
     padding: 1rem 2.5rem;
     font-size: 1.125rem;
 }
+
 
 
 .landing-plant-icon {
@@ -117,7 +125,7 @@
 .landing-plant-name {
     font-family: 'Fraunces', serif;
     font-size: 1.5rem;
-    color: var(--forest-deep);
+    color: var(--c-forest-deep);
     margin-bottom: 0.5rem;
 }
 
@@ -126,14 +134,14 @@
     align-items: center;
     gap: 0.5rem;
     font-size: 0.9rem;
-    color: var(--moss);
+    color: var(--c-moss);
     margin-top: 0.75rem;
 }
 
 
 .landing-stat-bar {
     height: 8px;
-    background: var(--sand);
+    background: var(--c-sand);
     border-radius: 10px;
     overflow: hidden;
     flex: 1;
@@ -141,7 +149,7 @@
 
 .landing-stat-fill {
     height: 100%;
-    background: linear-gradient(90deg, var(--sage), var(--sunlight));
+    background: linear-gradient(90deg, var(--c-sage), var(--c-sunlight));
     border-radius: 10px;
     animation: fillBar 2s ease-out;
 }
@@ -152,96 +160,145 @@
 
 
 
-/* Features Section */
-.features {
-    padding: 6rem 5%;
-    background: white;
+
+.landing-plant-card-showcase {
     position: relative;
+    width: 100%;
+    height: 500px;
 }
 
-.features::before {
-    content: '';
+.landing-floating-card {
     position: absolute;
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 10px 40px var(--shadow);
+    transition: transform 0.3s ease;
+}
+
+.landing-floating-card:hover {
+    transform: translateY(-10px) rotate(2deg);
+}
+
+
+
+.landing-card-1 {
+    width: 280px;
     top: 0;
-    left: 0;
+    left: 50%;
+    transform: translateX(-50%) rotate(-3deg);
+    animation: floatCard1 6s ease-in-out infinite;
+    z-index: 3;
+}
+
+.landing-card-2 {
+    width: 260px;
+    top: 120px;
     right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, transparent, var(--sage), transparent);
+    transform: rotate(5deg);
+    animation: floatCard2 7s ease-in-out infinite;
+    z-index: 2;
 }
 
-.section-title {
-    text-align: center;
-    margin-bottom: 4rem;
-    animation: fadeInUp 1s ease-out;
+.landing-card-3 {
+    width: 240px;
+    bottom: 0;
+    left: 0;
+    transform: rotate(-5deg);
+    animation: floatCard3 8s ease-in-out infinite;
+    z-index: 1;
 }
 
-@keyframes fadeInUp {
-    from { transform: translateY(30px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
+@keyframes floatCard1 {
+    0%, 100% { transform: translateX(-50%) rotate(-3deg) translateY(0); }
+    50% { transform: translateX(-50%) rotate(-3deg) translateY(-15px); }
 }
 
-.section-title h2 {
-    font-family: 'Fraunces', serif;
-    font-size: 3rem;
-    color: var(--forest-deep);
-    margin-bottom: 1rem;
+@keyframes floatCard2 {
+    0%, 100% { transform: rotate(5deg) translateY(0); }
+    50% { transform: rotate(5deg) translateY(-20px); }
 }
 
-.section-title p {
-    font-size: 1.25rem;
-    color: var(--moss);
+@keyframes floatCard3 {
+    0%, 100% { transform: rotate(-5deg) translateY(0); }
+    50% { transform: rotate(-5deg) translateY(-10px); }
 }
 
-.features-grid {
+
+
+
+.landing-features-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 3rem;
 }
 
-.feature-card {
+.landing-feature-card {
     text-align: center;
     padding: 2rem;
     animation: fadeInUp 1s ease-out backwards;
 }
 
-.feature-card:nth-child(1) { animation-delay: 0.1s; }
-.feature-card:nth-child(2) { animation-delay: 0.2s; }
-.feature-card:nth-child(3) { animation-delay: 0.3s; }
+.landing-feature-card:nth-child(1) { animation-delay: 0.1s; }
+.landing-feature-card:nth-child(2) { animation-delay: 0.2s; }
+.landing-feature-card:nth-child(3) { animation-delay: 0.3s; }
 
-.feature-icon {
+.landing-feature-icon {
     font-size: 4rem;
     margin-bottom: 1.5rem;
     display: inline-block;
     transition: transform 0.3s ease;
 }
 
-.feature-card:hover .feature-icon {
+.landing-feature-card:hover .landing-feature-icon {
     transform: scale(1.1) rotate(5deg);
 }
 
-.feature-card h3 {
+.landing-feature-card h3 {
     font-family: 'Fraunces', serif;
     font-size: 1.75rem;
-    color: var(--forest-deep);
+    color: var(--c-forest-deep);
     margin-bottom: 1rem;
 }
 
-.feature-card p {
+.landing-feature-card p {
     color: var(--moss);
     line-height: 1.7;
 }
 
+
+
+.landing-section-title {
+    text-align: center;
+    margin-bottom: 4rem;
+    animation: fadeInUp 1s ease-out;
+}
+
+.landing-section-title h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 3rem;
+    color: var(--c-forest-deep);
+    margin-bottom: 1rem;
+}
+
+.landing-section-title p {
+    font-size: 1.25rem;
+    color: var(--c-moss);
+}
+
+
+
 /* CTA Section */
-.cta {
+.landing-cta {
     padding: 6rem 5%;
-    background: linear-gradient(135deg, var(--forest-deep) 0%, var(--moss) 100%);
-    color: var(--cream);
+    background: linear-gradient(135deg, var(--c-forest-deep) 0%, var(--c-moss) 100%);
+    color: var(--c-cream);
     text-align: center;
     position: relative;
     overflow: hidden;
 }
 
-.cta::before {
+.landing-cta::before {
     content: '';
     position: absolute;
     top: -50%;
@@ -257,46 +314,46 @@
     50% { transform: scale(1.1); opacity: 0.8; }
 }
 
-.cta-content {
+.landing-cta-content {
     position: relative;
     z-index: 2;
 }
 
-.cta h2 {
+.landing-cta h2 {
     font-family: 'Fraunces', serif;
     font-size: 3.5rem;
     margin-bottom: 1.5rem;
     animation: fadeInUp 1s ease-out;
 }
 
-.cta p {
+.landing-cta p {
     font-size: 1.5rem;
     margin-bottom: 2.5rem;
     opacity: 0.9;
     animation: fadeInUp 1s ease-out 0.2s backwards;
 }
 
-.cta .btn-primary {
-    background: var(--cream);
-    color: var(--forest-deep);
+.landing-cta .landing-btn-primary {
+    background: var(--c-cream);
+    color: var(--c-forest-deep);
     animation: fadeInUp 1s ease-out 0.4s backwards;
 }
 
-.cta .btn-primary:hover {
-    background: var(--sand);
+.landing-cta .landing-btn-primary:hover {
+    background: var(--c-sand);
     transform: translateY(-2px) scale(1.05);
 }
 
 
 /* Footer */
-footer {
+.landing-footer {
     padding: 3rem 5%;
-    background: var(--forest-deep);
-    color: var(--cream);
+    background: var(--c-forest-deep);
+    color: var(--c-cream);
     text-align: center;
 }
 
-footer p {
+.landing-footer p {
     opacity: 0.8;
 }
 

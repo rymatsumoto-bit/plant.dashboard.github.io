@@ -71,10 +71,10 @@ class FactorsContributionCalculator:
         """Fetch all active factors from database"""
         print("  🔍 Fetching active factors...")
         response = (self.supabase
-                   .table('plant_factor_active')
-                   .select('plant_factor_id')
-                   .eq('is_active', True)
-                   .execute())
+            .table('plant_factor')
+            .select('plant_factor_id')
+            .is_('end_date', 'null')
+            .execute())
         return response.data
     
 def main():
