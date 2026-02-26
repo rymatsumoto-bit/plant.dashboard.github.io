@@ -7,8 +7,7 @@ export const API_CONFIG = {
     
     ENDPOINTS: {
         NEW_ACTIVITY: '/api/new-activity',
-        STATUS: '/status',
-        HEALTH: '/'
+        MANUAL_DAILY_BATCH: '/api/manual-daily-batch'
     }
 };
 

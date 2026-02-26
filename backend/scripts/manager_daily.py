@@ -240,6 +240,7 @@ class DailyBatch:
             # PREPARE DATA TO UPLOAD
             self.batch_timestamp = self.batch_timestamp.isoformat()
             schedule_severity_update_df = json.loads(schedule_severity_update_df.to_json(orient="records", date_format="iso"))
+            factor_contribution_update_df = json.loads(factor_contribution_update_df.to_json(orient="records", date_format="iso"))
             status_update_df = json.loads(status_update_df.to_json(orient="records", date_format="iso"))
 
             # EXECUTE IN SUPAPBASE

@@ -49,7 +49,8 @@ class PlantActivity(BaseModel):
     notes: Optional[str] = None
     result: Optional[str] = None
     user_id: str
-    
+
+
 # ============================================
 # ENDPOINTS
 # ============================================
@@ -95,6 +96,20 @@ async def daily_batch(
             detail=f"Failed to process daily batch: {str(e)}"
         )
 
+# Daily Routine Manual Trigger
+@app.post("/api/manual-daily-batch")
+async def manual_daily_batch(background_tasks: BackgroundTasks):
+    # This acts as a bridge. It calls your logic directly, 
+    # bypassing the need for the JS to know the CRON_SECRET.
+    try:
+        def run_batch():
+            batch = DailyBatch()
+            batch.run()
+
+        background_tasks.add_task(run_batch)
+        return {"status": "started", "message": "Manual trigger successful"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 # New activity endpoint (watering, fertilizing, etc.)
