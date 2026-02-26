@@ -2,6 +2,8 @@
 // SETTINGS.JS - Settings View Logic
 // ============================================
 
+import { getApiUrl, API_CONFIG } from '../services/api.js';
+
 /**
  * Initialize settings view
  */
@@ -13,6 +15,10 @@ export function initializeSettings() {
     
     // Setup settings forms
     setupSettingsForms();
+
+    // Setup event listeners
+    setupSettingsListeners();
+
 }
 
 /**
@@ -40,4 +46,33 @@ function setupSettingsForms() {
 export function savePreferences(preferences) {
     console.log('Saving preferences:', preferences);
     // TODO: Save to localStorage/database
+}
+
+
+/**
+ * Setup settings view listeners
+ */
+function setupSettingsListeners() {
+
+    // Daily Batch Button
+    const dailyBatchBtn = document.getElementById('daily-batch-btn');
+    if (dailyBatchBtn) {
+        dailyBatchBtn.addEventListener('click', async () => {
+            try {
+                // Call Python backend to run daily batch
+                const response = await fetch(getApiUrl(API_CONFIG.ENDPOINTS.MANUAL_DAILY_BATCH), {
+                    method: 'POST'
+                });
+
+                if (!response.ok) {
+                    throw new Error(errorData.detail || 'Failed to launch daily batch');
+                }                
+            } catch (error) {
+                console.error('Error launching daily batch:', error);
+                showNotification('Error launching daily batch', 'error');
+            }
+        });
+    }
+
+    console.log('Settings listeners ready');
 }
