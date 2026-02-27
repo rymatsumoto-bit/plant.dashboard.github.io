@@ -1,0 +1,51 @@
+/**
+ * CHUNKS
+ * pieces of containers to segregate content
+ */
+
+/* Goes outside and above a card */
+.chunk-title {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    font-size: var(--font-size-xl);
+    font-weight: 600;
+    align-items: center;
+}
+
+.chunk-container {
+    display: grid;
+    gap: var(--spacing-xl);
+    margin-bottom: var(--spacing-xl);
+    align-items: start;
+}
+
+.chunk-container-single-column {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+    align-items: start;
+}
+
+.chunk-container-1-1 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-xl);
+    margin-bottom: var(--spacing-xl);
+    align-items: start;
+}
+
+.chunk-container-2-1 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-xl);
+    margin-bottom: var(--spacing-xl);
+    align-items: start;
+}
+
+.chunk-container-1-2 {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: var(--spacing-xl);
+    margin-bottom: var(--spacing-xl);
+    align-items: start;
+}

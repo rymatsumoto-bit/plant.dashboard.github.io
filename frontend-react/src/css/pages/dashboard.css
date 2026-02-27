@@ -1,0 +1,28 @@
+/* Dashboard Content */
+
+/* Dashboard Schedule List Container */
+#dashboard-schedule-list {
+    max-height: 450px; /* Adjust based on card height minus padding */
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: var(--spacing-sm); /* Space for scrollbar */
+}
+
+/* Optional: Style the scrollbar */
+#dashboard-schedule-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+#dashboard-schedule-list::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+    border-radius: var(--radius-sm);
+}
+
+#dashboard-schedule-list::-webkit-scrollbar-thumb {
+    background: var(--bg-secondary);
+    border-radius: var(--radius-sm);
+}
+
+#dashboard-schedule-list::-webkit-scrollbar-thumb:hover {
+    background: var(--c-sage-mist);
+}

@@ -1,26 +1,9 @@
-import { useState, useEffect } from 'react';
-import { getCurrentUser } from '../services/supabase';
+import { useState } from 'react';
 import LoginModal from '../components/LoginModal';
-import '../css/main.css';
-
 
 export default function Landing() {
   // State to control login modal visibility
   const [showLoginModal, setShowLoginModal] = useState(false);
-
-  // Check if user is already authenticated on page load
-  useEffect(() => {
-    async function checkAuth() {
-      const user = await getCurrentUser();
-      if (user) {
-        // User is logged in - redirect to dashboard
-        // For now, just console log. We'll add routing later
-        console.log('User already logged in:', user.email);
-        // TODO: Navigate to dashboard when we build it
-      }
-    }
-    checkAuth();
-  }, []);
 
   // Handler for opening login modal
   const handleSignInClick = () => {
@@ -35,8 +18,9 @@ export default function Landing() {
   // Handler for successful login
   const handleLoginSuccess = () => {
     setShowLoginModal(false);
-    // TODO: Navigate to dashboard when we build it
-    console.log('Login successful! Will redirect to dashboard...');
+    // Reload the page to trigger App.jsx auth check
+    // This will cause App to re-check auth and show Dashboard
+    window.location.reload();
   };
 
   return (

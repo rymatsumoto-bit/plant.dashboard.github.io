@@ -1,17 +1,117 @@
-/*
-======================
- Buttons
-======================
- */
+/* Button Types */
+/*--------------*/ 
 
-/*
-======================
- Sizes
-======================
- */
-
-.btn-large {
-    padding: 1rem 2.5rem;
-    font-size: 1.125rem;
+/* Button */
+.btn {
+    display: inline-flex;
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    padding: 10px 20px;
+    gap: 8px;
+    border-radius: var(--radius-sm);
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition-fast);
 }
 
+.btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.btn:active {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Small Button */
+.btn-small {
+    display: inline-flex;
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    padding: 5px 10px;
+    gap: 6px;
+    border-radius: var(--radius-sm);
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    min-width: 75px;
+}
+
+.btn-small:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* Button Styles */
+/*--------------*/ 
+
+/* Theme Buttons Colors */
+
+.btn-primary {
+    background: var(--btn-primary-bg);
+    color: var(--btn-primary-text);
+}
+
+.btn-primary:hover {
+    background: var(--btn-primary-hover);
+}
+
+.btn-secondary {
+    background: var(--btn-secondary-bg);
+    color: var(--btn-secondary-text);
+}
+
+.btn-secondary:hover {
+    background: var(--btn-secondary-hover);
+}
+
+
+/* Action Buttons Colors */
+
+.btn-add {
+    background: var(--btn-act-add-bg);
+    color: var(--btn-act-add-text);
+}
+
+.btn-edit {
+    background: var(--btn-act-edit-bg);
+    color: var(--btn-act-edit-text);
+}
+
+.btn-delete {
+    background: var(--btn-act-delete-bg);
+    color: var(--btn-act-delete-text);
+}
+
+.btn-cancel {
+    background: var(--btn-act-cancel-bg);
+    color: var(--btn-act-cancel-text);
+}
+
+/* Specialty Button Types */
+/*------------------------*/ 
+
+
+/* Toggle Buttons */
+.btn-toggle {
+    padding: 8px;
+    border: 2px solid var(--border-light);
+    background: var(--bg-card);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.btn-toggle:hover {
+    border-color: var(--c-botanical-green);
+}
+
+.btn-toggle.active {
+    background: var(--c-botanical-green);
+    color: white;
+    border-color: var(--c-botanical-green);
+}
