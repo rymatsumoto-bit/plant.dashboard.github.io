@@ -260,6 +260,91 @@ plant-care-dashboard/
 
 ```
 
+
+
+### Future File Structure (with React)
+```
+plant-care-dashboard/
+│
+├── frontend/                              # First level views
+│   ├── index.html                          # Main application shell
+│   │
+│   ├── public/
+│   │
+│   ├── src/                              # First level views
+│   │   ├── App.jsx                             # Static assets
+│   │   ├── main.jsx                             # Static assets
+│   │   │
+│   │   ├── assets/                             # Static assets
+│   │   │
+│   │   ├── components/                         # Reusable UI components
+│   │   │   ├── KPICard.jsx                     # Card with KPIs
+│   │   │   ├── LoginModal.jsx                  # Box to login
+│   │   │   ├── ScheduleItem.jsx                # Component with schedule items
+│   │   │   ├── Sidebar.jsx                     # Navigation sidebar
+│   │   │
+│   │   ├── css/
+│   │   │   ├── main.css                        # Import all css files, to be the single reference in all html files
+│   │   │   ├── reset.css                       # CSS reset
+│   │   │   ├── variables.css                   # Design tokens (colors, spacing, etc.)
+│   │   │   ├── base.css                        # Base styles and utilities
+│   │   │   │
+│   │   │   ├── components/
+│   │   │   │   ├── buttons.css                 # Button styles
+│   │   │   │   ├── hero.css                    # For landing page
+│   │   │   │   ├── leaf.css                    # For landing page
+│   │   │   │   └── .css                  # 
+│   │   │   │
+│   │   │   └── pages/
+│   │   │      ├── landing.css                 # For the Landing
+│   │   │      └── .css                # Settings feature styles
+│   │   │
+│   │   ├── pages/                              # Pages codes
+│   │   │   ├── Dashboard.jsx                   # Dashboard view
+│   │   │   ├── Landing.jsx                     # Landing page (pre-sign in)
+│   │   │   └── .
+│   │   │
+│   │   ├── services/                           # Services and utiliites
+│   │   │   ├── metrics.js                      # Call for metrics from Supabase
+│   │   │   ├── supabase.js                     # Connects to supabase
+│   │   │   └── .
+│
+├── backend/                             # Python related folders
+│   ├── .env
+│   ├── requirements.txt
+│   ├── app.py
+│   │
+│   ├── config/
+│   │   └── supabase.py                 # Supabase URL + service ke
+│   │
+│   ├── data/                           # Local data
+│   │   └── cache/                      # Temp local data
+│   │
+│   ├── scripts/                       # python codes
+│   │   ├── factors/                   # calculations for each factor
+│   │   │   └── watering_due.py        # factor calculation for a watering due date
+│   │   ├── factors_contribution/      # factor contribution for the overall plant status
+│   │   │   └── watering_due.py        # 
+│   │   ├── manager_plant_factor_contribution.py   # Driver of calculation of factor contribution for plant status
+│   │   ├── manager_plant_factor.py                # Driver of calculation of each factor
+│   │   ├── manager_plant_status.py                # Driver of calculation of plant status
+│   │   └── manager_schedule.py                    # Driver to manage schedule items
+│   │
+│   └── utils/                          # Utility codes
+│       ├── supabase_client.py          # Supabase connection logic
+│       ├── dates.py                    # Date helpers
+│       └── weather.py                  # Weather API integration
+│
+└── docs/
+    ├── CLAUDE.md                       # This file
+    ├── DATA-SCHEMA.md
+    ├── LOGIC.md
+    ├── FEATURES.md
+    └── DECISIONS.md
+
+```
+
+
 ---
 
 ## Current Status

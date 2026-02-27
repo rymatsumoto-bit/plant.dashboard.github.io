@@ -29,12 +29,71 @@
     /* Primary Colors */
     --main-theme-primary: #03312e;
 
+    /* Background */
+    --bg-primary: #effdf7;
+    --bg-secondary: #d4ffee;
+    --bg-card: #ffffff;
+    --bg-white: #ffffff;
+
+    /* Text Colors */
+    --text-primary: #401d0f;
+    --text-secondary: #03312e;
+    --text-light: #5a5a5a;
+
+    /* Status Colors */
+    --info-bg: #d8f0e8;
+    --info-text: #02241f;
+    --info-accent: #91c7b1;
+    
+    --attention-bg: #faffb8;
+    --attention-text: #bbc52e;
+    --attention-accent: #eeff00;
+    
+    --warning-bg: #ffefd9;
+    --warning-text: #8b5000;
+    --warning-accent: #ff9800;
+    
+    --danger-bg: #ffd4c4;
+    --danger-text: #8b2500;
+    --danger-accent: #d84315;
+    
+    --success-bg: #d4e5a8;
+    --success-text: #4a5a08;
+    --success-accent: #3fa816;
+
+    /* Border Colors */
+    --border-light: #e2d4c4;
+    --border-medium: #c7b9a9;
+
+
     /* Shadow */
     --shadow: rgba(26, 58, 46, 0.1);
     --shadow-sm: 0 2px 5px rgba(0,0,0,0.1);
     --shadow-md: 0 2px 8px rgba(0,0,0,0.1);
     --shadow-lg: 0 4px 12px rgba(0,0,0,0.15);
 
+
+    /* Button Colors */
+    --btn-primary-bg: #03312e;
+    --btn-primary-text: #ffe2d1;
+    --btn-primary-hover: #024a45;
+    --btn-secondary-bg: #6f7c12;
+    --btn-secondary-text: #ffe2d1;
+    --btn-secondary-hover: #596b0f;
+    
+    /* Action Button Colors */
+    --btn-act-add-bg: #03312e;
+    --btn-act-add-text: #dcffd1;
+    --btn-act-add-hover: #024a45;
+    --btn-act-edit-bg: #4e7c12;
+    --btn-act-edit-text: #edffe7;
+    --btn-act-edit-hover: #5d8529;
+    --btn-act-cancel-bg: #ad9300;
+    --btn-act-cancel-text: #fff6c5;
+    --btn-act-cancel-hover: #bba110;
+    --btn-act-delete-bg: #b15e00;
+    --btn-act-delete-text: #fcd4a6;
+    --btn-act-delete-hover: #b96c13;
 
 
     /*
@@ -51,6 +110,43 @@
     --spacing-xxl: 40px;
 
 
+    /*
+    -----------------------
+    Border
+    -----------------------
+    */
+
+    --radius-sm: 5px;
+    --radius-md: 8px;
+    --radius-lg: 10px;
+    --radius-xl: 15px;
+    --radius-round: 50%;
+
+
+    /*
+    -----------------------
+    Typography
+    -----------------------
+    */
+
+    --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --font-size-xs: 0.7em;
+    --font-size-sm: 0.85em;
+    --font-size-base: 1em;
+    --font-size-lg: 1.1em;
+    --font-size-xl: 1.3em;
+    --font-size-xxl: 1.5em;
+    --font-size-title: 2em;
+
+    /*
+    -----------------------
+    Transitions
+    -----------------------
+    */
+
+    --transition-fast: 0.2s ease;
+    --transition-base: 0.3s ease;
+    --transition-slow: 0.5s ease;
 
 
 }

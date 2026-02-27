@@ -28,13 +28,13 @@
 
 .hero-content h1 em {
     font-style: italic;
-    color: var(--sage);
+    color: var(--c-sage);
     font-weight: 300;
 }
 
 .hero-content p {
     font-size: 1.25rem;
-    color: var(--moss);
+    color: var(--c-moss);
     margin-bottom: 2.5rem;
     line-height: 1.8;
 }
@@ -63,19 +63,19 @@
     font-size: 4.5rem;
     line-height: 1.1;
     margin-bottom: 1.5rem;
-    color: var(--forest-deep);
+    color: var(--c-forest-deep);
     font-weight: 600;
 }
 
 .hero-content h1 em {
     font-style: italic;
-    color: var(--sage);
+    color: var(--c-sage);
     font-weight: 300;
 }
 
 .hero-content p {
     font-size: 1.25rem;
-    color: var(--moss);
+    color: var(--c-moss);
     margin-bottom: 2.5rem;
     line-height: 1.8;
 }

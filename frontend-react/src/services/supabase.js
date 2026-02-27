@@ -282,7 +282,7 @@ export async function getPlantDetails(plantId) {
 export async function getActivityTypes() {
     const { data, error } = await supabase
         .from('plant_activity_type_lookup')
-        .select('activity_type_code, activity_label, activity_category')
+        .select('activity_type_code, activity_label, activity_category, background_color')
         .eq('is_active', true)
         .order('activity_label');
     

@@ -2,8 +2,16 @@
 @import "./variables.css";
 @import "./base.css";
 
-@import "./components/hero.css";
 @import "./components/buttons.css";
+@import "./components/cards.css";
+@import "./components/chunks.css";
+@import "./components/empty-state.css";
+@import "./components/hero.css";
 @import "./components/leaf.css";
+@import "./components/main-content.css";
+@import "./components/schedule.css";
+@import "./components/sidebar.css";
+@import "./components/toolbar.css";
 
+@import "./pages/dashboard.css";
 @import "./pages/landing.css";

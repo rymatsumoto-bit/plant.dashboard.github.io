@@ -1,0 +1,130 @@
+/* Sidebar */
+.sidebar {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    width: 250px;
+    background: var(--c-forest-teal);
+    color: var(--c-clay-peach);
+    padding: var(--spacing-xl) var(--spacing-lg);
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: var(--spacing-xs);
+}
+
+.sidebar-header .logo {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    filter: brightness(0) invert(1);
+}
+
+.sidebar-header h1 {
+    margin: 0;
+    font-size: var(--font-size-xxl);
+    color: var(--c-clay-peach);
+}
+
+.sidebar-header .version {
+    font-size: 0.6em;
+    opacity: 0.9;
+    margin-left: 8px;
+    font-weight: 400;
+}
+
+.sidebar .tagline {
+    font-size: 0.9em;
+    opacity: 0.9;
+    margin-bottom: var(--spacing-xxl);
+}
+
+/* Navigation */
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.sidebar-nav-top {
+    gap: var(--spacing-sm);
+    flex: 1;
+    overflow-y: auto;
+}
+
+.sidebar-nav-bottom {
+    margin-top: auto;
+    flex-shrink: 0;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: background var(--transition-base);
+    color: var(--c-clay-peach);
+}
+
+.nav-item:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+.nav-item.active {
+    background: rgba(255,255,255,0.2);
+    font-weight: 600;
+}
+
+.nav-icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    filter: brightness(0) invert(1);
+}
+
+.nav-icon:hover {
+    background: var(--c-botanical-green);
+    border-color: var(--c-botanical-green);
+    transform: rotate(45deg);
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-md);
+}
+
+.user-details {
+    flex: 1;
+    overflow: hidden;
+}
+
+.user-name {
+    font-weight: 600;
+    font-size: var(--font-size-base);
+    color: var(--c-clay-peach);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.user-email {
+    font-size: var(--font-size-sm);
+    color: rgba(237, 240, 242, 0.8);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

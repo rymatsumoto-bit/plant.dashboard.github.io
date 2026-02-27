@@ -64,7 +64,3 @@
     font-weight: 500;
     text-transform: uppercase;
 }
-
-.dash-schedule-badge[schedule-label="watering"] {
-    background: #47bbff;
-}

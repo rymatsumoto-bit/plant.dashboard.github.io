@@ -183,7 +183,7 @@
 
 
 .landing-card-1 {
-    width: 280px;
+    width: 260px;
     top: 0;
     left: 50%;
     transform: translateX(-50%) rotate(-3deg);
@@ -201,7 +201,7 @@
 }
 
 .landing-card-3 {
-    width: 240px;
+    width: 260px;
     bottom: 0;
     left: 0;
     transform: rotate(-5deg);
