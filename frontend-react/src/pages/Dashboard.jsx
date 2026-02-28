@@ -40,7 +40,7 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh' }}>
+    <div className="page-container">
       {/* Sidebar Navigation */}
       <Sidebar currentView="dashboard" />
 
