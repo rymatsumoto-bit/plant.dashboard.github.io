@@ -273,58 +273,66 @@ plant-care-dashboard/
 │   │
 │   ├── src/                              # First level views
 │   │   ├── App.jsx                             # Static assets
-│   │   ├── main.jsx                             # Static assets
+│   │   ├── main.jsx                            # Static assets
 │   │   │
 │   │   ├── assets/                             # Static assets
 │   │   │
-│   │   ├── components/                         # Reusable UI components
-│   │   │   ├── KPICard.jsx                     # Card with KPIs
-│   │   │   ├── LoginModal.jsx                  # Box to login
-│   │   │   ├── ScheduleItem.jsx                # Component with schedule items
-│   │   │   ├── Sidebar.jsx                     # Navigation sidebar
+│   │   ├── layout/                             # Navigation, layout, structure
+│   │   │   ├── Sidebar.jsx                         # Navigation sidebar
+│   │   │   └── 
+│   │   │
+│   │   ├── modals/                             # All modals
+│   │   │   ├── LoginModal.jsx                      # Box to login
+│   │   │   └── 
+│   │   │
+│   │   ├── dasboard/                           # For Dashboard.jsx
+│   │   │   ├── KPICard.jsx                         # KPI cards
+│   │   │   ├── ScheduleItem.jsx                    # Schedule item component
+│   │   │   └── 
 │   │   │
 │   │   ├── css/
-│   │   │   ├── main.css                        # Import all css files, to be the single reference in all html files
-│   │   │   ├── reset.css                       # CSS reset
-│   │   │   ├── variables.css                   # Design tokens (colors, spacing, etc.)
-│   │   │   ├── base.css                        # Base styles and utilities
+│   │   │   ├── main.css                            # Import all css files, to be the single reference in all html files
+│   │   │   ├── reset.css                           # CSS reset
+│   │   │   ├── variables.css                       # Design tokens (colors, spacing, etc.)
+│   │   │   ├── base.css                            # Base styles and utilities
 │   │   │   │
 │   │   │   ├── components/
-│   │   │   │   ├── buttons.css                 # Button styles
-│   │   │   │   ├── hero.css                    # For landing page
-│   │   │   │   ├── leaf.css                    # For landing page
-│   │   │   │   └── .css                  # 
+│   │   │   │   ├── buttons.css                     # Button styles
+│   │   │   │   ├── hero.css                        # For landing page
+│   │   │   │   ├── leaf.css                        # For landing page
+│   │   │   │   └── .css                      # 
 │   │   │   │
 │   │   │   └── pages/
-│   │   │      ├── landing.css                 # For the Landing
+│   │   │      ├── landing.css                      # For the Landing
 │   │   │      └── .css                # Settings feature styles
 │   │   │
 │   │   ├── pages/                              # Pages codes
-│   │   │   ├── Dashboard.jsx                   # Dashboard view
-│   │   │   ├── Landing.jsx                     # Landing page (pre-sign in)
+│   │   │   ├── Dashboard.jsx                       # Dashboard view
+│   │   │   ├── Landing.jsx                         # Landing page (pre-sign in)
 │   │   │   └── .
 │   │   │
 │   │   ├── services/                           # Services and utiliites
-│   │   │   ├── metrics.js                      # Call for metrics from Supabase
-│   │   │   ├── supabase.js                     # Connects to supabase
+│   │   │   ├── metrics.js                          # Call for metrics from Supabase
+│   │   │   ├── supabase.js                         # Connects to supabase
 │   │   │   └── .
 │
-├── backend/                             # Python related folders
-│   ├── .env
-│   ├── requirements.txt
-│   ├── app.py
+├── backend/                        # Python related folders
+│   ├── .env                            # Local variables (not exported)
+│   ├── requirements.txt                # System
 │   │
-│   ├── config/
-│   │   └── supabase.py                 # Supabase URL + service ke
+│   ├── app.py                          # Main controller
+│   │
+│   ├── config/                         # Configurations
+│   │   └── supabase.py                     # Supabase URL + service ke
 │   │
 │   ├── data/                           # Local data
-│   │   └── cache/                      # Temp local data
+│   │   └── cache/                          # Temp local data
 │   │
-│   ├── scripts/                       # python codes
-│   │   ├── factors/                   # calculations for each factor
-│   │   │   └── watering_due.py        # factor calculation for a watering due date
-│   │   ├── factors_contribution/      # factor contribution for the overall plant status
-│   │   │   └── watering_due.py        # 
+│   ├── scripts/                        # python codes
+│   │   ├── factors/                        # calculations for each factor
+│   │   │   └── watering_due.py                 # factor calculation for a watering due date
+│   │   ├── factors_contribution/           # factor contribution for the overall plant status
+│   │   │   └── watering_due.py                 # 
 │   │   ├── manager_plant_factor_contribution.py   # Driver of calculation of factor contribution for plant status
 │   │   ├── manager_plant_factor.py                # Driver of calculation of each factor
 │   │   ├── manager_plant_status.py                # Driver of calculation of plant status

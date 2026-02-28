@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getCurrentUser, signOut } from '../services/supabase';
+import { getCurrentUser, signOut } from '../../services/supabase';
 
 function Sidebar({ currentView = 'dashboard' }) {
   const [user, setUser] = useState(null);

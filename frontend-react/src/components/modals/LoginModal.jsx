@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import '../css/main.css';
-import { signIn } from '../services/supabase';
+import '../../css/main.css';
+import { signIn } from '../../services/supabase';
 
 export default function LoginModal({ onClose, onSuccess }) {
   // State for form inputs
