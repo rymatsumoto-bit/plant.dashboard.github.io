@@ -22,7 +22,6 @@ export async function openNewActivityModal() {
                 await addPlantActivity(data);
                 showNotification('Activity logged successfully!', 'success');
                 modal.querySelector('[data-action="close"]').click();
-                this.loadView(this.currentView);
             } catch (error) {
                 console.error('Error logging activity:', error);
                 showNotification('Failed to log activity', 'error');

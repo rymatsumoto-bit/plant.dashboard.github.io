@@ -341,7 +341,7 @@ export async function addPlantActivity(activityData) {
             activity_date: activityData.activity_date,
             quantifier: activityData.quantifier || null,
             unit: activityData.unit || null,
-            details: activityData.notes || null,
+            notes: activityData.notes || null,
             user_id: userId
         }])
         .select();
