@@ -25,7 +25,7 @@ function App() {
         if (colors) {
           colors.forEach(config => {
             document.documentElement.style.setProperty(
-              `--schedule-${config.activity_category_code}`,
+              `--schedule-${config.activity_type_code}`,
               config.background_color
             );
           });

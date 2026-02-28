@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { getDataMetrics } from '../services/metrics';
 import { getScheduleActive } from '../services/supabase';
-import Sidebar from '../components/Sidebar';
-import KPICard from '../components/KPICard';
-import ScheduleItem from '../components/ScheduleItem';
+import Sidebar from '../components/layout/Sidebar';
+import KPICard from '../components/dashboard/KPICard';
+import ScheduleCard from '../components/dashboard/ScheduleCard';
 
 export default function Dashboard() {
   // State for data
@@ -103,17 +103,7 @@ export default function Dashboard() {
               {/* Schedule Section */}
               <div className="chunk-container-single-column">
                 <div className="chunk-title">Schedule</div>
-                <div className="card">
-                  <div className="chunk-container-single-column">
-                    {schedule.length === 0 ? (
-                      <div className="empty-state">NO ITEMS</div>
-                    ) : (
-                      schedule.map((item) => (
-                        <ScheduleItem key={item.schedule_id} schedule={item} />
-                      ))
-                    )}
-                  </div>
-                </div>
+                <ScheduleCard schedule={schedule} />
               </div>
             </div>
           )}

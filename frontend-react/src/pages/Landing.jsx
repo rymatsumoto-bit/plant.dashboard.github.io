@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import LoginModal from '../components/LoginModal';
+import LoginModal from '../components/modals/LoginModal';
 
 export default function Landing() {
   // State to control login modal visibility
