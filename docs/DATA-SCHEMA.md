@@ -1,5 +1,5 @@
-| table_markdown                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| table_markdown                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | ## address
 
 ### Columns
@@ -22,23 +22,7 @@
 ### Primary Key
 - address_id
 
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| ## alerts_active_view
-
-### Columns
-| Column | Type | Nullable | Default |
-| --- | --- | --- | --- |
-| alert_id | uuid | YES |  |
-| alert_type | text | YES |  |
-| alert_label | text | YES |  |
-| alert_category | text | YES |  |
-| alert_severity | text | YES |  |
-| target_date | date | YES |  |
-| plant_id | uuid | YES |  |
-| plant_name | text | YES |  |
-
-### Primary Key\n- (none)\n
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | ## batch
 
 ### Columns
@@ -53,7 +37,7 @@
 ### Primary Key
 - batch_id
 
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | ## compass_direction_lookup
 
 ### Columns
@@ -69,7 +53,7 @@
 ### Primary Key
 - direction_code
 
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | ## factor_lookup
 
 ### Columns
@@ -89,7 +73,7 @@
 ### Primary Key
 - factor_code
 
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | ## habitat
 
 ### Columns
@@ -116,7 +100,7 @@
 
 ### Foreign Keys
 - humidity_level_id → habitat_humidity_level_lookup.humidity_level_id
-                                                                                                                                                                                                                                                                                                                                                    |
+                                                                                                                                                                                                                                                                                    |
 | ## habitat_classifications
 
 ### Columns
@@ -132,13 +116,14 @@
 | confidence_score | numeric | YES |  |
 | classification_date | timestamp with time zone | YES |  |
 | notes | jsonb | YES |  |
+| user_id | uuid | YES | auth.uid() |
 
 ### Primary Key
 - classification_id
 
 ### Foreign Keys
 - habitat_id → habitat.habitat_id
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | ## habitat_humidity_level_lookup
 
 ### Columns
@@ -154,7 +139,7 @@
 ### Primary Key
 - humidity_level_id
 
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | ## habitat_light_artificial
 
 ### Columns
@@ -183,7 +168,7 @@
 - light_artificial_strength_id → habitat_light_artificial_strength_lookup.light_artificial_strength_id
 - light_schedule_end_type_id → habitat_light_schedule_end_type_lookup.light_schedule_end_type_id
 - light_schedule_start_type_id → habitat_light_schedule_start_type_lookup.light_schedule_start_type_id
-                                                                 |
+ |
 | ## habitat_light_artificial_strength_lookup
 
 ### Columns
@@ -199,7 +184,7 @@
 ### Primary Key
 - light_artificial_strength_id
 
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | ## habitat_light_outdoor
 
 ### Columns
@@ -220,7 +205,7 @@
 ### Foreign Keys
 - address_id → address.address_id
 - habitat_id → habitat.habitat_id
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | ## habitat_light_outdoor_direction
 
 ### Columns
@@ -240,7 +225,7 @@
 ### Foreign Keys
 - direction_code → compass_direction_lookup.direction_code
 - habitat_id → habitat.habitat_id
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | ## habitat_light_schedule_end_type_lookup
 
 ### Columns
@@ -255,7 +240,7 @@
 ### Primary Key
 - light_schedule_end_type_id
 
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | ## habitat_light_schedule_start_type_lookup
 
 ### Columns
@@ -270,7 +255,7 @@
 ### Primary Key
 - light_schedule_start_type_id
 
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | ## habitat_light_type_lookup
 
 ### Columns
@@ -285,7 +270,7 @@
 ### Primary Key
 - light_type_id
 
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | ## habitat_light_window
 
 ### Columns
@@ -310,7 +295,7 @@
 - direction_code → compass_direction_lookup.direction_code
 - habitat_id → habitat.habitat_id
 - window_size_id → habitat_light_window_size_lookup.window_size_id
-                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+                                                                                                                                                                                                                                                                                                                                                                    |
 | ## habitat_light_window_size_lookup
 
 ### Columns
@@ -326,7 +311,7 @@
 ### Primary Key
 - window_size_id
 
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | ## plant
 
 ### Columns
@@ -350,7 +335,7 @@
 ### Foreign Keys
 - habitat_id → habitat.habitat_id
 - plant_type_id → plant_type_lookup.plant_type_id
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | ## plant_activity_history
 
 ### Columns
@@ -374,7 +359,25 @@
 ### Foreign Keys
 - activity_type_code → plant_activity_type_lookup.activity_type_code
 - plant_id → plant.plant_id
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| ## plant_activity_history_view
+
+### Columns
+| Column | Type | Nullable | Default |
+| --- | --- | --- | --- |
+| plant_id | uuid | YES |  |
+| activity_id | uuid | YES |  |
+| activity_type_code | text | YES |  |
+| activity_date | date | YES |  |
+| quantifier | double precision | YES |  |
+| unit | text | YES |  |
+| notes | text | YES |  |
+| activity_label | text | YES |  |
+| activity_category | text | YES |  |
+| background_color | text | YES |  |
+
+### Primary Key\n- (none)\n
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | ## plant_activity_type_lookup
 
 ### Columns
@@ -389,49 +392,12 @@
 | is_active | boolean | NO | true |
 | created_at | timestamp with time zone | NO | now() |
 | modified_at | timestamp with time zone | NO | now() |
+| background_color | text | YES |  |
 
 ### Primary Key
 - activity_type_code
 
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| ## plant_alerts
-
-### Columns
-| Column | Type | Nullable | Default |
-| --- | --- | --- | --- |
-| alert_id | uuid | NO | gen_random_uuid() |
-| plant_id | uuid | NO |  |
-| alert_type | text | NO |  |
-| alert_category | text | NO |  |
-| severity | text | NO |  |
-| title | text | NO |  |
-| message | text | NO |  |
-| target_date | date | NO |  |
-| due_date | date | NO |  |
-| is_snoozed | boolean | YES | false |
-| snooze_until | date | YES |  |
-| snooze_days | integer | YES |  |
-| is_dismissed | boolean | YES | false |
-| dismissed_at | timestamp with time zone | YES |  |
-| dismiss_type | text | YES |  |
-| suppress_until | date | YES |  |
-| source | text | YES | 'CALCULATED'::text |
-| calculation_run_id | uuid | YES |  |
-| status_history_id | uuid | YES |  |
-| is_active | boolean | NO | true |
-| created_at | timestamp with time zone | NO | now() |
-| modified_at | timestamp with time zone | NO | now() |
-| resolved_at | timestamp with time zone | YES |  |
-| alert_label | text | YES |  |
-| user_id | uuid | YES | auth.uid() |
-
-### Primary Key
-- alert_id
-
-### Foreign Keys
-- plant_id → plant.plant_id
-- status_history_id → plant_status_history_old.plant_status_id
- |
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | ## plant_category_lookup
 
 ### Columns
@@ -455,7 +421,7 @@
 ### Primary Key
 - plant_category_id
 
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                        |
 | ## plant_detail_view
 
 ### Columns
@@ -463,6 +429,8 @@
 | --- | --- | --- | --- |
 | plant_id | uuid | YES |  |
 | plant_name | text | YES |  |
+| acquisition_date | date | YES |  |
+| source | text | YES |  |
 | plant_category | text | YES |  |
 | species | text | YES |  |
 | watering_interval_days | smallint | YES |  |
@@ -473,7 +441,7 @@
 | status_icon | text | YES |  |
 
 ### Primary Key\n- (none)\n
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | ## plant_factor
 
 ### Columns
@@ -493,25 +461,7 @@
 ### Primary Key
 - plant_factor_id
 
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| ## plant_factor_active
-
-### Columns
-| Column | Type | Nullable | Default |
-| --- | --- | --- | --- |
-| plant_factor_id | uuid | NO | gen_random_uuid() |
-| plant_id | uuid | NO |  |
-| factor_code | text | NO |  |
-| confidence_score | real | YES |  |
-| batch_id | uuid | NO |  |
-| factor_date | date | YES |  |
-| factor_float | double precision | YES |  |
-| is_active | boolean | NO | true |
-
-### Primary Key
-- plant_factor_id
-
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | ## plant_factor_contribution
 
 ### Columns
@@ -530,60 +480,7 @@
 ### Primary Key
 - plant_factor_contribution_id
 
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| ## plant_factor_contribution_active
-
-### Columns
-| Column | Type | Nullable | Default |
-| --- | --- | --- | --- |
-| plant_factor_id | uuid | NO | gen_random_uuid() |
-| plant_id | uuid | NO |  |
-| factor_code | text | NO |  |
-| severity | smallint | NO |  |
-| batch_id | uuid | NO |  |
-| is_active | boolean | YES | true |
-| plant_factor_contribution_id | uuid | NO | gen_random_uuid() |
-| user_id | uuid | YES | auth.uid() |
-
-### Primary Key
-- plant_factor_contribution_id
-
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| ## plant_factor_contribution_history
-
-### Columns
-| Column | Type | Nullable | Default |
-| --- | --- | --- | --- |
-| plant_factor_id | uuid | NO |  |
-| plant_id | uuid | NO |  |
-| factor_code | text | NO |  |
-| severity | smallint | NO |  |
-| batch_id | uuid | NO |  |
-| plant_factor_contribution_id | uuid | NO | gen_random_uuid() |
-
-### Primary Key
-- plant_factor_contribution_id
-
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| ## plant_factor_history
-
-### Columns
-| Column | Type | Nullable | Default |
-| --- | --- | --- | --- |
-| plant_factor_history_id | uuid | NO | gen_random_uuid() |
-| plant_id | uuid | NO |  |
-| factor_code | text | NO |  |
-| confidence_score | real | YES |  |
-| batch_id | uuid | NO |  |
-| factor_date | date | YES |  |
-| factor_float | double precision | YES |  |
-| start_date | timestamp with time zone | NO | now() |
-| end_date | timestamp with time zone | YES |  |
-
-### Primary Key
-- plant_factor_history_id
-
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | ## plant_inventory_view
 
 ### Columns
@@ -603,7 +500,7 @@
 | last_activity_date | date | YES |  |
 
 ### Primary Key\n- (none)\n
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | ## plant_status
 
 ### Columns
@@ -622,62 +519,7 @@
 
 ### Foreign Keys
 - plant_id → plant.plant_id
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| ## plant_status_active
-
-### Columns
-| Column | Type | Nullable | Default |
-| --- | --- | --- | --- |
-| plant_status_id | uuid | NO | gen_random_uuid() |
-| plant_id | uuid | NO |  |
-| status_code | text | NO |  |
-| batch_id | uuid | NO |  |
-| user_id | uuid | YES | auth.uid() |
-
-### Primary Key
-- plant_status_id
-
-### Foreign Keys
-- plant_id → plant.plant_id
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| ## plant_status_history
-
-### Columns
-| Column | Type | Nullable | Default |
-| --- | --- | --- | --- |
-| plant_status_id | uuid | NO | gen_random_uuid() |
-| plant_id | uuid | NO |  |
-| status_code | text | NO |  |
-| batch_id | uuid | YES |  |
-| start_date | timestamp with time zone | NO | now() |
-| end_date | timestamp with time zone | YES |  |
-| user_id | uuid | YES | auth.uid() |
-
-### Primary Key
-- plant_status_id
-
-### Foreign Keys
-- plant_id → plant.plant_id
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| ## plant_status_history_old
-
-### Columns
-| Column | Type | Nullable | Default |
-| --- | --- | --- | --- |
-| plant_status_id | uuid | NO | gen_random_uuid() |
-| plant_id | uuid | NO |  |
-| status_code | text | NO |  |
-| is_current | boolean | NO | true |
-| batch_id | uuid | YES |  |
-| created_at | timestamp with time zone | NO | now() |
-| user_id | uuid | YES | auth.uid() |
-
-### Primary Key
-- plant_status_id
-
-### Foreign Keys
-- plant_id → plant.plant_id
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 | ## plant_status_lookup
 
 ### Columns
@@ -694,17 +536,7 @@
 ### Primary Key
 - status_code
 
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| ## plant_status_view
-
-### Columns
-| Column | Type | Nullable | Default |
-| --- | --- | --- | --- |
-| plant_id | uuid | YES |  |
-| status_weighted | numeric | YES |  |
-
-### Primary Key\n- (none)\n
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | ## plant_type_lookup
 
 ### Columns
@@ -726,7 +558,7 @@
 
 ### Foreign Keys
 - plant_category_id → plant_category_lookup.plant_category_id
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | ## schedule
 
 ### Columns
@@ -734,60 +566,20 @@
 | --- | --- | --- | --- |
 | schedule_id | uuid | NO | gen_random_uuid() |
 | plant_id | uuid | NO |  |
-| plant_factor_id | uuid | NO |  || schedule_date | date | NO |  |
+| schedule_date | date | NO |  |
 | schedule_label | text | NO |  |
 | schedule_severity | smallint | NO |  |
+| batch_id | uuid | NO |  |
 | factor_code | text | NO |  |
 | start_date | timestamp with time zone | NO |  |
 | end_date | timestamp with time zone | YES |  |
-| batch_id | uuid | NO |  |
 | user_id | uuid | YES | auth.uid() |
-
-
-### Primary Key
-- schedule_id
-
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| ## schedule_active
-
-### Columns
-| Column | Type | Nullable | Default |
-| --- | --- | --- | --- |
-| schedule_id | uuid | NO | gen_random_uuid() |
 | plant_factor_id | uuid | NO |  |
-| plant_id | uuid | NO |  |
-| schedule_date | date | NO |  |
-| schedule_status | text | NO |  |
-| schedule_label | text | NO |  |
-| batch_id | uuid | NO |  |
-| user_id | uuid | YES | auth.uid() |
-| factor_code | text | NO |  |
 
 ### Primary Key
 - schedule_id
 
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| ## schedule_history
-
-### Columns
-| Column | Type | Nullable | Default |
-| --- | --- | --- | --- |
-| schedule_id | uuid | NO | gen_random_uuid() |
-| plant_factor_id | uuid | NO |  |
-| plant_id | uuid | NO |  |
-| schedule_date | date | NO |  |
-| schedule_status | text | NO |  |
-| schedule_severity | smallint | NO |  |
-| batch_id | uuid | NO |  |
-| user_id | uuid | YES | auth.uid() |
-| start_date | timestamp with time zone | NO | now() |
-| end_date | timestamp with time zone | YES |  |
-| factor_code | text | NO |  |
-
-### Primary Key
-- schedule_id
-
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | ## schedule_view
 
 ### Columns
@@ -799,9 +591,10 @@
 | schedule_label | text | YES |  |
 | plant_id | uuid | YES |  |
 | plant_name | text | YES |  |
+| schedule_start_date | timestamp with time zone | YES |  |
 
 ### Primary Key\n- (none)\n
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | ## status_factor_contribution_map
 
 ### Columns
@@ -813,12 +606,11 @@
 | is_active | boolean | NO | true |
 | created_at | timestamp with time zone | NO | now() |
 | modified_at | timestamp with time zone | NO | now() |
-| user_id | uuid | YES | auth.uid() |
 
 ### Primary Key
 - status_factor_weight_id
 
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | ## status_factor_lookup
 
 ### Columns
@@ -840,7 +632,7 @@
 ### Primary Key
 - factor_id
 
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | ## user_roles
 
 ### Columns
@@ -850,6 +642,6 @@
 | role | text | NO |  |
 
 ### Primary Key
-- user_id, role
+- role, user_id
 
-### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+### Foreign Keys\n- (none)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |

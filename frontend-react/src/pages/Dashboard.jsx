@@ -2,10 +2,11 @@ import { useState, useEffect } from 'react';
 import { getDataMetrics } from '../services/metrics';
 import { getScheduleActive } from '../services/supabase';
 import Sidebar from '../components/layout/Sidebar';
+import Toolbar from '../components/layout/Toolbar';
 import KPICard from '../components/dashboard/KPICard';
 import ScheduleCard from '../components/dashboard/ScheduleCard';
 
-export default function Dashboard() {
+export default function Dashboard({ onNavigate }) {
   // State for data
   const [metrics, setMetrics] = useState(null);
   const [schedule, setSchedule] = useState([]);
@@ -40,19 +41,14 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <div className="page-container">
+    <>
       {/* Sidebar Navigation */}
-      <Sidebar currentView="dashboard" />
+      <Sidebar currentView="dashboard" onNavigate={onNavigate} />
 
       {/* Main Content Area */}
       <div className="main-content">
         {/* Toolbar */}
-        <div className="toolbar">
-          <div className="toolbar-title-section">
-            <h1 className="toolbar-title">Dashboard</h1>
-            <p className="toolbar-tagline">Your plant care overview</p>
-          </div>
-        </div>
+        <Toolbar currentView="dashboard" />
 
         {/* Content */}
         <div className="content">
@@ -109,6 +105,6 @@ export default function Dashboard() {
           )}
         </div>
       </div>
-    </div>
+    </>
   );
 }

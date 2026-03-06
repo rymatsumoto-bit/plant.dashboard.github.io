@@ -275,21 +275,6 @@ plant-care-dashboard/
 │   │   ├── App.jsx                             # Static assets
 │   │   ├── main.jsx                            # Static assets
 │   │   │
-│   │   ├── assets/                             # Static assets
-│   │   │
-│   │   ├── layout/                             # Navigation, layout, structure
-│   │   │   ├── Sidebar.jsx                         # Navigation sidebar
-│   │   │   └── 
-│   │   │
-│   │   ├── modals/                             # All modals
-│   │   │   ├── LoginModal.jsx                      # Box to login
-│   │   │   └── 
-│   │   │
-│   │   ├── dasboard/                           # For Dashboard.jsx
-│   │   │   ├── KPICard.jsx                         # KPI cards
-│   │   │   ├── ScheduleItem.jsx                    # Schedule item component
-│   │   │   └── 
-│   │   │
 │   │   ├── css/
 │   │   │   ├── main.css                            # Import all css files, to be the single reference in all html files
 │   │   │   ├── reset.css                           # CSS reset
@@ -298,16 +283,41 @@ plant-care-dashboard/
 │   │   │   │
 │   │   │   ├── components/
 │   │   │   │   ├── buttons.css                     # Button styles
+│   │   │   │   ├── cards.css
+│   │   │   │   ├── chunks.css
+│   │   │   │   ├── empty-state.css
 │   │   │   │   ├── hero.css                        # For landing page
 │   │   │   │   ├── leaf.css                        # For landing page
+│   │   │   │   ├── main-content.css                # For main page, wrapping all pages
+│   │   │   │   ├── schedule.css
+│   │   │   │   ├── sidebar.css
+│   │   │   │   ├── toolbar.css
 │   │   │   │   └── .css                      # 
 │   │   │   │
-│   │   │   └── pages/
-│   │   │      ├── landing.css                      # For the Landing
-│   │   │      └── .css                # Settings feature styles
+│   │   │   └── pages/                          # Styles specific for individual pages
+│   │   │      ├── dashboard.css                    # Specific style for dashboard page
+│   │   │      ├── inventory.css                    # For the Landing
+│   │   │      └── landing.css                      # Settings feature styles
+│   │   │
+│   │   ├── components/                             # jsx components of the pages
+│   │   │   ├── dashboard/                          # components in dashboard page
+│   │   │   │   ├── KPICard.jsx                         # KPI cards
+│   │   │   │   ├── ScheduleItem.jsx                    # Schedule item component
+│   │   │   │   └── 
+│   │   │   ├── inventory/                          # components in inventory page
+│   │   │   │   ├── KPICard.jsx                         # KPI cards
+│   │   │   │   ├── PlantTable.jsx                      # Table
+│   │   │   │   └── PlantTableRow.jsx                   # Table row
+│   │   │   ├── layout/                             # left hand side navigation and toolbar components
+│   │   │   │   ├── Sidebar.jsx                         # Left hand side navigation
+│   │   │   │   └── Toolbar.jsx                         # Toolbar
+│   │   │   └── modals/                             # modal components
+│   │   │   │   ├── LoginModal.jsx                      # Logging in from Landing page
+│   │   │   │   └── 
 │   │   │
 │   │   ├── pages/                              # Pages codes
 │   │   │   ├── Dashboard.jsx                       # Dashboard view
+│   │   │   ├── Inventory.jsx                       # Inventory view
 │   │   │   ├── Landing.jsx                         # Landing page (pre-sign in)
 │   │   │   └── .
 │   │   │
