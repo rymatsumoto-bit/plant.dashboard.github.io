@@ -1,12 +1,13 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { getCurrentUser, getActivityTypes } from './services/supabase';
-import Landing from './pages/Landing';
 import Dashboard from './pages/Dashboard';
+import Inventory from './pages/Inventory';
+import Landing from './pages/Landing';
 
 function App() {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  
+  const [currentView, setCurrentView] = useState('dashboard');
 
   // Load global color configuration on app start
   // =============================================
@@ -17,7 +18,7 @@ function App() {
         const colors = await getActivityTypes();
         
         if (!colors) {
-          console.warn('Could not load color config:', error);
+          console.warn('Could not load color config');
           return;
         }
         
@@ -29,7 +30,7 @@ function App() {
               config.background_color
             );
           });
-          console.log('✅ Global colors loaded from Supabase',colors);
+          console.log('✅ Global colors loaded from Supabase', colors);
         }
       } catch (err) {
         console.warn('Error loading color config:', err);
@@ -38,9 +39,6 @@ function App() {
     
     loadGlobalConfig();
   }, []);
-
-
-
 
   // Check authentication on app load
   // =============================================
@@ -57,6 +55,25 @@ function App() {
     }
     checkAuth();
   }, []);
+
+  // Load saved view from sessionStorage
+  // =============================================
+  useEffect(() => {
+    if (user) {
+      const savedView = sessionStorage.getItem('currentView');
+      if (savedView) {
+        setCurrentView(savedView);
+      }
+    }
+  }, [user]);
+
+  // Navigation handler
+  // =============================================
+  const handleNavigate = (view) => {
+    setCurrentView(view);
+    sessionStorage.setItem('currentView', view);
+    console.log('Navigating to:', view);
+  };
 
   // Show loading while checking auth
   if (isLoading) {
@@ -90,8 +107,35 @@ function App() {
     );
   }
 
-  // Show Landing or Dashboard based on auth state
-  return user ? <Dashboard /> : <Landing />;
+  // Show Landing page if not authenticated
+  if (!user) {
+    return <Landing />;
+  }
+
+  // Render the appropriate view based on currentView state
+  const renderView = () => {
+    switch (currentView) {
+      case 'dashboard':
+        return <Dashboard onNavigate={handleNavigate} />;
+      case 'inventory':
+        return <Inventory onNavigate={handleNavigate} />;
+      // Add more views as you convert them to React
+      // case 'reports':
+      //   return <Reports onNavigate={handleNavigate} />;
+      // case 'configuration':
+      //   return <Configuration onNavigate={handleNavigate} />;
+      // case 'settings':
+      //   return <Settings onNavigate={handleNavigate} />;
+      default:
+        return <Dashboard onNavigate={handleNavigate} />;
+    }
+  };
+
+  return (
+    <div className="app-container">
+      {renderView()}
+    </div>
+  );
 }
 
 export default App;

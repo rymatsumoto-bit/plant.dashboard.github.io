@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { getCurrentUser, signOut } from '../../services/supabase';
 
-function Sidebar({ currentView = 'dashboard' }) {
+function Sidebar({ currentView = 'dashboard', onNavigate }) {
   const [user, setUser] = useState(null);
 
   // Load user info on mount
@@ -35,6 +35,13 @@ function Sidebar({ currentView = 'dashboard' }) {
            'User';
   };
 
+  // Handle navigation clicks
+  const handleNavClick = (view) => {
+    if (onNavigate) {
+      onNavigate(view);
+    }
+  };
+
   return (
     <div className="sidebar">
       <div className="sidebar-header">
@@ -45,25 +52,40 @@ function Sidebar({ currentView = 'dashboard' }) {
       
       <nav className="sidebar-nav">
         <div className="sidebar-nav-top">
-          <div className={`nav-item ${currentView === 'dashboard' ? 'active' : ''}`}>
+          <div 
+            className={`nav-item ${currentView === 'dashboard' ? 'active' : ''}`}
+            onClick={() => handleNavClick('dashboard')}
+          >
             <img src="/assets/images/icons/nav-dashboard.svg" alt="" className="nav-icon" />
             <span>Dashboard</span>
           </div>
-          <div className={`nav-item ${currentView === 'reports' ? 'active' : ''}`}>
+          <div 
+            className={`nav-item ${currentView === 'reports' ? 'active' : ''}`}
+            onClick={() => handleNavClick('reports')}
+          >
             <img src="/assets/images/icons/nav-reports.svg" alt="" className="nav-icon" />
             <span>Reports</span>
           </div>
-          <div className={`nav-item ${currentView === 'inventory' ? 'active' : ''}`}>
+          <div 
+            className={`nav-item ${currentView === 'inventory' ? 'active' : ''}`}
+            onClick={() => handleNavClick('inventory')}
+          >
             <img src="/assets/images/icons/nav-inventory.svg" alt="" className="nav-icon" />
             <span>Inventory</span>
           </div>
-          <div className={`nav-item ${currentView === 'configuration' ? 'active' : ''}`}>
+          <div 
+            className={`nav-item ${currentView === 'configuration' ? 'active' : ''}`}
+            onClick={() => handleNavClick('configuration')}
+          >
             <img src="/assets/images/icons/nav-configuration.svg" alt="" className="nav-icon" />
             <span>Configuration</span>
           </div>
         </div>
         <div className="sidebar-nav-bottom">
-          <div className={`nav-item ${currentView === 'settings' ? 'active' : ''}`}>
+          <div 
+            className={`nav-item ${currentView === 'settings' ? 'active' : ''}`}
+            onClick={() => handleNavClick('settings')}
+          >
             <img src="/assets/images/icons/nav-settings.svg" alt="" className="nav-icon" />
             <span>Settings</span>
           </div>
