@@ -308,17 +308,19 @@ plant-care-dashboard/
 │   │   │   │   ├── KPICard.jsx                         # KPI cards
 │   │   │   │   ├── PlantTable.jsx                      # Table
 │   │   │   │   └── PlantTableRow.jsx                   # Table row
-│   │   │   ├── layout/                             # left hand side navigation and toolbar components
-│   │   │   │   ├── Sidebar.jsx                         # Left hand side navigation
-│   │   │   │   └── Toolbar.jsx                         # Toolbar
-│   │   │   └── modals/                             # modal components
+│   │   │   ├── modals/                             # modal components
 │   │   │   │   ├── LoginModal.jsx                      # Logging in from Landing page
 │   │   │   │   └── 
+│   │   │   │
+│   │   │   └── navigation/                         # left hand side navigation and toolbar components
+│   │   │       ├── Sidebar.jsx                         # Left hand side navigation
+│   │   │       └── Toolbar.jsx                         # Toolbar
 │   │   │
 │   │   ├── pages/                              # Pages codes
 │   │   │   ├── Dashboard.jsx                       # Dashboard view
 │   │   │   ├── Inventory.jsx                       # Inventory view
 │   │   │   ├── Landing.jsx                         # Landing page (pre-sign in)
+│   │   │   ├── PageLayout.jsx                      # Shell page that contains navigation and space for main content
 │   │   │   └── .
 │   │   │
 │   │   ├── services/                           # Services and utiliites
