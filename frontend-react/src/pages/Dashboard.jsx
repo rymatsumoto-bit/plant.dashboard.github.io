@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { getDataMetrics } from '../services/metrics';
 import { getScheduleActive } from '../services/supabase';
-import Sidebar from '../components/layout/Sidebar';
-import Toolbar from '../components/layout/Toolbar';
+import PageLayout from '../components/navigation/PageLayout';
 import KPICard from '../components/dashboard/KPICard';
 import ScheduleCard from '../components/dashboard/ScheduleCard';
 
@@ -41,70 +40,55 @@ export default function Dashboard({ onNavigate }) {
   }, []);
 
   return (
-    <>
-      {/* Sidebar Navigation */}
-      <Sidebar currentView="dashboard" onNavigate={onNavigate} />
-
-      {/* Main Content Area */}
-      <div className="main-content">
-        {/* Toolbar */}
-        <Toolbar currentView="dashboard" />
-
-        {/* Content */}
-        <div className="content">
-          {/* Loading State */}
-          {isLoading && (
-            <div className="loading-container">
-              <div className="loading-spinner"></div>
-              <span className="loading-text">Loading dashboard...</span>
-            </div>
-          )}
-
-          {/* Error State */}
-          {error && !isLoading && (
-            <div className="error-message">
-              {error}
-            </div>
-          )}
-
-          {/* Dashboard Content */}
-          {!isLoading && !error && metrics && (
-            <div className="chunk-container-1-2">
-              {/* KPIs Section */}
-              <div className="chunk-container-single-column">
-                <div className="chunk-title">KPIs</div>
-                
-                <KPICard
-                  title="Plants"
-                  metric={metrics.plant_active_total_count || 0}
-                  tagline="Total"
-                  iconSrc="/assets/images/icons/kpi-plant-count.svg"
-                />
-                
-                <KPICard
-                  title="Healthy"
-                  metric={`${metrics.plant_healthy_percentage || 0}%`}
-                  tagline="of Total"
-                  iconSrc="/assets/images/icons/kpi-plant-healthy.svg"
-                />
-                
-                <KPICard
-                  title="Active Alerts"
-                  metric={metrics.schedule_alert_count || 0}
-                  tagline="Total"
-                  iconSrc="/assets/images/icons/kpi-plant-attention.svg"
-                />
-              </div>
-
-              {/* Schedule Section */}
-              <div className="chunk-container-single-column">
-                <div className="chunk-title">Schedule</div>
-                <ScheduleCard schedule={schedule} />
-              </div>
-            </div>
-          )}
+    <PageLayout currentView="dashboard" onNavigate={onNavigate}>
+      {/* Loading State */}
+      {isLoading && (
+        <div className="loading-container">
+          <div className="loading-spinner"></div>
+          <span className="loading-text">Loading dashboard...</span>
         </div>
-      </div>
-    </>
+      )}
+
+      {/* Error State */}
+      {error && !isLoading && (
+        <div className="error-message">
+          {error}
+        </div>
+      )}
+
+      {/* Dashboard Content */}
+      {!isLoading && !error && metrics && (
+        <div className="chunk-container-1-2">
+          {/* KPIs Section */}
+          <div className="chunk-container-single-column">
+            <div className="chunk-title">KPIs</div>
+            
+            <KPICard
+              title="Plants"
+              metric={metrics.plant_active_total_count || 0}
+              tagline="Total"
+              iconSrc="/assets/images/icons/kpi-plant-count.svg"
+            />
+            
+            <KPICard
+              title="Healthy"
+              metric={`${metrics.plant_healthy_percentage || 0}%`}
+              tagline="of Total"
+              iconSrc="/assets/images/icons/kpi-plant-healthy.svg"
+            />
+            
+            <KPICard
+              title="Active Alerts"
+              metric={metrics.schedule_alert_count || 0}
+              tagline="Total"
+              iconSrc="/assets/images/icons/kpi-plant-attention.svg"
+            />
+          </div>
+
+          {/* Schedule Section */}
+          <ScheduleCard schedule={schedule} />
+        </div>
+      )}
+    </PageLayout>
   );
 }
