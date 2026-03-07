@@ -2,11 +2,11 @@
 // SUPABASE.JS - Database Service Layer
 // ============================================
 
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { createClient } from "@supabase/supabase-js";
 
 // Supabase configuration
 const SUPABASE_URL = 'https://dciowholtqcpgzpryush.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRjaW93aG9sdHFjcGd6cHJ5dXNoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ1Mzg2MDQsImV4cCI6MjA4MDExNDYwNH0.UdNGgOT_mpDrFQXjQp7XB6F0Bbdn-eGJi9mcjz-ZnIw';
+const SUPABASE_ANON_KEY = 'sb_publishable_Rhb-BL8h2UR10TBXnN7BVg_F3Us21E-';
 
 // Initialize Supabase client immediately
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -19,7 +19,6 @@ console.log('✅ Supabase client initialized');
 export function getSupabase() {
     return supabase;
 }
-
 
 
 // ============================================
