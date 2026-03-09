@@ -3,7 +3,7 @@ import Toolbar from './Toolbar';
 
 function PageLayout({ children, title, subtitle, currentView }) {
   return (
-    <div className="page-container">
+    <div className="dashboard-container">
       {/* Sidebar Navigation */}
       <Sidebar currentView={currentView} />
 

@@ -4,6 +4,8 @@ import { getDataMetrics } from '../services/metrics';
 import PageLayout from '../components/navigation/PageLayout';
 import KPICard from '../components/inventory/KPICard';
 import PlantTable from '../components/inventory/PlantTable';
+import Sidebar from '../components/navigation/Sidebar';
+import Toolbar from '../components/navigation/Toolbar';
 
 export default function Inventory({ onNavigate }) {
   const [plants, setPlants] = useState([]);

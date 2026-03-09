@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { getDataMetrics } from '../services/metrics';
 import { getScheduleActive } from '../services/supabase';
-import PageLayout from '../components/navigation/PageLayout';
+import Sidebar from '../components/navigation/Sidebar';
+import Toolbar from '../components/navigation/Toolbar';
 import KPICard from '../components/dashboard/KPICard';
 import ScheduleCard from '../components/dashboard/ScheduleCard';
 
