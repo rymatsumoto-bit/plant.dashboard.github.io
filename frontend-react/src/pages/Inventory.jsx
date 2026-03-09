@@ -3,8 +3,8 @@ import { getPlantInventory } from '../services/supabase';
 import { getDataMetrics } from '../services/metrics';
 import KPICard from '../components/inventory/KPICard';
 import PlantTable from '../components/inventory/PlantTable';
-import Sidebar from '../components/layout/Sidebar';
-import Toolbar from '../components/layout/Toolbar';
+import Sidebar from '../components/navigation/Sidebar';
+import Toolbar from '../components/navigation/Toolbar';
 
 export default function Inventory({ onNavigate }) {
   const [plants, setPlants] = useState([]);

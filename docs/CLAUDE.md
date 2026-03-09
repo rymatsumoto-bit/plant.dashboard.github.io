@@ -313,6 +313,7 @@ plant-care-dashboard/
 │   │   │   │   └── 
 │   │   │   │
 │   │   │   └── navigation/                         # left hand side navigation and toolbar components
+│   │   │       ├── PageLayout.jsx                      # Shell page that contains navigation and space for main content
 │   │   │       ├── Sidebar.jsx                         # Left hand side navigation
 │   │   │       └── Toolbar.jsx                         # Toolbar
 │   │   │
@@ -320,7 +321,6 @@ plant-care-dashboard/
 │   │   │   ├── Dashboard.jsx                       # Dashboard view
 │   │   │   ├── Inventory.jsx                       # Inventory view
 │   │   │   ├── Landing.jsx                         # Landing page (pre-sign in)
-│   │   │   ├── PageLayout.jsx                      # Shell page that contains navigation and space for main content
 │   │   │   └── .
 │   │   │
 │   │   ├── services/                           # Services and utiliites
