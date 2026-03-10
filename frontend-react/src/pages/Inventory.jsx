@@ -1,11 +1,9 @@
 import { useState, useEffect } from 'react';
-import { getPlantInventory } from '../services/supabase';
 import { getDataMetrics } from '../services/metrics';
+import { getPlantInventory } from '../services/supabase';
 import PageLayout from '../components/navigation/PageLayout';
-import KPICard from '../components/inventory/KPICard';
+import KPICardI from '../components/inventory/KPICardI';
 import PlantTable from '../components/inventory/PlantTable';
-import Sidebar from '../components/navigation/Sidebar';
-import Toolbar from '../components/navigation/Toolbar';
 
 export default function Inventory({ onNavigate }) {
   const [plants, setPlants] = useState([]);
@@ -46,8 +44,7 @@ export default function Inventory({ onNavigate }) {
   };
 
   const handlePlantClick = (plantId) => {
-    console.log('Navigate to plant detail:', plantId);
-    // TODO: Implement navigation to plant detail view
+    onNavigate('plant-detail', { plantId });
   };
 
   if (isLoading) {
@@ -69,21 +66,21 @@ export default function Inventory({ onNavigate }) {
     <PageLayout currentView="inventory" onNavigate={onNavigate}>
       {/* KPI Cards */}
       <div className="card-kpi-container">
-        <KPICard
+        <KPICardI
           title="Plants"
           metric={metrics?.plant_active_total_count || 0}
           tagline="Total"
           iconSrc="/assets/images/icons/kpi-plant-count.svg"
         />
         
-        <KPICard
+        <KPICardI
           title="Healthy"
           metric={`${metrics?.plant_healthy_percentage || 0}%`}
           tagline="of Total"
           iconSrc="/assets/images/icons/kpi-plant-healthy.svg"
         />
         
-        <KPICard
+        <KPICardI
           title="Active Alerts"
           metric={metrics?.schedule_alert_count || 0}
           tagline="Total"

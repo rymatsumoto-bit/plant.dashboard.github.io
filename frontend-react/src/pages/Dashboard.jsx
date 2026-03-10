@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { getDataMetrics } from '../services/metrics';
 import { getScheduleActive } from '../services/supabase';
-import Sidebar from '../components/navigation/Sidebar';
-import Toolbar from '../components/navigation/Toolbar';
+import PageLayout from '../components/navigation/PageLayout';
 import KPICard from '../components/dashboard/KPICard';
 import ScheduleCard from '../components/dashboard/ScheduleCard';
 
@@ -87,7 +86,10 @@ export default function Dashboard({ onNavigate }) {
           </div>
 
           {/* Schedule Section */}
-          <ScheduleCard schedule={schedule} />
+          <div className="chunk-container-single-column">
+            <div className="chunk-title">Schedule</div>
+              <ScheduleCard schedule={schedule} />
+          </div>
         </div>
       )}
     </PageLayout>

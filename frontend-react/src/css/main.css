@@ -11,6 +11,7 @@
 @import "./components/main-content.css";
 @import "./components/schedule.css";
 @import "./components/sidebar.css";
+@import "./components/tables.css";
 @import "./components/toolbar.css";
 
 @import "./pages/dashboard.css";

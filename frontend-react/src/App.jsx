@@ -3,11 +3,14 @@ import { getCurrentUser, getActivityTypes } from './services/supabase';
 import Dashboard from './pages/Dashboard';
 import Inventory from './pages/Inventory';
 import Landing from './pages/Landing';
+import PlantDetail from './pages/PlantDetail';
+import Settings from './pages/Settings'
 
 function App() {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [currentView, setCurrentView] = useState('dashboard');
+  const [viewParams, setViewParams] = useState('plant_id');
 
   // Load global color configuration on app start
   // =============================================
@@ -69,8 +72,9 @@ function App() {
 
   // Navigation handler
   // =============================================
-  const handleNavigate = (view) => {
+  const handleNavigate = (view, params = {}) => {
     setCurrentView(view);
+    setViewParams(params);               // new state: const [viewParams, setViewParams] = useState({});
     sessionStorage.setItem('currentView', view);
     console.log('Navigating to:', view);
   };
@@ -119,23 +123,25 @@ function App() {
         return <Dashboard onNavigate={handleNavigate} />;
       case 'inventory':
         return <Inventory onNavigate={handleNavigate} />;
+      case 'plant-detail':
+        return <PlantDetail
+          plantId={viewParams.plantId}
+          onBack={() => handleNavigate('inventory')}
+          onNavigate={handleNavigate}
+        />;
       // Add more views as you convert them to React
       // case 'reports':
       //   return <Reports onNavigate={handleNavigate} />;
       // case 'configuration':
       //   return <Configuration onNavigate={handleNavigate} />;
-      // case 'settings':
-      //   return <Settings onNavigate={handleNavigate} />;
+      case 'settings':
+        return <Settings onNavigate={handleNavigate} />;
       default:
         return <Dashboard onNavigate={handleNavigate} />;
     }
   };
 
-  return (
-    <div className="app-container">
-      {renderView()}
-    </div>
-  );
+  return renderView();
 }
 
 export default App;
