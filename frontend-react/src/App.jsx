@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
 import { getCurrentUser, getActivityTypes } from './services/supabase';
+import './css/main.css';
+import Configuration from './pages/Configuration';
 import Dashboard from './pages/Dashboard';
 import Inventory from './pages/Inventory';
 import Landing from './pages/Landing';
 import PlantDetail from './pages/PlantDetail';
-import Settings from './pages/Settings'
+import Reports from './pages/Reports';
+import Settings from './pages/Settings';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -129,11 +132,10 @@ function App() {
           onBack={() => handleNavigate('inventory')}
           onNavigate={handleNavigate}
         />;
-      // Add more views as you convert them to React
-      // case 'reports':
-      //   return <Reports onNavigate={handleNavigate} />;
-      // case 'configuration':
-      //   return <Configuration onNavigate={handleNavigate} />;
+      case 'reports':
+        return <Reports onNavigate={handleNavigate} />;
+      case 'configuration':
+        return <Configuration onNavigate={handleNavigate} />;
       case 'settings':
         return <Settings onNavigate={handleNavigate} />;
       default:
