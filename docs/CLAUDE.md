@@ -291,6 +291,7 @@ plant-care-dashboard/
 │   │   │   │   ├── main-content.css                # For main page, wrapping all pages
 │   │   │   │   ├── schedule.css
 │   │   │   │   ├── sidebar.css
+│   │   │   │   ├── tables.css
 │   │   │   │   ├── toolbar.css
 │   │   │   │   └── .css                      # 
 │   │   │   │
@@ -318,12 +319,17 @@ plant-care-dashboard/
 │   │   │       └── Toolbar.jsx                         # Toolbar
 │   │   │
 │   │   ├── pages/                              # Pages codes
+│   │   │   ├── Configuration.jsx                   # Configuration view
 │   │   │   ├── Dashboard.jsx                       # Dashboard view
 │   │   │   ├── Inventory.jsx                       # Inventory view
 │   │   │   ├── Landing.jsx                         # Landing page (pre-sign in)
+│   │   │   ├── PlantDetail.jsx                     # Plant detail page
+│   │   │   ├── Reports.jsx                         # Reports view
+│   │   │   ├── Settings.jsx                        # Settings view
 │   │   │   └── .
 │   │   │
 │   │   ├── services/                           # Services and utiliites
+│   │   │   ├── api.js                              # Location of end points in OnRender
 │   │   │   ├── metrics.js                          # Call for metrics from Supabase
 │   │   │   ├── supabase.js                         # Connects to supabase
 │   │   │   └── .

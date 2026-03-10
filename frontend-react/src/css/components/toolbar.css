@@ -39,6 +39,7 @@
     font-size: var(--font-size-base);
     font-family: inherit;
     transition: border-color var(--transition-fast);
+    background-color: var(--bg-white);
     box-shadow: var(--shadow-md);
 }
 
@@ -49,4 +50,12 @@
 
 .search-input::placeholder {
     color: var(--text-light);
+}
+
+/* Buttons Container */
+.toolbar-button-container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 10px;
 }
