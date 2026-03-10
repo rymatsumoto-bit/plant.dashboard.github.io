@@ -1,52 +1,67 @@
 export default function PlantTableRow({ plant, onClick }) {
-  // Format the last activity date
+
   const formatDate = (dateString) => {
-    if (!dateString) return '-';
+    if (!dateString) return 'no activity';
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { 
-      month: 'short', 
-      day: 'numeric', 
-      year: 'numeric' 
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
     });
   };
 
-  // Determine status badge styling based on plant health
-  const getStatusBadge = () => {
-    const status = plant.plant_status || 'unknown';
-    const statusClass = status.toLowerCase().replace(' ', '-');
-    
-    return (
-      <div className={`status-badge status-${statusClass}`}>
-        {status}
-      </div>
-    );
+  const handleDetailClick = (e) => {
+    e.stopPropagation();
+    onClick(plant.plant_id);
   };
 
   return (
-    <div 
-      className="table-row" 
+    <div
+      className="table-row"
       data-plant-id={plant.plant_id}
-      onClick={onClick}
-      style={{ cursor: 'pointer' }}
+      onClick={() => onClick(plant.plant_id)}
     >
-      <div>
-        <div className="plant-name">{plant.plant_name}</div>
-        <div className="plant-species">{plant.species}</div>
+      {/* Name + Species */}
+      <div className="plant-name-cell">
+        <div className="plant-name-icon">
+          <img
+            src={`/assets/images/icons/plants/${plant.plant_icon}.svg`}
+            alt={plant.plant_icon || 'plant'}
+            className="plant-icon-svg"
+            onError={(e) => {
+              e.currentTarget.onerror = null;
+              e.currentTarget.src = '/assets/images/icons/plants/default.svg';
+            }}
+          />
+        </div>
+        <div className="plant-name-text">
+          <div className="name">{plant.plant_name || 'Unnamed Plant'}</div>
+          <div className="species">{plant.species || 'Unknown Species'}</div>
+        </div>
       </div>
-      <div>{plant.location_name || '-'}</div>
-      <div>{getStatusBadge()}</div>
-      <div>{formatDate(plant.last_activity_date)}</div>
+
+      {/* Habitat */}
+      <div>{plant.habitat || 'Habitat unknown'}</div>
+
+      {/* Status icon with tooltip */}
       <div>
-        <button 
-          className="btn-icon"
-          onClick={(e) => {
-            e.stopPropagation(); // Prevent row click
-            onClick();
-          }}
-          aria-label="View details"
-        >
-          →
-        </button>
+        <span className="status-icon">
+          {plant.status_icon || '❓'}
+          <div className="tooltip-text">{plant.status_label || 'unknown'}</div>
+        </span>
+      </div>
+
+      {/* Last Activity */}
+      <div className="plant-name-cell">
+        <div className="plant-name-text">
+          <div className="name">{formatDate(plant.last_activity_date)}</div>
+          <div className="species">{plant.last_activity_label || '-'}</div>
+        </div>
+      </div>
+
+      {/* Detail button */}
+      <div className="plant-detail-btn" onClick={handleDetailClick}>
+        <img src="/assets/images/icons/nav-detail.svg" alt="detail" />
       </div>
     </div>
   );

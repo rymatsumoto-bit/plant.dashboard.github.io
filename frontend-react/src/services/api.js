@@ -1,0 +1,17 @@
+// services/api.js
+
+export const API_CONFIG = {
+  BASE_URL:
+    window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+      ? ''
+      : 'https://plant-dashboard-github-io.onrender.com',
+
+  ENDPOINTS: {
+    NEW_ACTIVITY: '/api/new-activity',
+    MANUAL_DAILY_BATCH: '/api/manual-daily-batch'
+  }
+};
+
+export function getApiUrl(endpoint) {
+  return `${API_CONFIG.BASE_URL}${endpoint}`;
+}
