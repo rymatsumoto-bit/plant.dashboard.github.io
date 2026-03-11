@@ -286,6 +286,7 @@ plant-care-dashboard/
 │   │   │   │   ├── cards.css
 │   │   │   │   ├── chunks.css
 │   │   │   │   ├── empty-state.css
+│   │   │   │   ├── forms.css
 │   │   │   │   ├── hero.css                        # For landing page
 │   │   │   │   ├── leaf.css                        # For landing page
 │   │   │   │   ├── main-content.css                # For main page, wrapping all pages
