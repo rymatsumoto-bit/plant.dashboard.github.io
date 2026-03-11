@@ -1,0 +1,70 @@
+/* ============================================
+   MODAL PANEL - additions for a modal.css
+   ============================================ */
+
+.modal-panel {
+    background-color: var(--bg-card);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    max-width: 600px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow-lg);
+}
+
+.modal-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-lg);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 2px solid var(--border-light);
+}
+
+.modal-panel-title {
+    margin: 0;
+    color: var(--c-botanical-green);
+    font-size: var(--font-size-xxl);
+}
+
+.modal-panel-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--text-light);
+    line-height: 1;
+    padding: 0;
+}
+
+.modal-panel-close:hover {
+    color: var(--text-primary);
+}
+
+.modal-panel-body {
+    margin-bottom: var(--spacing-lg);
+}
+
+.modal-panel-footer {
+    display: flex;
+    gap: var(--spacing-md);
+    padding-top: var(--spacing-lg);
+    border-top: 1px solid var(--border-light);
+    justify-content: flex-end;
+}
+
+.modal-loading-text {
+    text-align: center;
+    color: var(--text-light);
+    padding: 2rem 0;
+}
+
+.modal-error {
+    color: var(--danger-text);
+    background-color: var(--danger-bg);
+    padding: var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    margin-bottom: var(--spacing-md);
+    font-size: var(--font-size-sm);
+}
