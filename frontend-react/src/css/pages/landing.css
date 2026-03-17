@@ -184,7 +184,7 @@
 
 .landing-card-1 {
     width: 260px;
-    top: 0;
+    top: 0px;
     left: 50%;
     transform: translateX(-50%) rotate(-3deg);
     animation: floatCard1 6s ease-in-out infinite;

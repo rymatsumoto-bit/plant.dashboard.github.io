@@ -1,4 +1,8 @@
+/* Card Base */
+/*===========*/
+
 /* Card Basics */
+
 .card {
     background: var(--bg-card);
     border-radius: var(--radius-lg);
@@ -19,7 +23,6 @@
     font-size: 1.3em;
     margin-bottom: 0;
     padding-bottom: var(--spacing-sm);
-    border-bottom: 2px solid var(--border-light);
 }
 
 .card h3 {
@@ -27,7 +30,6 @@
     font-size: var(--font-size-base);
     margin-bottom: 0;
     padding-bottom: var(--spacing-sm);
-    border-bottom: 2px solid var(--border-light);
 }
 
 .card h4 {
@@ -35,7 +37,6 @@
     font-size: var(--font-size-sm);
     margin-bottom: 0;
     padding-bottom: var(--spacing-sm);
-    border-bottom: 2px solid var(--border-light);
 }
 
 .card-title {
@@ -62,6 +63,7 @@
 }
 
 /* Card KPI */
+/*==========*/
 
 .card-kpi-container {
     display: flex;
@@ -115,8 +117,97 @@
 }
 
 
-/* Landing Page */
+/* Card Habitat */
+/*==============*/
 
+.card-habitat-container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    gap: var(--spacing-xl);
+    padding-bottom: var(--spacing-lg);
+    overflow-x: auto;
+}
+
+.card-habitat {    
+    width: 280px;
+    height: 360px;
+    flex-shrink: 0;
+}
+
+.card-habitat-image {
+    width: 240px;
+    height: 120px;
+    display: block;
+    text-align: center;
+    justify-content: center;
+    margin-top: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+.card-habitat-stat {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--c-moss);
+    margin-top: var(--spacing-xs);
+    justify-content: space-between;
+}
+
+.card-habitat-stat-bar {
+    height: 8px;
+    width: 120px;
+    background: var(--c-sand);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.card-habitat-stat-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--c-sage), var(--c-sunlight));
+    border-radius: 10px;
+    animation: fillBar 2s ease-out;
+}
+
+
+/* Card Address */
+/*==============*/
+
+.card-address-container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    gap: var(--spacing-xl);
+    padding-bottom: var(--spacing-lg);
+    overflow-x: auto;
+}
+
+.card-address {    
+    width: 280px;
+    height: 360px;
+    flex-shrink: 0;
+    transition: all var(--transition-fast);
+}
+
+.card-address:hover {
+    transform: translateY(1px);
+    box-shadow: 0 8px 20px rgba(216, 216, 216, 0.50);
+}
+
+.card-address-image {
+    width: 240px;
+    height: 120px;
+    display: block;
+    text-align: center;
+    justify-content: center;
+    margin-top: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+
+/* Landing Page */
+/*==============*/
 
 .plant-card-showcase {
     position: relative;
@@ -140,7 +231,7 @@
 
 
 .card-1 {
-    width: 280px;
+    width: 260px;
     top: 0;
     left: 50%;
     transform: translateX(-50%) rotate(-3deg);
@@ -158,7 +249,7 @@
 }
 
 .card-3 {
-    width: 240px;
+    width: 260px;
     bottom: 0;
     left: 0;
     transform: rotate(-5deg);
