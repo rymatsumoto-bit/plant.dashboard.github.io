@@ -1,13 +1,21 @@
+// ============================================
+// Configuration.jsx
+// ============================================
+
 import { useState,useEffect } from 'react';
 import { getHabitats, getAddresses } from '../services/supabase';
 import PageLayout from '../components/navigation/PageLayout';
 import AddressList from '../components/configuration/AddressList';
 import HabitatList from '../components/configuration/HabitatList';
+import HabitatDetailModal from '../components/modals/HabitatDetailModal';
+import AddressDetailModal from '../components/modals/AddressDetailModal';
 
 export default function Configuration({ onNavigate }) {
   const [isLoading, setIsLoading] = useState(true);
   const [habitats, setHabitats] = useState([]);
   const [addresses, setAddresses] = useState([]);
+  const [selectedHabitatId, setSelectedHabitatId] = useState(null);
+    const [selectedAddressId, setSelectedAddressId] = useState(null);
 
   // Load configuratiion data on mount
   useEffect(() => {
@@ -34,15 +42,49 @@ export default function Configuration({ onNavigate }) {
       setIsLoading(false);
     }
   };
-  
+
+  // ── Modal handlers ──────────────────────────────────────────────────────────
+ 
   const handleHabitatClick = (habitatId) => {
-    onNavigate('plant-detail', { habitatId });
+    setSelectedHabitatId(habitatId);
   };
-
+ 
+  const handleModalClose = () => {
+    setSelectedHabitatId(null);
+  };
+ 
+  const handleHabitatEdit = (habitatId) => {
+    // TODO: open edit form/modal
+    console.log('Edit habitat:', habitatId);
+  };
+ 
+  const handleHabitatArchive = (habitatId) => {
+    // Optimistically remove from list; re-fetch or filter locally
+    setHabitats((prev) => prev.filter((h) => h.habitat_id !== habitatId));
+    console.log('Archived habitat:', habitatId);
+    // TODO: call supabase update({ is_active: false }) here
+  };
+ 
   const handleAddressClick = (addressId) => {
-    onNavigate('plant-detail', { addressId });
+    setSelectedAddressId(addressId);
+  };
+ 
+  const handleAddressModalClose = () => {
+    setSelectedAddressId(null);
+  };
+ 
+  const handleAddressEdit = (addressId) => {
+    // TODO: open edit form/modal
+    console.log('Edit address:', addressId);
+  };
+ 
+  const handleAddressArchive = (addressId) => {
+    setAddresses((prev) => prev.filter((a) => a.address_id !== addressId));
+    console.log('Archived address:', addressId);
+    // TODO: call supabase .update({ is_active: false }).eq('address_id', addressId)
   };
 
+ // ── Loading state ───────────────────────────────────────────────────────────
   if (isLoading) {
     return (
       <PageLayout currentView="configuration" onNavigate={onNavigate}>
@@ -58,6 +100,7 @@ export default function Configuration({ onNavigate }) {
     );
   }
 
+  // ── Render ──────────────────────────────────────────────────────────────────
   return (
     <PageLayout currentView="configuration" onNavigate={onNavigate}>
       {/* Habitats */}
@@ -101,6 +144,26 @@ export default function Configuration({ onNavigate }) {
       />
 
 
+      {/* Habitat Detail Modal */}
+      {selectedHabitatId && (
+        <HabitatDetailModal
+          habitatId={selectedHabitatId}
+          onClose={handleModalClose}
+          onEdit={handleHabitatEdit}
+          onArchive={handleHabitatArchive}
+        />
+      )}
+
+      {/* Address Detail Modal */}
+      {selectedAddressId && (
+        <AddressDetailModal
+          addressId={selectedAddressId}
+          onClose={handleAddressModalClose}
+          onEdit={handleAddressEdit}
+          onArchive={handleAddressArchive}
+        />
+      )}
+      
     </PageLayout>
   );
 }

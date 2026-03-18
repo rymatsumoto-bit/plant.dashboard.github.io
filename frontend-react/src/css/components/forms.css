@@ -95,6 +95,32 @@
     border-radius: 2px;
 }
 
+.form-section-title {
+    color: var(--text-secondary);
+    font-size: 1.1em;
+    margin-bottom: var(--spacing-md);
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--border-light);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.form-section-title::before {
+    content: '';
+    display: inline-block;
+    width: 4px;
+    height: 20px;
+    background: var(--c-botanical-green);
+    border-radius: 2px;
+}
+
+.form-section-single-row {
+    display: flex;
+    flex-direction: row;
+    gap: var(--spacing-xl);
+}
+
 /* Backdrop */
 .form-backdrop {
     position: fixed;
@@ -126,23 +152,3 @@
     font-weight: 600;
 }
 
-/* Form section title (Optional Details heading) */
-.form-section-title {
-    color: var(--text-secondary);
-    font-size: 1.1em;
-    margin-bottom: var(--spacing-md);
-    padding-top: var(--spacing-md);
-    border-top: 1px solid var(--border-light);
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-}
-
-.form-section-title::before {
-    content: '';
-    display: inline-block;
-    width: 4px;
-    height: 20px;
-    background: var(--c-botanical-green);
-    border-radius: 2px;
-}

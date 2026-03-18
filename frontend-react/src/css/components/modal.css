@@ -68,3 +68,24 @@
     margin-bottom: var(--spacing-md);
     font-size: var(--font-size-sm);
 }
+
+/* Modal buttons container */
+.modal-buttons {
+    display: flex;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-xl);
+    padding-top: var(--spacing-lg);
+    border-top: 1px solid var(--border-light);
+}
+
+/* Read-only field value displayed inside modals */
+.modal-detail-value {
+    font-size: var(--font-size-base);
+    color: var(--text-secondary);
+    font-weight: 500;
+    padding: var(--spacing-sm) 0;
+    border-bottom: 1px solid var(--border-light);
+    min-height: 2em;
+    display: block;
+    margin: 0;
+}

@@ -133,8 +133,13 @@
     width: 280px;
     height: 360px;
     flex-shrink: 0;
+    transition: all var(--transition-fast);
 }
 
+.card-habitat:hover {
+    transform: translate(2px, 5px);
+    box-shadow: 0 8px 20px rgba(216, 216, 216, 0.50);
+}
 .card-habitat-image {
     width: 240px;
     height: 120px;
@@ -191,7 +196,7 @@
 }
 
 .card-address:hover {
-    transform: translateY(1px);
+    transform: translate(2px, 5px);
     box-shadow: 0 8px 20px rgba(216, 216, 216, 0.50);
 }
 
