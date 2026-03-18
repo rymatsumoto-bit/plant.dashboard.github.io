@@ -25,12 +25,12 @@ export default function PlantTableRow({ plant, onClick }) {
       <div className="plant-name-cell">
         <div className="plant-name-icon">
           <img
-            src={`/assets/images/icons/plants/${plant.plant_icon}.svg`}
+            src={`assets/images/icons/plants/${plant.plant_icon}.svg`}
             alt={plant.plant_icon || 'plant'}
             className="plant-icon-svg"
             onError={(e) => {
               e.currentTarget.onerror = null;
-              e.currentTarget.src = '/assets/images/icons/plants/default.svg';
+              e.currentTarget.src = 'assets/images/icons/plants/default.svg';
             }}
           />
         </div>
@@ -61,7 +61,7 @@ export default function PlantTableRow({ plant, onClick }) {
 
       {/* Detail button */}
       <div className="plant-detail-btn" onClick={handleDetailClick}>
-        <img src="/assets/images/icons/nav-detail.svg" alt="detail" />
+        <img src="assets/images/icons/nav-detail.svg" alt="detail" />
       </div>
     </div>
   );

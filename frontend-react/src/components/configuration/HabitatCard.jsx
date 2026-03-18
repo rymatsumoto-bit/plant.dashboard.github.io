@@ -17,11 +17,11 @@ export default function HabitatCard({ habitat, onClick }) {
         
         <div className="card-habitat-image">
           <img
-            src={`/assets/images/habitat-desert.jpg`}
+            src={`assets/images/habitat-desert.jpg`}
             alt={habitat.habitat_id || 'habitat'}
             onError={(e) => {
               e.currentTarget.onerror = null;
-              e.currentTarget.src = '/assets/images/icons/plants/default.svg';
+              e.currentTarget.src = 'assets/images/icons/plants/default.svg';
             }}
           />
         </div>

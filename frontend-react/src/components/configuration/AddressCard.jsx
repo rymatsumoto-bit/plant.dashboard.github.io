@@ -17,11 +17,11 @@ export default function AddressCard({ address, onClick }) {
         
         <div className="card-address-image">
           <img
-            src={`/assets/images/habitat-desert.jpg`}
+            src={`assets/images/habitat-desert.jpg`}
             alt={address.address_id || 'address'}
             onError={(e) => {
               e.currentTarget.onerror = null;
-              e.currentTarget.src = '/assets/images/icons/plants/default.svg';
+              e.currentTarget.src = 'assets/images/icons/plants/default.svg';
             }}
           />
         </div>
