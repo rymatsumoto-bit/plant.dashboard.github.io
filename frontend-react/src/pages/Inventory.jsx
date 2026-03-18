@@ -70,21 +70,21 @@ export default function Inventory({ onNavigate }) {
           title="Plants"
           metric={metrics?.plant_active_total_count || 0}
           tagline="Total"
-          iconSrc="/assets/images/icons/kpi-plant-count.svg"
+          iconSrc="assets/images/icons/kpi-plant-count.svg"
         />
         
         <KPICardI
           title="Healthy"
           metric={`${metrics?.plant_healthy_percentage || 0}%`}
           tagline="of Total"
-          iconSrc="/assets/images/icons/kpi-plant-healthy.svg"
+          iconSrc="assets/images/icons/kpi-plant-healthy.svg"
         />
         
         <KPICardI
           title="Active Alerts"
           metric={metrics?.schedule_alert_count || 0}
           tagline="Total"
-          iconSrc="/assets/images/icons/kpi-plant-attention.svg"
+          iconSrc="assets/images/icons/kpi-plant-attention.svg"
         />
       </div>
 
