@@ -4,7 +4,7 @@
 
 This document explains all calculations, forecasting algorithms, and business logic used in the Plant Care Dashboard. Intended for developers and data scientists who need to understand or modify the system's intelligence layer.
 
-**Last Updated:** December 29, 2024
+**Last Updated:** December 29, 2025
 
 ---
 
@@ -90,69 +90,58 @@ Predict when each plant needs to be watered next based on historical watering pa
 ## Fertilizing Frequency Calculation
 
 ### Algorithm Version: 1.0  
-### Last Updated: 2024-12-29  
+### Last Updated: 2026-03-19  
 ### Status: Planned
 
 ### Purpose
-Predict when each plant needs fertilizing based on plant species and growth season.
+Schedule next fertilization depending on type of fertilizer used.
 
 ### Input Data
-- Historical fertilizing dates
-- Plant species fertilizing requirements
-- Current season (optional enhancement)
+- Last fertilization
+- Type of fertilizer (long term, short term, every watering)
 
 ### Calculation Steps
 
-1. **Check Historical Data**
-   - If user has fertilized this plant before, use historical pattern
-   - Calculate average days between fertilizing events
-   - Minimum 2 fertilizing events needed
+1. **Check Fertilizer Type**
+   - User needs to define what kind of fertilizers exist, and frequency that it should be used
+   - Calculate next fertilization date based on settings
 
-2. **Use Species Default**
-   - If no history or < 2 events, use species default
-   - Most plants: 30-60 days (stored in plant_types table)
+2. **Use Species Recommendation**
+   - If available, give user a proposed next date based on plant type
 
-3. **Seasonal Adjustment (Future)**
-   - Growing season (spring/summer): More frequent
-   - Dormant season (fall/winter): Less frequent or none
-
-4. **Generate Next Fertilizing Date**
+3. **Generate Next Fertilizing Date**
    - `next_fertilize_date = last_fertilized_date + interval`
 
-5. **Schedule Threshold**
+4. **Schedule Threshold**
    - Fertilizing is less time-critical than watering
 
 
 
 ### Assumptions
 - Fertilizing less time-sensitive than watering
-- Species defaults are reliable starting point
-- User will establish pattern after a few fertilizing events
-- No fertilizing during dormant season (future enhancement)
+- User will establish type of fertilizers
 
 ### Constants
-- **Minimum history required**: 2 fertilizing events
 - **Default fertilizing interval**: dependent of type of fertilizer
 
 ### Future Improvements
 - Seasonal adjustments (more in summer, less in winter)
-- Soil nutrient testing integration
-- Growth rate correlation
+- User provide NPK values of fertilizers, and cross reference with plant needs
 
 ---
 
 ## Repotting Prediction
 
 ### Algorithm Version: 1.0  
-### Last Updated: 2024-12-29  
+### Last Updated: 2026-03-19
 ### Status: Planned
 
 ### Purpose
-Remind users when plants may need repotting based on time since last repotting and plant growth rate.
+Suggest users when plants may need repotting based on time since last repotting and watering frequency.
 
 ### Input Data
 - Last repotting date
-- Plant species growth rate
+- Plant species watering frequency
 - Plant age
 
 ### Calculation Steps
@@ -161,27 +150,21 @@ Remind users when plants may need repotting based on time since last repotting a
    - Check activities table for last 'repot' event
    - If never repotted, use acquired_date as baseline
 
-2. **Apply Species Growth Rate**
-   - Fast-growing plants: every 12-18 months
-   - Medium-growing: every 18-24 months
-   - Slow-growing: every 24-36 months
+2. **Investigate Watering Frequency**
+   - As interval between waterings start to grow smaller, to maybe 4 days or less
 
-3. **Calculate Next Repotting**
-   - `next_repot_date = last_repot_date + growth_rate_interval`
+3. **Create Schedule Item**
+   - `watering frequency more than twice a week`
+   - `repot has been more than x years, based on current pot size`
 
 4. **Schedule Threshold**
    - User can dismiss if not needed
 
 
 ### Assumptions
-- Repotting frequency based primarily on species growth rate
+- Repotting frequency based primarily on watering frequency
 - Container size not tracked (future enhancement)
 - User knows to dismiss if plant still has room to grow
-
-### Constants
-- **Fast-growing interval**: 12 months
-- **Medium-growing interval**: 18 months
-- **Slow-growing interval**: 24 months
 
 ### Future Improvements
 - Track pot size changes
@@ -228,37 +211,11 @@ Determine severity level healthy, warning, attention, urgent) for each schedule 
 - TBD
 
 #### Repotting Due
-
-**Thresholds:**
 **Thresholds:**
 - TBD
 
 ---
 
-## Pest Pattern Detection
-
-### Algorithm Version: 1.0  
-### Last Updated: 2024-12-29  
-### Status: Future / Planned
-
-### Purpose
-Detect recurring pest problems and predict future occurrences.
-
-### Approach (Not Yet Implemented)
-
-**Phase 1: Simple Detection**
-- If 2+ pest occurrences within 60 days → generate schedule
-- Suggest preventive treatment
-
-**Phase 2: Pattern Recognition**
-- Seasonal patterns (e.g., spider mites in winter)
-- Location correlation (pests spreading between nearby plants)
-- Treatment effectiveness tracking
-
-### Future Implementation
-This will be developed in Phase 2 after core features are operational.
-
----
 
 ## Constants Reference
 
