@@ -111,17 +111,21 @@ A solution that combines plant historical data and environment information, enha
 ---
 
 ## Technology Stack
-
+ 
 ### Frontend
-- HTML5
-- CSS3
-- JavaScript (Vanilla JS)
-
+- React (with Vite)
+- **CSS: Incremental migration to Tailwind CSS** (decision made 2026-03-20)
+  - New components use Tailwind only
+  - Existing custom CSS files are migrated opportunistically
+  - Both coexist during transition — this is intentional
+  - See `docs/TAILWIND-MIGRATION.md` for per-file migration status and rules
+  - See `docs/DECISIONS.md` for full reasoning
+ 
 ### Backend
 - Python (for forecasting algorithms)
 - Render (FastAPI)
 - Daily batches: Render cron
-
+ 
 ### Storage
 - Supabase
 - localStorage / sessionStorage (for web-based solution)
@@ -140,134 +144,12 @@ A solution that combines plant historical data and environment information, enha
 ### Working Files
 All project files (HTML, CSS, JS, PY, MD) are maintained in the project folder and uploaded by the project owner. AI assistants should reference these uploaded files for current code state rather than relying on code snippets in this document.
 
-### Current File Structure
+### Current File Structure (with React)
 ```
 plant-care-dashboard/
 │
-├── frontend/                              # First level views
-│   ├── index.html                          # Main application shell
-│   │
-│   ├── css/
-│   │   ├── main.css                        # Import all css files, to be the single reference in all html files
-│   │   ├── reset.css                       # CSS reset
-│   │   ├── variables.css                   # Design tokens (colors, spacing, etc.)
-│   │   ├── base.css                        # Base styles and utilities
-│   │   ├── layout.css                      # Layout structure (sidebar, main content)
-│   │   ├── components/
-│   │   │   ├── alerts.css                  # Alerts related elements
-│   │   │   ├── buttons.css                 # Button styles
-│   │   │   ├── cards.css                   # Card components
-│   │   │   ├── charts.css                  # Chart styles
-│   │   │   ├── chunks.css                  # Styles of sections of the dashboard
-│   │   │   ├── empty-state.css             # Style for emtpy state
-│   │   │   ├── forms.css                   # Forms styles
-│   │   │   ├── loading.css                 # Style for loading data
-│   │   │   ├── modal.css                   # Modal styling
-│   │   │   ├── tables.css                  # Table and list styles
-│   │   │   └── charts.css                  # Chart components (placeholder)
-│   │   ├── features/
-│   │   │   ├── dashboard.css               # Dashboard-specific styles
-│   │   │   ├── inventory.css               # Inventory feature styles
-│   │   │   ├── reports.css                 # Reports feature styles
-│   │   │   ├── configuration.css           # Configuration feature styles
-│   │   │   └── settings.css                # Settings feature styles
-│   │   └── responsive.css                  # Media queries
-│   │
-│   ├── views/                              # First level views
-│   │   ├── dashboard.html                  # Main dashboard view
-│   │   ├── reports.html                    # Reports view
-│   │   ├── inventory.html                  # Plant inventory
-│   │   ├── configuration.html              # Plant parameter configuration
-│   │   └── settings.html                   # System configuration
-│   │
-│   ├── components/                         # Reusable UI components
-│   │   ├── configuration-tabs/             # Tabs under configuration view
-│   │   │   ├── address.html                # Content for address configuration
-│   │   │   └── habitat.html                # Content for habitat configuration
-│   │   └── modals/                         # Reusable modal componentes
-│   │       └── activity/                   # Modal componentes of each type of activity
-│   │       │   └── watering.html           # Modal for watering activity
-│   │       ├── prompt-modal.html           # Modal shell/container
-│   │       ├── light-artificial.html       # Form content for artifical light details
-│   │       ├── light-outdoor.html          # Form content for outdoor light details
-│   │       ├── light-window.html           # Form content for window light details
-│   │       └── new-activity.html           # Form content for new activity log
-│   │
-│   ├── js/                                 # JavaScript modules
-│   │   ├── app.js                          # Main entry point
-│   │   ├── router.js                       # View loading and navigation
-│   │   ├── utils.js                        # Utility functions
-│   │   ├── components/
-│   │   │   └── breadcrumb.js               # Breadcrumb component logic
-│   │   ├── modals/
-│   │   │   ├── activity/                   # loading view of activities
-│   │   │   │   └── watering.js             # watering
-│   │   │   ├── light-modal.js              # loading view of light details
-│   │   │   └── prompt-modal.js             # Modal logic and management
-│   │   ├── views/
-│   │   │   ├── dashboard.js                # Dashboard-specific logic
-│   │   │   ├── reports.js                  # Reports-specific logic
-│   │   │   ├── inventory.js                # Inventory-specific logic
-│   │   │   ├── configuration.js            # Configuration orchestrator (main)
-│   │   │   ├── configuration/              # Configuration sub-modules
-│   │   │   │   ├── habitat-manager.js      # Habitat CRUD and rendering
-│   │   │   │   ├── address-manager.js      # Address CRUD and rendering
-│   │   │   │   └── shared-utils.js         # Shared configuration utilities
-│   │   │   └── settings.js                 # Settings-specific logic
-│   │   └── services/
-│   │       ├── supabase.js                 # Database queries and operations
-│   │       └── storage.js                  # localStorage/sessionStorage helpers
-│   │
-│   └── assets/                             # Static assets
-│		├── images/
-│		│   └── icons/                      # Storage of icons
-│		│   │   ├── activity/               # Icons for different activities
-│		│   │   └── plants/                 # Icons for plant types
-│		└── fonts/                          
-│
-├── backend/                             # Python related folders
-│   ├── .env
-│   ├── requirements.txt
-│   ├── app.py
-│   │
-│   ├── config/
-│   │   └── supabase.py                 # Supabase URL + service ke
-│   │
-│   ├── data/                           # Local data
-│   │   └── cache/                      # Temp local data
-│   │
-│   ├── scripts/                       # python codes
-│   │   ├── factors/                   # calculations for each factor
-│   │   │   └── watering_due.py        # factor calculation for a watering due date
-│   │   ├── factors_contribution/      # factor contribution for the overall plant status
-│   │   │   └── watering_due.py        # 
-│   │   ├── manager_plant_factor_contribution.py   # Driver of calculation of factor contribution for plant status
-│   │   ├── manager_plant_factor.py                # Driver of calculation of each factor
-│   │   ├── manager_plant_status.py                # Driver of calculation of plant status
-│   │   └── manager_schedule.py                    # Driver to manage schedule items
-│   │
-│   └── utils/                          # Utility codes
-│       ├── supabase_client.py          # Supabase connection logic
-│       ├── dates.py                    # Date helpers
-│       └── weather.py                  # Weather API integration
-│
-└── docs/
-    ├── CLAUDE.md                       # This file
-    ├── DATA-SCHEMA.md
-    ├── LOGIC.md
-    ├── FEATURES.md
-    └── DECISIONS.md
-
-```
-
-
-
-### Future File Structure (with React)
-```
-plant-care-dashboard/
-│
-├── frontend/                              # First level views
-│   ├── index.html                          # Main application shell
+├── frontend/                             # First level views
+│   ├── index.html                        # Main application shell
 │   │
 │   ├── public/
 │   │
@@ -315,7 +197,7 @@ plant-care-dashboard/
 │   │   │   │   └── 
 │   │   │   │
 │   │   │   └── navigation/                         # left hand side navigation and toolbar components
-│   │   │   │   ├── PageLayout.jsx                      # Shell page that contains navigation and space for main content
+│   │   │       ├── PageLayout.jsx                      # Shell page that contains navigation and space for main content
 │   │   │       ├── Sidebar.jsx                         # Left hand side navigation
 │   │   │       └── Toolbar.jsx                         # Toolbar
 │   │   │
