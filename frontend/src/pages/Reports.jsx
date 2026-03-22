@@ -14,6 +14,7 @@ const [isLoading, setIsLoading] = useState(true);
           minHeight: '400px' 
         }}>
           <div className="loading-spinner">Loading reports...</div>
+          <div className="bg-red-500 text-white p-4">Tailwind works!</div>
         </div>
       </PageLayout>
     );
