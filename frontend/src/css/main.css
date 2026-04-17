@@ -1,16 +1,15 @@
 @import "tailwindcss";
 
-@import "./reset.css";
-@import "./variables.css";
-@import "./base.css";
+@import "./reset.css" layer(base);
+@import "./variables.css" layer(base);
+@import "./base.css" layer(base);
+
 
 @import "./components/buttons.css";
 @import "./components/cards.css";
 @import "./components/chunks.css";
 @import "./components/empty-state.css";
 @import "./components/forms.css";
-@import "./components/hero.css";
-@import "./components/leaf.css";
 @import "./components/main-content.css";
 @import "./components/modal.css";
 @import "./components/schedule.css";
@@ -20,4 +19,77 @@
 
 @import "./pages/dashboard.css";
 @import "./pages/inventory.css";
-@import "./pages/landing.css";
+
+
+@theme {
+  /* COLOR: Brand palette */
+  --color-forest-teal:  #03312e;
+  --color-botanical:    #08827a;
+  --color-forest-deep:  #1a3a2e;
+  --color-sage:         #7a9b76;
+  --color-moss:         #4a6b5f;
+  --color-sage-mist:    #91c7b1;
+  --color-cream:        #f4f1ea;
+  --color-sand:         #e8dcc8;
+  --color-terracotta:   #c86f56;
+  --color-sunlight:     #f4d58d;
+  --color-clay:         #edf0f2;
+  --color-soil:         #401d0f;
+
+  /* COLORS: Base */
+  --color-background-base:  #effdf7;
+  --color-font-base:        #03312e;
+
+
+  /* COLORS: Status */
+  --color-success:            #3fa816;
+  --color-success-bg:         #d4e5a8;
+  --color-success-foreground: #4a5a08;
+
+  --color-info:               #91c7b1;
+  --color-info-bg:            #d8f0e8;
+  --color-info-foreground:    #02241f;
+
+  --color-attention:            #eeff00;
+  --color-attention-bg:         #faffb8;
+  --color-attention-foreground: #bbc52e;
+
+  --color-warning:            #ff9800;
+  --color-warning-bg:         #ffefd9;
+  --color-warning-foreground: #8b5000;
+
+  --color-danger:             #d84315;
+  --color-danger-bg:          #ffd4c4;
+  --color-danger-foreground:  #8b2500;
+
+
+  /* FONT: Sizes */
+  --text-2xs:   0.55em;
+  --text-xs:    0.70em;
+  --text-sm:    0.85em;
+  --text-base:  1.00em;
+  --text-lg:    1.10em;
+  --text-xl:    1.25em;
+  --text-2xl:   1.50em;
+  --text-3xl:   1.75em;
+  --text-title: 2.00em;
+
+  /* SHADOW */
+  --shadow-sm: 0 2px 5px rgba(0,0,0,0.1);
+  --shadow-md: 0 2px 8px rgba(0,0,0,0.1);
+  --shadow-lg: 0 4px 12px rgba(0,0,0,0.15);
+
+
+  /* TRANSITION: Duration */
+  --duration-fast: 200ms;
+  --duration-base: 300ms;
+  --duration-slow: 500ms;
+
+}
+
+@layer components {
+  /* buttons */
+  .btn {
+    @apply inline-flex items-center justify-center rounded-full cursor-pointer transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg;
+  }
+}

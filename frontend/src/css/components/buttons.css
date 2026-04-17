@@ -3,16 +3,16 @@
 
 /* Button */
 .btn {
-    display: inline-flex;
-    font-size: var(--font-size-base);
-    font-weight: 600;
-    padding: 10px 20px;
-    gap: 8px;
-    border-radius: var(--radius-sm);
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all var(--transition-fast);
+    /*display: inline-flex;*/
+    /*font-size: var(--font-size-base);*/
+    /*font-weight: 600;*/
+    /*padding: 10px 20px;*/
+    /*gap: 8px; (skipping gap)
+    /*border-radius: var(--radius-md);*/
+    /*align-items: center;
+    justify-content: center;*/
+    /*cursor: pointer;*/
+    /*transition: all var(--transition-fast);*/
 }
 
 .btn:hover {
