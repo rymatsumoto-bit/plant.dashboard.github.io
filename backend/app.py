@@ -20,6 +20,7 @@ app = FastAPI(title="Plant Dashboard API")
 origins = [
     "http://127.0.0.1:5501",            # local dev
     "http://localhost:5501",            # in case browser uses localhost
+    "http://localhost:5173",            # in case localhost vite
     "https://rymatsumoto-bit.github.io" # production frontend
 ]
 
