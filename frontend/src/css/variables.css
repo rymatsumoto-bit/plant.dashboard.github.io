@@ -68,7 +68,7 @@
 
     /* Shadow */
     --shadow: rgba(26, 58, 46, 0.1);
-    --shadow-sm: 0 2px 5px rgba(0,0,0,0.1);
+    /*--shadow-sm: 0 2px 5px rgba(0,0,0,0.1);*/
     --shadow-md: 0 2px 8px rgba(0,0,0,0.1);
     --shadow-lg: 0 4px 12px rgba(0,0,0,0.15);
 

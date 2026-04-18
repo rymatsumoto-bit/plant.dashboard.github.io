@@ -43,62 +43,63 @@ function Sidebar({ currentView = 'dashboard', onNavigate }) {
   };
 
   return (
-    <div className="sidebar">
-      <div className="sidebar-header">
-        <img src="assets/images/icons/main-logo.svg" alt="Plant Hub Logo" className="logo" />
-        <h1>Plant Hub <span className="version">v0.1.2</span></h1>
-      </div>
-      <p className="tagline">A dashboard for plant care</p>
-      
-      <nav className="sidebar-nav">
-        <div className="sidebar-nav-top">
-          <div 
-            className={`nav-item ${currentView === 'dashboard' ? 'active' : ''}`}
-            onClick={() => handleNavClick('dashboard')}
-          >
-            <img src="assets/images/icons/nav-dashboard.svg" alt="" className="nav-icon" />
-            <span>Dashboard</span>
-          </div>
-          <div 
-            className={`nav-item ${currentView === 'reports' ? 'active' : ''}`}
-            onClick={() => handleNavClick('reports')}
-          >
-            <img src="assets/images/icons/nav-reports.svg" alt="" className="nav-icon" />
-            <span>Reports</span>
-          </div>
-          <div 
-            className={`nav-item ${currentView === 'inventory' ? 'active' : ''}`}
-            onClick={() => handleNavClick('inventory')}
-          >
-            <img src="assets/images/icons/nav-inventory.svg" alt="" className="nav-icon" />
-            <span>Inventory</span>
-          </div>
-          <div 
-            className={`nav-item ${currentView === 'configuration' ? 'active' : ''}`}
-            onClick={() => handleNavClick('configuration')}
-          >
-            <img src="assets/images/icons/nav-configuration.svg" alt="" className="nav-icon" />
-            <span>Configuration</span>
-          </div>
+    <>
+      <div className="flex flex-col sticky top-0 h-screen w-60 bg-forest-teal py-8 px-5 shadow-[2px_0_10px_rgba(0,0,0,0.1)]">
+        <div className="flex gap-2 mb-4">
+          <img src="assets/images/icons/main-logo.svg" alt="Plant Hub Logo" className="w-12 h-12 shrink-0"/>
+          <h1 className="m-0 leading-6 text-2xl text-clay">Plant Hub <span className="text-2xs font-normal opacity-75">v0.5.0.1</span></h1>
         </div>
-        <div className="sidebar-nav-bottom">
-          <div 
-            className={`nav-item ${currentView === 'settings' ? 'active' : ''}`}
-            onClick={() => handleNavClick('settings')}
-          >
-            <img src="assets/images/icons/nav-settings.svg" alt="" className="nav-icon" />
-            <span>Settings</span>
+        <p className="text-base text-clay mb-10 opacity-90">A dashboard for plant care</p>
+        
+        <nav className="flex flex-col h-full">
+          <div className="flex-1 overflow-y-auto gap-2">
+
+            {[
+              { title: 'Dashboard', body: 'dashboard', icon: 'assets/images/icons/nav-dashboard.svg' },
+              { title: 'Reports', body: 'reports', icon: 'assets/images/icons/nav-reports.svg' },
+              { title: 'Inventory', body: 'inventory', icon: 'assets/images/icons/nav-inventory.svg' },
+              { title: 'Configuration', body: 'configuration', icon: 'assets/images/icons/nav-configuration.svg' },
+            ].map(({ title, body, icon }) => (
+              <div
+                key={body}
+                onClick={() => handleNavClick(body)}
+                className={`flex items-center gap-3 px-5 py-4 mb-1 rounded-lg cursor-pointer text-clay transition-colors duration-300 ease-in-out
+                  ${currentView === body
+                  ? 'bg-white/10 font-semibold' : 'hover:bg-white/10'}
+                `}
+              >
+                <img src={icon} alt="" className="w-5 h-5 shrink brightness-0 invert-100" />
+                <span>{title}</span>
+              </div>
+            ))}
+
+
           </div>
-          <div className="user-info" onClick={handleSignOut} style={{ cursor: 'pointer' }}>
-            <img src="assets/images/icons/nav-user.svg" alt="" className="nav-icon" />
-            <div className="user-details">
-              <div className="user-name">{getUserDisplayName()}</div>
-              <div className="user-email">{user?.email || 'user@example.com'}</div>
+
+          <div className="mt-auto shrink-0">
+
+            <div 
+              onClick={() => handleNavClick('settings')}
+              className={`flex items-center gap-3 px-5 py-4 mb-1 rounded-lg cursor-pointer text-clay transition-colors duration-300 ease-in-out
+                  ${currentView === 'settings'
+                  ? 'bg-white/10 font-semibold' : 'hover:bg-white/10'}
+                `}              
+            >
+              <img src="assets/images/icons/nav-settings.svg" alt="" className="w-5 h-5 shrink brightness-0 invert-100" />
+              <span>Settings</span>
+            </div>
+
+            <div className="flex items-center jusify-center gap-4 p-4 rounded-lg cursor-pointer  bg-white/10" onClick={handleSignOut} style={{ cursor: 'pointer' }}>
+              <img src="assets/images/icons/nav-user.svg" alt="" className="w-5 h-5 shrink brightness-0 invert-100" />
+              <div className="flex-1 overflow-hidden">
+                <div className="font-semibold text-clay wrap-break-word">{getUserDisplayName()}</div>
+                
+              </div>
             </div>
           </div>
-        </div>
-      </nav>
-    </div>
+        </nav>
+      </div>
+    </>
   );
 }
 

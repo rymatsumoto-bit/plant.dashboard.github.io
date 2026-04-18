@@ -91,12 +91,12 @@ keeps this logic in one place.
 - [ ] `components/forms.css` — `.form-panel`, `.form-group`, `.form-label`, `.form-grid`, `.form-section`, `.form-backdrop`, `.form-static-value`
 - [✓] `components/hero.css` — Landing page hero section styles — **highest priority**, this is self contained and will be easier to transition
 - [✓] `components/leaf.css` — Floating leaf animation (landing page) — **highest priority**, this is self contained and will be easier to transition
-- [ ] `components/main-content.css` — `.page-container`, `.main-content`, `.content`, `.header`
+- [✓] `components/main-content.css` — `.page-container`, `.main-content`, `.content`, `.header`
 - [ ] `components/modal.css` — `.modal-panel`, `.modal-panel-header`, `.modal-panel-footer`, `.modal-error`, `.modal-detail-value`
 - [ ] `components/schedule.css` — `.dash-schedule-item`, `.dash-schedule-plant`, `.dash-schedule-plant-icon` (severity colors), `.dash-schedule-badge`
-- [ ] `components/sidebar.css` — `.sidebar`, `.sidebar-header`, `.nav-item`, `.nav-icon`, `.user-info`, `.user-details` — **high priority**, this is self contained and will be easier to transition
+- [✓] `components/sidebar.css` — `.sidebar`, `.sidebar-header`, `.nav-item`, `.nav-icon`, `.user-info`, `.user-details` — **high priority**, this is self contained and will be easier to transition
 - [ ] `components/tables.css` — `.table`, `.table-header`, `.table-row`, `.table-activity`, `.table-activity-row`, `.table-activity-type-badge`, `.plant-name-cell`, `.status-icon`
-- [ ] `components/toolbar.css` — `.toolbar`, `.toolbar-title`, `.search-container`, `.search-input`, `.toolbar-button-container` — **high priority**, this is self contained and will be easier to transition
+- [✓] `components/toolbar.css` — `.toolbar`, `.toolbar-title`, `.search-container`, `.search-input`, `.toolbar-button-container` — **high priority**, this is self contained and will be easier to transition
 
 #### Pages
 - [ ] `pages/dashboard.css` — `#dashboard-schedule-list` scrollbar styles
@@ -107,9 +107,10 @@ keeps this logic in one place.
 
 ## Completed Files
 
-components/hero.css
-components/leaf.css
-pages/landing.css
+components/navigation/PageLayout.jsx
+components/navigation/Sidebar.jsx
+components/navigation/Toolbar.jsx
+pages/Landing.jsx
 
 ---
 

@@ -2,7 +2,7 @@
 /*--------------*/ 
 
 /* Button */
-.btn {
+/*.btn {
     /*display: inline-flex;*/
     /*font-size: var(--font-size-base);*/
     /*font-weight: 600;*/
@@ -13,7 +13,7 @@
     justify-content: center;*/
     /*cursor: pointer;*/
     /*transition: all var(--transition-fast);*/
-}
+/*}*/
 
 .btn:hover {
   transform: translateY(-3px);
@@ -48,7 +48,7 @@
 /*--------------*/ 
 
 /* Theme Buttons Colors */
-
+/*
 .btn-primary {
     background: var(--btn-primary-bg);
     color: var(--btn-primary-text);
@@ -57,7 +57,7 @@
 .btn-primary:hover {
     background: var(--btn-primary-hover);
 }
-
+*/
 .btn-secondary {
     background: var(--btn-secondary-bg);
     color: var(--btn-secondary-text);

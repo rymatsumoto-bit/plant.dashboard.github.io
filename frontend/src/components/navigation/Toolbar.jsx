@@ -16,7 +16,7 @@ function Toolbar({ currentView, onActivitySuccess }) {
   };
 
   const viewInfo = {
-    dashboard:     { title: 'Dashboard',       tagline: 'Your plant care overview' },
+    dashboard:     { title: 'Dashboard',        tagline: 'Your plant care overview' },
     inventory:     { title: 'Plant Inventory',  tagline: 'Manage your plant collection' },
     reports:       { title: 'Reports',          tagline: 'Analyze your plant care data' },
     configuration: { title: 'Configuration',    tagline: 'Set up plant care parameters' },
@@ -27,30 +27,30 @@ function Toolbar({ currentView, onActivitySuccess }) {
 
   return (
     <>
-      <div className="toolbar">
-        <div className="toolbar-title-section">
-          <h1 className="toolbar-title">{info.title}</h1>
-          <p className="toolbar-tagline">{info.tagline}</p>
+      <div className="sticky top-0 z-10 grid grid-cols-[minmax(500px,auto)_1fr_auto] shrink-0 items-center justify-between border-b border-clay bg-white p-5 shadow-sm">
+        <div>
+          <h1 className="text-4xl text-forest-deep">{info.title}</h1>
+          <p className="text-md opacity-80 m-0">{info.tagline}</p>
         </div>
 
-        <div className="search-container">
+        <div className="flex w-full max-w-100 justify-self-start">
           <input
             type="text"
             id="search-input"
-            className="search-input"
+            className="w-full px-4 py-2.5 border border-clay rounded-lg text-base transition-colors duration-200 ease-in bg-white shadow-md focus:outline-none focus:border-botanical"
             placeholder="Search..."
           />
         </div>
 
-        <div className="toolbar-button-container">
+        <div className="flex flex-row items-end gap-4">
           <button
-            className="btn btn-primary"
+            className="btn btn-primary w-36 h-12"
             onClick={() => setShowWateringModal(true)}
           >
             + WATERING
           </button>
           <button
-            className="btn btn-primary"
+            className="btn btn-primary w-36 h-12"
             onClick={() => setShowNewActivityModal(true)}
           >
             + ACTIVITY
