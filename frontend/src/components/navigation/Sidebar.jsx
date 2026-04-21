@@ -47,7 +47,7 @@ function Sidebar({ currentView = 'dashboard', onNavigate }) {
       <div className="flex flex-col sticky top-0 h-screen w-60 bg-forest-teal py-8 px-5 shadow-[2px_0_10px_rgba(0,0,0,0.1)]">
         <div className="flex gap-2 mb-4">
           <img src="assets/images/icons/main-logo.svg" alt="Plant Hub Logo" className="w-12 h-12 shrink-0"/>
-          <h1 className="m-0 leading-6 text-2xl text-clay">Plant Hub <span className="text-2xs font-normal opacity-75">v0.5.0.1</span></h1>
+          <h1 className="m-0 leading-6 text-2xl text-clay">Plant Hub <span className="text-2xs font-normal opacity-75">v0.5.0.2</span></h1>
         </div>
         <p className="text-base text-clay mb-10 opacity-90">A dashboard for plant care</p>
         

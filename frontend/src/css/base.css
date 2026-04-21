@@ -18,8 +18,8 @@ html {
 body {
     display: flex;
     font-family: 'DM Sans', sans-serif;
-    background: var(--bg-primary);
-    color: var(--c-forest-deep);
+    background: var(--color-background-primary);
+    color: var(--color-forest-teal);
     line-height: 1.6;
     min-height: 100vh;
     width: 100%;
@@ -72,19 +72,19 @@ p {
  */
 
 
-.tooltip-text {
-    /* visibility: hidden; /* Hides the tooltip by default */
+/*.tooltip-text {
+    /* visibility: hidden; /* Hides the tooltip by default 
     width: 120px;
-    background-color: var(--bg-secondary);
-    color: var(--text-secondary);
+    background-color: var(--color-background-secondary);
+    color: var(--color-forest-teal);
     text-align: center;
     padding: 5px 0;
     border-radius: 6px;
-    position: absolute; /* Positions the tooltip relative to its parent container */
+    position: absolute;
     z-index: 1;
-    bottom: 125%; /* Position the tooltip above the container */
+    bottom: 125%;
     left: 50%;
-    margin-left: -60px; /* Center the tooltip (half of the width) */
+    margin-left: -60px;
     opacity: 0;
-    transition: opacity 0.3s; /* Smooth transition for appearance */
-}
+    transition: opacity 0.3s;
+}*/

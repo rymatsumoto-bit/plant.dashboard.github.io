@@ -32,19 +32,13 @@ export default function Settings({ onNavigate }) {
   return (
     <PageLayout currentView="settings" onNavigate={onNavigate}>
 
-      <div className="header">
-        <p>Configure your app settings.</p>
-      </div>
-
       {/* Admin Actions */}
-      <div className="chunk-title">Admin</div>
-
       <div className="card">
-        <h4>Daily Batch</h4>
+        <h1>Daily Batch</h1>
         <p>Manually trigger the daily batch to recalculate plant factors, statuses, and schedules.</p>
 
         <button
-          className="btn btn-primary"
+          className="btn btn-primary w-48 h-12"
           onClick={handleRunDailyBatch}
           disabled={batchStatus === 'loading'}
         >
@@ -53,12 +47,12 @@ export default function Settings({ onNavigate }) {
 
         {/* Feedback */}
         {batchStatus === 'success' && (
-          <p className="mt-md" style={{ color: 'var(--success-text)' }}>
+          <p className="mt-4 text-success">
             ✅ {batchMessage}
           </p>
         )}
         {batchStatus === 'error' && (
-          <p className="mt-md" style={{ color: 'var(--danger-text)' }}>
+          <p className="mt-4 text-danger">
             ❌ {batchMessage}
           </p>
         )}

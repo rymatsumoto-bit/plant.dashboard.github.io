@@ -3,9 +3,9 @@ import AddressCard from './AddressCard';
 export default function AddressList({ addresses, onAddressClick }) {
   if (!addresses || addresses.length === 0) {
     return (
-      <div className="table">
+      <div className="card">
         <div>
-          <div className="empty-state">No addresses.</div>
+          <div className="text-center p-5 text-font-light text-sm">No addresses.</div>
         </div>
       </div>
     );

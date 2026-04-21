@@ -8,13 +8,9 @@
 @import "./components/buttons.css";
 @import "./components/cards.css";
 @import "./components/chunks.css";
-@import "./components/empty-state.css";
 @import "./components/forms.css";
 @import "./components/modal.css";
-@import "./components/schedule.css";
-@import "./components/tables.css";
 
-@import "./pages/dashboard.css";
 @import "./pages/inventory.css";
 
 
@@ -34,8 +30,11 @@
   --color-soil:         #401d0f;
 
   /* COLORS: Base */
-  --color-background-base:  #effdf7;
-  --color-font-base:        #03312e;
+  --color-background-primary:   #effdf7;
+  --color-background-secondary: #d4ffee;
+  --color-font-base:            #03312e;
+  --color-font-light:           #5a5a5a;
+  --color-item-highlight:       #e9fff5;
 
   /* COLORS: Buttons */
 
@@ -116,4 +115,48 @@
   .btn-primary:hover {
     @apply bg-btn-primary-hover
   }
+
+  /* card */
+  .card {
+    @apply bg-white
+            rounded-lg
+            shadow-md
+            p-1
+            cursor-pointer;
+
+    h1 {
+      @apply  text-forest-teal
+              text-3xl
+              mb-0
+              pb-2.5;
+    }
+  }
+  
+
+
+  /* scrollbar */
+  .scrollbar {
+    /* For Firefox */
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-clay) transparent;
+
+    /* For Chrome, Edge, and Safari */
+    &::-webkit-scrollbar {
+      width: 6px;
+      height: 6px; /* for horizontal scrollbars */
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      @apply bg-clay/50 rounded-full;
+      
+      &:hover {
+        @apply bg-clay;
+      }
+    }
+  }
+
 }

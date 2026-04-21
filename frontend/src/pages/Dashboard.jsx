@@ -43,7 +43,12 @@ export default function Dashboard({ onNavigate }) {
     <PageLayout currentView="dashboard" onNavigate={onNavigate} onActivitySuccess={loadDashboardData}>
       {/* Loading State */}
       {isLoading && (
-        <div className="loading-container">
+        <div  style={{ 
+          display: 'flex', 
+          justifyContent: 'center', 
+          alignItems: 'center', 
+          minHeight: '400px' 
+        }}>
           <div className="loading-spinner"></div>
           <span className="loading-text">Loading dashboard...</span>
         </div>

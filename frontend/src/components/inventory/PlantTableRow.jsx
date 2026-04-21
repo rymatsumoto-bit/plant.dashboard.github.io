@@ -17,26 +17,25 @@ export default function PlantTableRow({ plant, onClick }) {
 
   return (
     <div
-      className="table-row"
+      className="grid grid-cols-[2fr_1.5fr_1fr_1.5fr_0.5fr] px-6 py-5 border-t border-clay items-center duration-200 hover:bg-item-highlight"
       data-plant-id={plant.plant_id}
       onClick={() => onClick(plant.plant_id)}
     >
       {/* Name + Species */}
-      <div className="plant-name-cell">
-        <div className="plant-name-icon">
+      <div className="flex items-center gap-3">
+        <div className="flex items-center justify-center w-9 h-9 rounded-lg">
           <img
             src={`assets/images/icons/plants/${plant.plant_icon}.svg`}
             alt={plant.plant_icon || 'plant'}
-            className="plant-icon-svg"
             onError={(e) => {
               e.currentTarget.onerror = null;
               e.currentTarget.src = 'assets/images/icons/plants/default.svg';
             }}
           />
         </div>
-        <div className="plant-name-text">
-          <div className="name">{plant.plant_name || 'Unnamed Plant'}</div>
-          <div className="species">{plant.species || 'Unknown Species'}</div>
+        <div>
+          <div className="text-base font-semibold mb-0.5">{plant.plant_name || 'Unnamed Plant'}</div>
+          <div className="text-sm text-font-light">{plant.species || 'Unknown Species'}</div>
         </div>
       </div>
 
@@ -45,23 +44,30 @@ export default function PlantTableRow({ plant, onClick }) {
 
       {/* Status icon with tooltip */}
       <div>
-        <span className="status-icon">
+        <span className="group relative
+              w-10 h-10 text-xl
+              rounded-full
+              bg-background-secondary
+              inline-flex
+              items-center
+              justify-center
+              cursor-pointer">
           {plant.status_icon || '❓'}
-          <div className="tooltip-text">{plant.status_label || 'unknown'}</div>
+          <div className="w-30 bg-background-secondary text-forest-teal text-center py-1 rounded-full absolute z-1 bottom-[125%] left-1/2 -ml-15 opacity-0 transition-opacity duration-300 group-hover:visible group-hover:opacity-100">{plant.status_label || 'unknown'}</div>
         </span>
       </div>
 
       {/* Last Activity */}
-      <div className="plant-name-cell">
-        <div className="plant-name-text">
-          <div className="name">{formatDate(plant.last_activity_date)}</div>
-          <div className="species">{plant.last_activity_label || '-'}</div>
+      <div className="flex items-center gap-3">
+        <div>
+          <div className="text-base mb-0.5">{formatDate(plant.last_activity_date)}</div>
+          <div className="text-base text-font-light">{plant.last_activity_label || '-'}</div>
         </div>
       </div>
 
       {/* Detail button */}
-      <div className="plant-detail-btn" onClick={handleDetailClick}>
-        <img src="assets/images/icons/nav-detail.svg" alt="detail" />
+      <div className="w-9 h-9 items-center cursor-pointer" onClick={handleDetailClick}>
+        <img className="w-full h-full object-cover" src="assets/images/icons/nav-detail.svg" alt="detail" />
       </div>
     </div>
   );

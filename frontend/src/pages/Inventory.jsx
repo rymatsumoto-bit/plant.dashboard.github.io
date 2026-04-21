@@ -65,7 +65,7 @@ export default function Inventory({ onNavigate }) {
   return (
     <PageLayout currentView="inventory" onNavigate={onNavigate}>
       {/* KPI Cards */}
-      <div className="card-kpi-container">
+      <div className="flex gap-7 pb-10">
         <KPICardI
           title="Plants"
           metric={metrics?.plant_active_total_count || 0}
