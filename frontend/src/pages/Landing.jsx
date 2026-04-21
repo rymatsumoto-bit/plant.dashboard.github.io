@@ -85,7 +85,7 @@ export default function Landing() {
 
       {/* ── Root: organic radial background ── */}
       <div
-        className="relative overflow-x-hidden leading-relaxed bg-background-base"
+        className="relative overflow-x-hidden leading-relaxed bg-background-primary"
       >
 
         {/* Organic background texture */}

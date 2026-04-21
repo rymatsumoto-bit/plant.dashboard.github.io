@@ -167,21 +167,11 @@ plant-care-dashboard/
 │   │   │   │   ├── buttons.css                     # Button styles
 │   │   │   │   ├── cards.css
 │   │   │   │   ├── chunks.css
-│   │   │   │   ├── empty-state.css
 │   │   │   │   ├── forms.css
-│   │   │   │   ├── hero.css                        # For landing page
-│   │   │   │   ├── leaf.css                        # For landing page
-│   │   │   │   ├── main-content.css                # For main page, wrapping all pages
-│   │   │   │   ├── schedule.css
-│   │   │   │   ├── sidebar.css
-│   │   │   │   ├── tables.css
-│   │   │   │   ├── toolbar.css
-│   │   │   │   └── .css                      # 
+│   │   │   │   └── modal.css                      # 
 │   │   │   │
 │   │   │   └── pages/                          # Styles specific for individual pages
-│   │   │      ├── dashboard.css                    # Specific style for dashboard page
-│   │   │      ├── inventory.css                    # For the Landing
-│   │   │      └── landing.css                      # Settings feature styles
+│   │   │      └── inventory.css                      # Settings feature styles
 │   │   │
 │   │   ├── components/                             # jsx components of the pages
 │   │   │   ├── dashboard/                          # components in dashboard page

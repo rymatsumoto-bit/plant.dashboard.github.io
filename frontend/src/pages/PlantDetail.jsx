@@ -122,8 +122,8 @@ export default function PlantDetail({ plantId, onBack, onNavigate }) {
           <div className="chunk-container-single-column">
             <div className="chunk-title">Activity History</div>
 
-            <div className="table-activity">
-              <div className="table-activity-header">
+            <div className="bg-white rounded-xl shadow-md cursor-pointer">
+              <div className="grid grid-cols-[1fr_2fr_1fr_1fr_1.5fr_1.5fr] p-5 gap-x-4 font-semibold text-base text-font-base pr-9">
                 <div>Date</div>
                 <div>Type</div>
                 <div>Qty</div>
@@ -132,9 +132,9 @@ export default function PlantDetail({ plantId, onBack, onNavigate }) {
                 <div>Results</div>
               </div>
 
-              <div className="table-activity-body">
+              <div className="scrollbar overflow-y-auto max-h-100 [scrollbar-width:thin] [scrollbar-gutter:stable]">
                 {activity.length === 0 ? (
-                  <div className="empty-state">No activity recorded.</div>
+                  <div className="text-center p-5 text-font-light text-sm">No activity recorded.</div>
                 ) : (
                   activity.map((a) => (
                     <PlantActivityRow key={a.activity_id} activity={a} />

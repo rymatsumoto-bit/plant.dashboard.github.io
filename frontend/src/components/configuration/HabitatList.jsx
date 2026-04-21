@@ -3,9 +3,9 @@ import HabitatCard from './HabitatCard';
 export default function HabitatList({ habitats, onHabitatClick }) {
   if (!habitats || habitats.length === 0) {
     return (
-      <div className="table">
+      <div className="card">
         <div>
-          <div className="empty-state">No habitats.</div>
+          <div className="text-center p-5 text-font-light text-sm">No habitats.</div>
         </div>
       </div>
     );
