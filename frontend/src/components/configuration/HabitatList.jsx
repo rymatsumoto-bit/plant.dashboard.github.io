@@ -12,7 +12,7 @@ export default function HabitatList({ habitats, onHabitatClick }) {
   }
 
   return (
-    <div id="habitat-list-cards" className="card-habitat-container">
+    <div id="habitat-list-cards" className="flex flex-row items-end gap-7 pb-5 overflow-x-auto">
       {habitats.map((habitat) => (
         <HabitatCard
           key={habitats.habitat_id}

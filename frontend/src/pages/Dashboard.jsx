@@ -62,10 +62,10 @@ export default function Dashboard({ onNavigate }) {
 
       {/* Dashboard Content */}
       {!isLoading && !error && metrics && (
-        <div className="chunk-container-1-2">
+        <div className="grid grid-cols-[1fr_2fr] gap-8 mb-8 items-start">
           {/* KPIs Section */}
-          <div className="chunk-container-single-column">
-            <div className="chunk-title">KPIs</div>
+          <div className="grid grid-cols-1 gap-6 items-start">
+            <div className="grid grid-cols-[1fr_auto] text-xl font-semibold items-center mb-3">KPIs</div>
             
             <KPICard
               title="Plants"
@@ -90,8 +90,8 @@ export default function Dashboard({ onNavigate }) {
           </div>
 
           {/* Schedule Section */}
-          <div className="chunk-container-single-column">
-            <div className="chunk-title">Schedule</div>
+          <div className="grid grid-cols-1 gap-6 items-start">
+            <div className="grid grid-cols-[1fr_auto] text-xl font-semibold items-center mb-3">Schedule</div>
               <ScheduleCard schedule={schedule} />
           </div>
         </div>

@@ -1,16 +1,7 @@
 @import "tailwindcss";
 
 @import "./reset.css" layer(base);
-@import "./variables.css" layer(base);
 @import "./base.css" layer(base);
-
-
-@import "./components/buttons.css";
-@import "./components/cards.css";
-@import "./components/chunks.css";
-@import "./components/modal.css";
-
-@import "./pages/inventory.css";
 
 
 @theme {
@@ -40,9 +31,9 @@
   --color-btn-primary-bg:       #03312e;
   --color-btn-primary-text:     #ffe2d1;
   --color-btn-primary-hover:    #024a45;
-/*  --color-btn-secondary-bg:     #6f7c12;
+  --color-btn-secondary-bg:     #6f7c12;
   --color-btn-secondary-text:   #ffe2d1;
-  --color-btn-secondary-hover:  #596b0f;*/
+  --color-btn-secondary-hover:  #596b0f;
 
 
 
@@ -95,10 +86,26 @@
 
 @layer components {
 
-  /* loading spinner */
+  /* admin */
   .loading-spinner {
     @apply text-moss text-xl;
   }
+
+  .error-message {
+    @apply  flex
+            text-sm
+          text-danger
+          bg-danger-bg
+            font-semibold
+            items-center
+            gap-1.5
+            p-3
+            rounded
+            mt-1
+            mb-4;
+  }
+
+
 
   /* buttons */
   .btn {
@@ -109,18 +116,34 @@
             cursor-pointer
             transition-all
             duration-300
-            hover:-translate-y-px
-            hover:shadow-lg;
+            hover:-translate-y-1
+            hover:shadow-lg
+            active:-translate-y-1
+            active:shadow-lg;
+  }
+
+  .btn-small {
+    @apply  text-sm
+            font-medium
+            px-3 py-2;
   }
 
   .btn-primary {
-    @apply bg-btn-primary-bg text-btn-primary-text;
+    @apply  bg-btn-primary-bg
+            text-btn-primary-text
+            hover:bg-btn-primary-hover;
   }
 
-  .btn-primary:hover {
-    @apply bg-btn-primary-hover
+  .btn-secondary {
+    @apply  bg-btn-secondary-bg
+            text-btn-secondary-text
+            hover:bg-btn-secondary-hover;
   }
 
+  .btn-add { @apply bg-forest-teal text-sand; }
+  .btn-edit { @apply bg-warning-foreground text-sand; }
+  .btn-delete { @apply bg-terracotta text-sand; }
+  .btn-cancel { @apply bg-clay text-terracotta; }
 
 
   /* card */
@@ -131,15 +154,12 @@
             p-1
             cursor-pointer;
 
-    h1 {
-      @apply  text-forest-teal
-              text-3xl
-              mb-0
-              pb-2.5;
-    }
+    h1 { @apply text-forest-teal text-3xl mb-0 pb-2.5; }
+    h2 { @apply text-botanical text-xl mb-0 pb-2.5; }
+    h3 { @apply text-botanical text-base pb-2.5; }
+    h4 { @apply text-botanical text-sm pb-2.5; }
   }
   
-
 
   /* forms */
   .form-backdrop {

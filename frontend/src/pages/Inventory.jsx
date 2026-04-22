@@ -89,12 +89,12 @@ export default function Inventory({ onNavigate }) {
       </div>
 
       {/* Table Title */}
-      <div className="chunk-title">
+      <div className="grid grid-cols-[1fr_auto] text-xl font-semibold items-center mb-3">
         Plant List
-        <div className="card-title-btn">
+        <div className="flex justify-end gap-2">
           <button 
             id="new-plant-btn" 
-            className="btn-small btn-add"
+            className="btn btn-small btn-add"
             onClick={handleNewPlantClick}
           >
             NEW

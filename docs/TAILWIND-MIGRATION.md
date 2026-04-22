@@ -79,20 +79,20 @@ keeps this logic in one place.
 
 #### Base & Config
 - [ ] `reset.css` — CSS reset; can likely be replaced by Tailwind's preflight
-- [ ] `variables.css` — Design tokens; migrate values into `tailwind.config.js` theme extension (do last)
-- [ ] `base.css` — Base body/heading styles and utility classes (`.hidden`, `.text-center`, margin helpers)
-- [ ] `main.css` — Import orchestrator; update imports as files are retired
+- [✓] `variables.css` — Design tokens; migrate values into `tailwind.config.js` theme extension (do last)
+- [✓] `base.css` — Base body/heading styles and utility classes (`.hidden`, `.text-center`, margin helpers)
+- [✓] `main.css` — Import orchestrator; update imports as files are retired
 
 #### Components
-- [ ] `components/buttons.css` — `.btn`, `.btn-small`, `.btn-primary`, `.btn-secondary`, `.btn-add`, `.btn-edit`, `.btn-delete`, `.btn-cancel`, `.btn-toggle`
-- [ ] `components/cards.css` — `.card`, `.card-kpi`, `.card-habitat`, `.card-address`, `.card-title`, `.card-title-btn`, floating card animations (landing page)
-- [ ] `components/chunks.css` — `.chunk-title`, `.chunk-container`, `.chunk-container-single-column`, `.chunk-container-1-1`, `.chunk-container-1-2`, `.chunk-container-2-1`
+- [✓] `components/buttons.css` — `.btn`, `.btn-small`, `.btn-primary`, `.btn-secondary`, `.btn-add`, `.btn-edit`, `.btn-delete`, `.btn-cancel`, `.btn-toggle`
+- [✓] `components/cards.css` — `.card`, `.card-kpi`, `.card-habitat`, `.card-address`, `.card-title`, `.card-title-btn`, floating card animations (landing page)
+- [✓] `components/chunks.css` — `.chunk-title`, `.chunk-container`, `.chunk-container-single-column`, `.chunk-container-1-1`, `.chunk-container-1-2`, `.chunk-container-2-1`
 - [✓] `components/empty-state.css` — `.empty-state`
 - [✓] `components/forms.css` — `.form-panel`, `.form-group`, `.form-label`, `.form-grid`, `.form-section`, `.form-backdrop`, `.form-static-value`
 - [✓] `components/hero.css` — Landing page hero section styles — **highest priority**, this is self contained and will be easier to transition
 - [✓] `components/leaf.css` — Floating leaf animation (landing page) — **highest priority**, this is self contained and will be easier to transition
 - [✓] `components/main-content.css` — `.page-container`, `.main-content`, `.content`, `.header`
-- [ ] `components/modal.css` — `.modal-panel`, `.modal-panel-header`, `.modal-panel-footer`, `.modal-error`, `.modal-detail-value`
+- [✓] `components/modal.css` — `.modal-panel`, `.modal-panel-header`, `.modal-panel-footer`, `.modal-error`, `.modal-detail-value`
 - [✓] `components/schedule.css` — `.dash-schedule-item`, `.dash-schedule-plant`, `.dash-schedule-plant-icon` (severity colors), `.dash-schedule-badge`
 - [✓] `components/sidebar.css` — `.sidebar`, `.sidebar-header`, `.nav-item`, `.nav-icon`, `.user-info`, `.user-details` — **high priority**, this is self contained and will be easier to transition
 - [✓] `components/tables.css` — `.table`, `.table-header`, `.table-row`, `.table-activity`, `.table-activity-row`, `.table-activity-type-badge`, `.plant-name-cell`, `.status-icon`
@@ -107,10 +107,10 @@ keeps this logic in one place.
 
 ## Completed Files
 
-- [ ] components/configuration/AddressCard.jsx
-- [ ] components/configuration/AddressList.jsx
-- [ ] components/configuration/HabitatCard.jsx
-- [ ] components/configuration/HabitatList.jsx
+- [✓] components/configuration/AddressCard.jsx
+- [✓] components/configuration/AddressList.jsx
+- [✓] components/configuration/HabitatCard.jsx
+- [✓] components/configuration/HabitatList.jsx
 - [✓] components/dashboard/KPICard.jsx
 - [✓] components/dashboard/ScheduleCard.jsx
 - [✓] components/dashboard/ScheduleItem.jsx
@@ -118,30 +118,29 @@ keeps this logic in one place.
 - [✓] components/inventory/PlantActivityRow.jsx
 - [✓] components/inventory/PlantTable.jsx
 - [✓] components/inventory/PlantTableRow.jsx
-- [ ] components/modals/activities/NewActivityModal.jsx
-- [ ] components/modals/activities/WateringModal.jsx
-- [ ] components/modals/fields/ActivityTypeSelect.jsx
-- [ ] components/modals/fields/DatePicker.jsx
-- [ ] components/modals/fields/NotesField.jsx
-- [ ] components/modals/fields/PlantSelect.jsx
-- [ ] components/modals/fields/QuantifierInput.jsx
-- [ ] components/modals/fields/ResultField.jsx
-- [ ] components/modals/fields/UnitSelect.jsx
-- [ ] components/modals/fields/WateringLevelSelect.jsx
-- [ ] components/modals/ActivityModalBase.jsx
-- [ ] components/modals/AddressDetailModal.jsx
-- [ ] components/modals/HabitatDetailModal.jsx
-- [ ] components/modals/LoginModal.jsx
-- [ ] components/modals/NewActivityModal.jsx
+- [✓] components/modals/activities/NewActivityModal.jsx
+- [✓] components/modals/activities/WateringModal.jsx
+- [✓] components/modals/fields/ActivityTypeSelect.jsx
+- [✓] components/modals/fields/DatePicker.jsx
+- [✓] components/modals/fields/NotesField.jsx
+- [✓] components/modals/fields/PlantSelect.jsx
+- [✓] components/modals/fields/QuantifierInput.jsx
+- [✓] components/modals/fields/ResultField.jsx
+- [✓] components/modals/fields/UnitSelect.jsx
+- [✓] components/modals/fields/WateringLevelSelect.jsx
+- [✓] components/modals/ActivityModalBase.jsx
+- [✓] components/modals/AddressDetailModal.jsx
+- [✓] components/modals/HabitatDetailModal.jsx
+- [✓] components/modals/LoginModal.jsx
 - [✓] components/navigation/PageLayout.jsx
 - [✓] components/navigation/Sidebar.jsx
 - [✓] components/navigation/Toolbar.jsx
-- [ ] pages/Configuration.jsx
-- [ ] pages/Dashboard.jsx
-- [ ] pages/Inventory.jsx
+- [✓] pages/Configuration.jsx
+- [✓] pages/Dashboard.jsx
+- [✓] pages/Inventory.jsx
 - [✓] pages/Landing.jsx
-- [ ] pages/PlantDetail.jsx
-- [ ] pages/Reports.jsx
+- [✓] pages/PlantDetail.jsx
+- [✓] pages/Reports.jsx
 - [✓] pages/Settings.jsx
 
 

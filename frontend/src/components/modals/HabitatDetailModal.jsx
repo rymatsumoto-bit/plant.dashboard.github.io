@@ -100,13 +100,13 @@ export default function HabitatDetailModal({ habitatId, onClose, onEdit, onArchi
       >
         {/* Modal panel */}
         <div
-          className="modal-panel"
+          className="bg-white rounded-xl p-8 max-w-150 w-[90%] max-h-[90vh] overflow-y-auto shadow-lg"
           onClick={(e) => e.stopPropagation()}
         >
           {/* ── Header ── */}
-          <div className="modal-panel-header">
+          <div className="flex justify-between items-center mb-5 pb-4 border-b-2 border-clay">
             <h3>{isLoading ? 'Loading...' : 'Habitat Details'}</h3>
-            <button className="close-modal" onClick={onClose} aria-label="Close">&#x2715;</button>
+            <button className="bg-transparent border-none text-2xl text-font-light p-0 leading-none cursor-pointer hover:text-font-base" onClick={onClose} aria-label="CLOSE">×</button>
           </div>
 
           {/* ── Body ── */}
@@ -114,15 +114,12 @@ export default function HabitatDetailModal({ habitatId, onClose, onEdit, onArchi
 
             {/* Loading */}
             {isLoading && (
-              <div className="loading-inline" style={{ padding: 'var(--spacing-xl) 0' }}>
-                <div className="loading-spinner"></div>
-                <span>Loading habitat details...</span>
-              </div>
+              <div className="loading-spinner">Loading habitat details...</div>
             )}
 
             {/* Error */}
             {!isLoading && error && (
-              <div className="modal-error">{error}</div>
+              <div className="error-message">{error}</div>
             )}
 
             {/* Content */}
@@ -132,7 +129,7 @@ export default function HabitatDetailModal({ habitatId, onClose, onEdit, onArchi
                 <div className="form-section">
                   <div className="form-group">
                     <label>Habitat Name</label>
-                    <p className="modal-detail-value">{habitat.habitat_name || '—'}</p>
+                    <p className="block m-0 text-base font-medium text-font-light py-3 border-b border-clay min-h-8">{habitat.habitat_name || '—'}</p>
                   </div>
                 </div>
 
@@ -141,7 +138,7 @@ export default function HabitatDetailModal({ habitatId, onClose, onEdit, onArchi
                   <div className="form-section-title">Light Exposure</div>
 
                   {!hasLights && (
-                    <p className="modal-detail-value">No light sources configured.</p>
+                    <p className="block m-0 text-base font-medium text-font-light py-3 border-b border-clay min-h-8">No light sources configured.</p>
                   )}
 
                   {lights.artificial.map((light) => (
@@ -150,7 +147,7 @@ export default function HabitatDetailModal({ habitatId, onClose, onEdit, onArchi
                         <span className="habitat-light-item-title">
                           {light.light_name || 'Unnamed Light'}
                         </span>
-                        <span style={{ fontSize: '0.85em', color: 'var(--text-light)' }}>
+                        <span className="text-sm text-font-light">
                           (Artificial)
                         </span>
                       </div>
@@ -168,7 +165,7 @@ export default function HabitatDetailModal({ habitatId, onClose, onEdit, onArchi
                         <span className="habitat-light-item-title">
                           {light.light_name || 'Unnamed Window'}
                         </span>
-                        <span style={{ fontSize: '0.85em', color: 'var(--text-light)' }}>
+                        <span className="text-sm text-font-light">
                           (Window)
                         </span>
                       </div>
@@ -188,7 +185,7 @@ export default function HabitatDetailModal({ habitatId, onClose, onEdit, onArchi
                         <span className="habitat-light-item-title">
                           {light.light_name || 'Unnamed Outdoor Area'}
                         </span>
-                        <span style={{ fontSize: '0.85em', color: 'var(--text-light)' }}>
+                        <span className="text-sm text-font-light">
                           (Outdoor)
                         </span>
                       </div>
@@ -204,7 +201,7 @@ export default function HabitatDetailModal({ habitatId, onClose, onEdit, onArchi
                   <div className="form-section-title">Temperature</div>
                   <div className="form-group">
                     <label>Control</label>
-                    <p className="modal-detail-value">
+                    <p className="block m-0 text-base font-medium text-font-light py-3 border-b border-clay min-h-8">
                       {habitat.temperature_controlled ? 'Controlled' : 'Non-Controlled'}
                     </p>
                   </div>
@@ -248,7 +245,7 @@ export default function HabitatDetailModal({ habitatId, onClose, onEdit, onArchi
           </div>
 
           {/* ── Footer ── */}
-          <div className="modal-buttons">
+          <div className="flex gap-4 mt-4 pt-2.5 border-t border-clay">
             <button
               className="btn btn-edit"
               onClick={() => { onEdit?.(habitatId); onClose(); }}

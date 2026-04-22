@@ -23,32 +23,32 @@ export default function ActivityModalBase({
 
         {/* Modal Panel */}
         <div
-          className="modal-panel"
+          className="bg-white rounded-xl p-8 max-w-150 w-[90%] max-h-[90vh] overflow-y-auto shadow-lg"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
-          <div className="modal-panel-header">
-            <h2 className="modal-panel-title">{title}</h2>
-            <button className="modal-panel-close" onClick={onClose}>×</button>
+          <div className="flex justify-between items-center mb-5 pb-4 border-b-2 border-clay">
+            <h2 className="m-0 text-botanical text-2xl">{title}</h2>
+            <button className="bg-transparent border-none text-2xl text-font-light p-0 leading-none cursor-pointer hover:text-font-base" onClick={onClose} aria-label="CLOSE">×</button>
           </div>
 
           {/* Body */}
           {isLoadingData ? (
-            <p className="modal-loading-text">Loading form data...</p>
+            <p className="loading-spinner">Loading form data...</p>
           ) : (
             <>
               {/* Form fields injected here by Layer 3 */}
-              <div className="modal-panel-body">
+              <div className="mb-5">
                 {children}
               </div>
 
               {/* Error Message */}
               {error && (
-                <p className="modal-error">{error}</p>
+                <p className="error-message">{error}</p>
               )}
 
               {/* Footer Buttons */}
-              <div className="modal-panel-footer">
+              <div className="flex gap-4 pt-5 border-t border-clay justify-end">
                 <button
                   onClick={onClose}
                   disabled={isLoading}
