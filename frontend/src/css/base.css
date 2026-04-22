@@ -1,8 +1,16 @@
+:root {
+}
+
+
+
+
+
 /*
 ======================
  Base Styles
 ======================
  */
+
 
 html {
     width: 100%;
@@ -29,15 +37,15 @@ body {
 h1, h2, h3, h4, h5, h6 {
     font-weight: 600;
     line-height: 1.2;
-    color: var(--text-primary);
+    color: var(--color-font-base);
 }
 
-h1 { font-size: var(--font-size-title); }
-h2 { font-size: var(--font-size-xxl); }
-h3 { font-size: var(--font-size-xl); }
+h1 { font-size: var(--text-title); }
+h2 { font-size: var(--text-xxl); }
+h3 { font-size: var(--text-xl); }
 
 p {
-    margin-bottom: var(--spacing-md);
+    margin-bottom: 16px;
 }
 
 /*
@@ -49,42 +57,3 @@ p {
 .hidden {
     display: none !important;
 }
-
-.text-center {
-    text-align: center;
-}
-
-.text-light {
-    color: var(--text-light);
-}
-
-.mt-sm { margin-top: var(--spacing-sm); }
-.mt-md { margin-top: var(--spacing-md); }
-.mt-lg { margin-top: var(--spacing-lg); }
-.mb-sm { margin-bottom: var(--spacing-sm); }
-.mb-md { margin-bottom: var(--spacing-md); }
-.mb-lg { margin-bottom: var(--spacing-lg); }
-
-/*
-======================
- Tooltup Text
-======================
- */
-
-
-/*.tooltip-text {
-    /* visibility: hidden; /* Hides the tooltip by default 
-    width: 120px;
-    background-color: var(--color-background-secondary);
-    color: var(--color-forest-teal);
-    text-align: center;
-    padding: 5px 0;
-    border-radius: 6px;
-    position: absolute;
-    z-index: 1;
-    bottom: 125%;
-    left: 50%;
-    margin-left: -60px;
-    opacity: 0;
-    transition: opacity 0.3s;
-}*/

@@ -12,7 +12,7 @@ export default function AddressList({ addresses, onAddressClick }) {
   }
 
   return (
-    <div id="address-list-cards" className="card-address-container">
+    <div id="address-list-cards" className="flex flex-row items-end gap-7 pb-5 overflow-x-auto">
       {addresses.map((address) => (
         <AddressCard
           key={addresses.address_id}

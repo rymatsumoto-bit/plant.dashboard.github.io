@@ -58,10 +58,7 @@ export default function PlantDetail({ plantId, onBack, onNavigate }) {
 
       {/* Loading State */}
       {isLoading && (
-        <div className="loading-container">
-          <div className="loading-spinner"></div>
-          <span className="loading-text">Loading plant details...</span>
-        </div>
+        <div className="loading-spinner">Loading plant details...</div>
       )}
 
       {/* Error State */}
@@ -71,14 +68,14 @@ export default function PlantDetail({ plantId, onBack, onNavigate }) {
 
       {/* Content */}
       {!isLoading && !error && details && (
-        <div className="chunk-container-1-2">
+        <div className="grid grid-cols-[1fr_2fr] gap-8 mb-8 items-start">
 
           {/* Left Column — Characteristics */}
-          <div className="chunk-container-single-column" style={{width: '360px'}}>
-            <div className="chunk-title">
+          <div className="grid grid-cols-1 gap-6 items-start" style={{width: '360px'}}>
+            <div className="grid grid-cols-[1fr_auto] text-xl font-semibold items-center mb-3">
               Details
-              <div className="card-title-btn">
-                <button className="btn-small btn-edit">
+              <div className="flex justify-end gap-2">
+                <button className="btn btn-small btn-edit">
                   EDIT
                 </button>
               </div>
@@ -88,7 +85,7 @@ export default function PlantDetail({ plantId, onBack, onNavigate }) {
               <h1>{capitalize(details.plant_name)}</h1>
               <div>{capitalize(details.species)}</div>
               
-              <div className="card-image">
+              <div className="block text-center justify-center mt-4 mb-5">
                 <img
                   src={`assets/images/habitat-desert.jpg`}
                   alt={details.species || 'plant'}
@@ -99,7 +96,7 @@ export default function PlantDetail({ plantId, onBack, onNavigate }) {
                 />
               </div>
               <br/>
-              <div className="chunk-container-1-1">
+              <div className="grid grid-cols-[1fr_1fr] gap-8 mb-8 items-start">
                 <div>
                   <h4>Category</h4>
                   <div>{capitalize(details.plant_category)}</div>
@@ -119,8 +116,8 @@ export default function PlantDetail({ plantId, onBack, onNavigate }) {
           </div>
 
           {/* Right Column — Activity History */}
-          <div className="chunk-container-single-column">
-            <div className="chunk-title">Activity History</div>
+          <div className="grid grid-cols-1 gap-6 items-start">
+            <div className="grid grid-cols-[1fr_auto] text-xl font-semibold items-center mb-3">Activity History</div>
 
             <div className="bg-white rounded-xl shadow-md cursor-pointer">
               <div className="grid grid-cols-[1fr_2fr_1fr_1fr_1.5fr_1.5fr] p-5 gap-x-4 font-semibold text-base text-font-base pr-9">

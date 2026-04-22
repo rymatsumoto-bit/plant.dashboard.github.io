@@ -7,7 +7,7 @@ export default function AddressCard({ address, onClick }) {
 
   return (
     <div
-      className="card card-address" 
+      className="card w-70 h-90 shrink p-4 transition-all duration-200 ease-in-out hover:translate-x-0.5 hover:translate-y-1 hover:shadow-lg" 
       data-address-id={address.address_id}
       onClick={() => onClick(address.address_id)}
     >
@@ -15,7 +15,7 @@ export default function AddressCard({ address, onClick }) {
       <div>
         <h2>{address.address_name || 'Unnamed Address'}</h2>
         
-        <div className="card-address-image">
+        <div className="w-60 h-30 block items-center justify-center mt-4 mb-5 mx-auto">
           <img
             src={`assets/images/habitat-desert.jpg`}
             alt={address.address_id || 'address'}
@@ -25,30 +25,30 @@ export default function AddressCard({ address, onClick }) {
             }}
           />
         </div>
-        <div className="card-habitat-stat">
+        <div className="flex items-center gap-2 text-sm text-moss mt-1 justify-between">
           <span>Lighting</span>
-          <div className="card-habitat-stat-bar">
-            <div className="card-habitat-stat-fill" style={{ width: '65%' }}></div>
+          <div className="h-2 w-30 rounded-xl bg-sand overflow-hidden">
+            <div className="h-full rounded-xl bg-[linear-gradient(90deg,var(--color-sage),var(--color-sunlight))]" style={{ width: '50%' }}></div>
           </div>
         </div>
 
-        <div className="card-habitat-stat">
+        <div className="flex items-center gap-2 text-sm text-moss mt-1 justify-between">
           <span>Humidity</span>
-          <div className="card-habitat-stat-bar">
-            <div className="card-habitat-stat-fill" style={{ width: '65%' }}></div>
+          <div className="h-2 w-30 rounded-xl bg-sand overflow-hidden">
+            <div className="h-full rounded-xl bg-[linear-gradient(90deg,var(--color-sage),var(--color-sunlight))]" style={{ width: '65%' }}></div>
           </div>
         </div>
 
-        <div className="card-habitat-stat">
+        <div className="flex items-center gap-2 text-sm text-moss mt-1 justify-between">
           <span>Temperature</span>
-          <div className="card-habitat-stat-bar">
-            <div className="card-habitat-stat-fill" style={{ width: '65%' }}></div>
+          <div className="h-2 w-30 rounded-xl bg-sand overflow-hidden">
+            <div className="h-full rounded-xl bg-[linear-gradient(90deg,var(--color-sage),var(--color-sunlight))]" style={{ width: '65%' }}></div>
           </div>
         </div>
 
         <br/>
 
-        <div className="card-habitat-stat">
+        <div className="flex items-center gap-2 text-sm text-moss mt-1 justify-between">
           <span>Plants</span>
           <div>45</div>
         </div>

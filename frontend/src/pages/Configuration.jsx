@@ -104,12 +104,12 @@ export default function Configuration({ onNavigate }) {
   return (
     <PageLayout currentView="configuration" onNavigate={onNavigate}>
       {/* Habitats */}
-      <div className="chunk-title">
+      <div className="grid grid-cols-[1fr_auto] text-xl font-semibold items-center mb-3">
         Habitat List
-        <div className="card-title-btn">
+        <div className="flex justify-end gap-2">
           <button 
             id="config-new-habitat-btn" 
-            className="btn-small btn-add"
+            className="btn btn-small btn-add"
             onClick={handleHabitatClick}
           >
             NEW
@@ -125,12 +125,12 @@ export default function Configuration({ onNavigate }) {
       <br/>
 
       {/* Addresses */}
-      <div className="chunk-title">
+      <div className="grid grid-cols-[1fr_auto] text-xl font-semibold items-center mb-3">
         Address List
-        <div className="card-title-btn">
+        <div className="flex justify-end gap-2">
           <button 
             id="config-new-address-btn" 
-            className="btn-small btn-add"
+            className="btn btn-small btn-add"
             onClick={handleAddressClick}
           >
             NEW
