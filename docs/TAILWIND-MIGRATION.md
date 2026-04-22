@@ -88,7 +88,7 @@ keeps this logic in one place.
 - [ ] `components/cards.css` — `.card`, `.card-kpi`, `.card-habitat`, `.card-address`, `.card-title`, `.card-title-btn`, floating card animations (landing page)
 - [ ] `components/chunks.css` — `.chunk-title`, `.chunk-container`, `.chunk-container-single-column`, `.chunk-container-1-1`, `.chunk-container-1-2`, `.chunk-container-2-1`
 - [✓] `components/empty-state.css` — `.empty-state`
-- [ ] `components/forms.css` — `.form-panel`, `.form-group`, `.form-label`, `.form-grid`, `.form-section`, `.form-backdrop`, `.form-static-value`
+- [✓] `components/forms.css` — `.form-panel`, `.form-group`, `.form-label`, `.form-grid`, `.form-section`, `.form-backdrop`, `.form-static-value`
 - [✓] `components/hero.css` — Landing page hero section styles — **highest priority**, this is self contained and will be easier to transition
 - [✓] `components/leaf.css` — Floating leaf animation (landing page) — **highest priority**, this is self contained and will be easier to transition
 - [✓] `components/main-content.css` — `.page-container`, `.main-content`, `.content`, `.header`
@@ -100,7 +100,7 @@ keeps this logic in one place.
 
 #### Pages
 - [✓] `pages/dashboard.css` — `#dashboard-schedule-list` scrollbar styles
-- [ ] `pages/inventory.css` — `.status-badge`, `.plant-name`, `.plant-species`, `.btn-icon`, `.loading-spinner`
+- [✓] `pages/inventory.css` — `.status-badge`, `.plant-name`, `.plant-species`, `.btn-icon`, `.loading-spinner`
 - [✓] `pages/landing.css` — All landing page specific styles (`.landing-body`, `.landing-nav`, `.landing-btn`, `.landing-features-grid`, `.landing-cta`, `.landing-footer`, card showcase animations)
 
 ---

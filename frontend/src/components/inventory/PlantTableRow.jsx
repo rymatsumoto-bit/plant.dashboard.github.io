@@ -1,13 +1,17 @@
 export default function PlantTableRow({ plant, onClick }) {
 
-  const formatDate = (dateString) => {
+  const formatDate = (dateString, locale = 'en-US') => {
     if (!dateString) return 'no activity';
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
+
+    // Split YYYY-MM-DD and create a local date (not UTC)
+    const [year, month, day] = dateString.split('-').map(Number);
+    const date = new Date(year, month - 1, day); 
+
+    return new Intl.DateTimeFormat(locale, {
       month: 'short',
       day: 'numeric',
       year: 'numeric'
-    });
+    }).format(date);
   };
 
   const handleDetailClick = (e) => {

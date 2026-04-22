@@ -2,7 +2,7 @@
    INVENTORY PAGE - Additional Styles
    ============================================ */
 
-/* Status Badges */
+/* Status Badges *//*
 .status-badge {
     display: inline-block;
     padding: 4px 12px;
@@ -31,8 +31,8 @@
     background-color: #e2e3e5;
     color: #383d41;
 }
-
-/* Plant Name and Species in Table */
+*/
+/* Plant Name and Species in Table *//*
 .plant-name {
     font-weight: 600;
     color: var(--c-forest-deep, #2D3319);
@@ -44,8 +44,8 @@
     color: var(--c-moss, #5A8A4A);
     font-style: italic;
 }
-
-/* Icon Button in Table */
+*/
+/* Icon Button in Table *//*
 .btn-icon {
     background: transparent;
     border: none;
@@ -59,10 +59,10 @@
 .btn-icon:hover {
     color: var(--c-forest-deep, #2D3319);
     transform: translateX(2px);
-}
+}*/
 
-/* Loading Spinner */
+/* Loading Spinner *//*
 .loading-spinner {
     color: var(--c-moss, #5A8A4A);
     font-size: var(--font-size-lg, 1.1em);
-}
+}*/
