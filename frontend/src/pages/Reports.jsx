@@ -7,13 +7,8 @@ const [isLoading, setIsLoading] = useState(true);
   if (isLoading) {
     return (
       <PageLayout currentView="reports" onNavigate={onNavigate}>
-        <div style={{ 
-          display: 'flex', 
-          justifyContent: 'center', 
-          alignItems: 'center', 
-          minHeight: '400px' 
-        }}>
-          <div className="loading-spinner">Loading reports...</div>
+        <div className="flex justify-center items-center min-h-100">
+          <div className="text-moss text-lg">Loading reports...</div>
         </div>
       </PageLayout>
     );

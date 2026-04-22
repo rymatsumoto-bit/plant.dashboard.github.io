@@ -3,7 +3,7 @@
 // ============================================
 
 import { useState } from 'react';
-import NewActivityModal from '../modals/NewActivityModal';
+import NewActivityModal from '../modals/activities/NewActivityModal';
 import WateringModal from '../modals/activities/WateringModal';
 
 function Toolbar({ currentView, onActivitySuccess }) {

@@ -107,18 +107,44 @@ keeps this logic in one place.
 
 ## Completed Files
 
-components/dashboard/KPICard.jsx
-components/dashboard/ScheduleCard.jsx
-components/inventory/KPICardI.jsx
-components/inventory/PlantActivityRow.jsx
-components/inventory/PlantTable.jsx
-components/inventory/PlantTableRow.jsx
-components/navigation/PageLayout.jsx
-components/navigation/Sidebar.jsx
-components/navigation/Toolbar.jsx
-pages/Dashboard.jsx
-pages/Landing.jsx
-pages/Settings.jsx
+- [ ] components/configuration/AddressCard.jsx
+- [ ] components/configuration/AddressList.jsx
+- [ ] components/configuration/HabitatCard.jsx
+- [ ] components/configuration/HabitatList.jsx
+- [✓] components/dashboard/KPICard.jsx
+- [✓] components/dashboard/ScheduleCard.jsx
+- [✓] components/dashboard/ScheduleItem.jsx
+- [✓] components/inventory/KPICardI.jsx
+- [✓] components/inventory/PlantActivityRow.jsx
+- [✓] components/inventory/PlantTable.jsx
+- [✓] components/inventory/PlantTableRow.jsx
+- [ ] components/modals/activities/NewActivityModal.jsx
+- [ ] components/modals/activities/WateringModal.jsx
+- [ ] components/modals/fields/ActivityTypeSelect.jsx
+- [ ] components/modals/fields/DatePicker.jsx
+- [ ] components/modals/fields/NotesField.jsx
+- [ ] components/modals/fields/PlantSelect.jsx
+- [ ] components/modals/fields/QuantifierInput.jsx
+- [ ] components/modals/fields/ResultField.jsx
+- [ ] components/modals/fields/UnitSelect.jsx
+- [ ] components/modals/fields/WateringLevelSelect.jsx
+- [ ] components/modals/ActivityModalBase.jsx
+- [ ] components/modals/AddressDetailModal.jsx
+- [ ] components/modals/HabitatDetailModal.jsx
+- [ ] components/modals/LoginModal.jsx
+- [ ] components/modals/NewActivityModal.jsx
+- [✓] components/navigation/PageLayout.jsx
+- [✓] components/navigation/Sidebar.jsx
+- [✓] components/navigation/Toolbar.jsx
+- [ ] pages/Configuration.jsx
+- [ ] pages/Dashboard.jsx
+- [ ] pages/Inventory.jsx
+- [✓] pages/Landing.jsx
+- [ ] pages/PlantDetail.jsx
+- [ ] pages/Reports.jsx
+- [✓] pages/Settings.jsx
+
+
 
 ---
 

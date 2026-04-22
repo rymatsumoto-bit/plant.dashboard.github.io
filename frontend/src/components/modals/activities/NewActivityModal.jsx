@@ -7,17 +7,17 @@
 // ============================================
 
 import { useState } from 'react';
-import { getApiUrl, API_CONFIG } from '../../services/api';
-import { getCurrentUserId } from '../../services/supabase';
+import { getApiUrl, API_CONFIG } from '../../../services/api';
+import { getCurrentUserId } from '../../../services/supabase';
 
-import ActivityModalBase from './ActivityModalBase';
-import ActivityTypeSelect from './fields/ActivityTypeSelect';
-import PlantSelect from './fields/PlantSelect';
-import DatePicker from './fields/DatePicker';
-import QuantifierInput from './fields/QuantifierInput';
-import UnitSelect from './fields/UnitSelect';
-import ResultField from './fields/ResultField';
-import NotesField from './fields/NotesField';
+import ActivityModalBase from '../ActivityModalBase';
+import ActivityTypeSelect from '../fields/ActivityTypeSelect';
+import PlantSelect from '../fields/PlantSelect';
+import DatePicker from '../fields/DatePicker';
+import QuantifierInput from '../fields/QuantifierInput';
+import UnitSelect from '../fields/UnitSelect';
+import ResultField from '../fields/ResultField';
+import NotesField from '../fields/NotesField';
 
 export default function NewActivityModal({ onClose, onSuccess }) {
   const [formData, setFormData] = useState({
