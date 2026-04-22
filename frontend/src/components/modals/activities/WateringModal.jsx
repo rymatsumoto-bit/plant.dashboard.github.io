@@ -119,9 +119,9 @@ export default function WateringModal({ onClose, onSuccess, defaultPlantId = nul
 
       {/* Optional Details Section */}
       <div className="form-section">
-        <h3 className="form-section-title">Optional Details</h3>
+        <div className="form-section-title">Optional Details</div>
 
-        <div className="form-grid">
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-6">
           {/* Watering Level — replaces free QuantifierInput */}
           <WateringLevelSelect
             value={formData.quantifier}
@@ -136,7 +136,7 @@ export default function WateringModal({ onClose, onSuccess, defaultPlantId = nul
           />
         </div>
 
-        <div className="form-grid">
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-6">
           <ResultField value={formData.result} onChange={handleChange} />
           <NotesField value={formData.notes} onChange={handleChange} />
         </div>

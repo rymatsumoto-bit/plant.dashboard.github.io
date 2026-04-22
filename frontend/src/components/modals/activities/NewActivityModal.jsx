@@ -117,12 +117,12 @@ export default function NewActivityModal({ onClose, onSuccess }) {
       <div className="form-section">
         <h3 className="form-section-title">Optional Details</h3>
 
-        <div className="form-grid">
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-6">
           <QuantifierInput value={formData.quantifier} onChange={handleChange} />
           <UnitSelect value={formData.unit} onChange={handleChange} />
         </div>
 
-        <div className="form-grid">
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-6">
           <ResultField value={formData.result} onChange={handleChange} />
           <NotesField value={formData.notes} onChange={handleChange} />
         </div>

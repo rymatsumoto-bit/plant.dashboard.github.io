@@ -96,7 +96,7 @@ export default function AddressDetailModal({ addressId, onClose, onEdit, onArchi
               <>
                 {/* Basic Information */}
                 <div className="form-section">
-                  <h3>Basic Information</h3>
+                  <div className="form-section-title">Basic Information</div>
 
                   <div className="form-group">
                     <label>Address Name</label>
@@ -117,8 +117,8 @@ export default function AddressDetailModal({ addressId, onClose, onEdit, onArchi
                 {/* Coordinates */}
                 {formatCoordinates() && (
                   <div className="form-section">
-                    <h3>Coordinates</h3>
-                    <div className="form-section-single-row">
+                    <div className="form-section-title">Coordinates</div>
+                    <div className="flex flex-row gap-8">
                       <div className="form-group">
                         <label>Latitude</label>
                         <p className="detail-value">{address.latitude ?? '—'}</p>
@@ -134,7 +134,7 @@ export default function AddressDetailModal({ addressId, onClose, onEdit, onArchi
 
                 {/* Timezone */}
                 <div className="form-section">
-                  <h3>Timezone</h3>
+                  <div className="form-section-title">Timezone</div>
                   <div className="form-group">
                     <label>Timezone</label>
                     <p className="detail-value">{address.timezone || '—'}</p>

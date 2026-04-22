@@ -8,7 +8,6 @@
 @import "./components/buttons.css";
 @import "./components/cards.css";
 @import "./components/chunks.css";
-@import "./components/forms.css";
 @import "./components/modal.css";
 
 @import "./pages/inventory.css";
@@ -95,6 +94,12 @@
 }
 
 @layer components {
+
+  /* loading spinner */
+  .loading-spinner {
+    @apply text-moss text-xl;
+  }
+
   /* buttons */
   .btn {
     @apply  inline-flex
@@ -116,6 +121,8 @@
     @apply bg-btn-primary-hover
   }
 
+
+
   /* card */
   .card {
     @apply bg-white
@@ -132,6 +139,50 @@
     }
   }
   
+
+
+  /* forms */
+  .form-backdrop {
+    @apply fixed inset-0 bg-black/50 flex items-center justify-center z-1000;
+  }
+
+  .form-group {
+    @apply mb-5;
+  }
+
+  .from-group label {
+    @apply block font-semibold text-font-light mb-1;
+  }
+
+  .form-group input,
+  .form-group select {
+    @apply w-full p-2.5 border border-sand rounded-sm text-base;
+    @apply focus:border-botanical;
+  }
+
+  .form-section {
+    @apply mb-8;
+  }
+
+  .form-section-title {
+    @apply flex items-center text-font-light text-lg mb-4 pt-4 gap-3 border-t border-clay;
+  
+    &::before {
+      content: "";
+      @apply inline-block w-1 h-5 shrink bg-botanical rounded-xs;
+    }
+  }
+
+  /* Form label (used by Layer 2 field components) */
+  .form-label {
+    @apply block font-semibold text-sage mb-1;
+  }
+
+  /* Static value display — shown when a field is locked/disabled */
+  .form-static-value {
+    @apply p-2.5 bg-background-primary border border-sand rounded text-font-light text-base font-semibold;
+  }
+
 
 
   /* scrollbar */

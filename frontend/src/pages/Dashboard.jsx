@@ -49,8 +49,7 @@ export default function Dashboard({ onNavigate }) {
           alignItems: 'center', 
           minHeight: '400px' 
         }}>
-          <div className="loading-spinner"></div>
-          <span className="loading-text">Loading dashboard...</span>
+          <div className="loading-spinner">Loading dashboard...</div>
         </div>
       )}
 

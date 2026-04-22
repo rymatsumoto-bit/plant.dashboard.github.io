@@ -138,7 +138,7 @@ export default function HabitatDetailModal({ habitatId, onClose, onEdit, onArchi
 
                 {/* Light Exposure */}
                 <div className="form-section">
-                  <h3>Light Exposure</h3>
+                  <div className="form-section-title">Light Exposure</div>
 
                   {!hasLights && (
                     <p className="modal-detail-value">No light sources configured.</p>
@@ -201,7 +201,7 @@ export default function HabitatDetailModal({ habitatId, onClose, onEdit, onArchi
 
                 {/* Temperature */}
                 <div className="form-section">
-                  <h3>Temperature</h3>
+                  <div className="form-section-title">Temperature</div>
                   <div className="form-group">
                     <label>Control</label>
                     <p className="modal-detail-value">
@@ -210,7 +210,7 @@ export default function HabitatDetailModal({ habitatId, onClose, onEdit, onArchi
                   </div>
 
                   {habitat.temperature_controlled && (
-                    <div className="form-section-single-row">
+                    <div className="flex flex-row gap-8">
                       <div className="form-group">
                         <label>Min (°F)</label>
                         <p className="detail-value">{habitat.temp_min ?? '—'}</p>
@@ -229,7 +229,7 @@ export default function HabitatDetailModal({ habitatId, onClose, onEdit, onArchi
 
                 {/* Humidity */}
                 <div className="form-section">
-                  <h3>Humidity</h3>
+                  <div className="form-section-title">Humidity</div>
                   <div className="form-group">
                     <label>Level</label>
                     <p className="detail-value">{humidityLevel?.humidity_level || '—'}</p>
@@ -238,7 +238,7 @@ export default function HabitatDetailModal({ habitatId, onClose, onEdit, onArchi
 
                 {/* Appliances */}
                 <div className="form-section">
-                  <h3>Appliances</h3>
+                  <div className="form-section-title">Appliances</div>
                   <div className="form-group">
                     <p className="detail-value">{getApplianceList()}</p>
                   </div>
