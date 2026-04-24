@@ -52,14 +52,14 @@ export default function ActivityModalBase({
                 <button
                   onClick={onClose}
                   disabled={isLoading}
-                  className="btn btn-secondary"
+                  className="btn btn-secondary w-40 h-10"
                 >
                   CANCEL
                 </button>
                 <button
                   onClick={onSubmit}
                   disabled={isLoading}
-                  className="btn btn-primary"
+                  className="btn btn-primary w-40 h-10"
                 >
                   {isLoading ? 'SAVING...' : submitLabel}
                 </button>

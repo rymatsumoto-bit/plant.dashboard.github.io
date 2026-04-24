@@ -52,7 +52,7 @@ The project is actively being built, so the friction compounds daily. This is th
 - `FEATURES.md`: Tailwind Migration — tracks per-file migration status
 - `CLAUDE.md`: Technology Stack section
 
-**Status:** Active
+**Status:** Archived
 
 ------------------------------------------------------------------------------------------------
 

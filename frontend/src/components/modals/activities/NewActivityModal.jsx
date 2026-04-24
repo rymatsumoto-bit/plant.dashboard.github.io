@@ -1,9 +1,9 @@
 // ============================================
 // NewActivityModal.jsx - Layer 3: Generic Activity Modal
 // ============================================
-// Refactored to use ActivityModalBase (Layer 1)
-// and shared field components (Layer 2).
-// All fields are free — no pre-selection or locking.
+// Accepts optional defaultActivityType and defaultPlantId
+// from ActivityLauncher. When provided, the corresponding
+// field is pre-filled and locked.
 // ============================================
 
 import { useState } from 'react';
@@ -19,10 +19,15 @@ import UnitSelect from '../fields/UnitSelect';
 import ResultField from '../fields/ResultField';
 import NotesField from '../fields/NotesField';
 
-export default function NewActivityModal({ onClose, onSuccess }) {
+export default function NewActivityModal({
+  onClose,
+  onSuccess,
+  defaultActivityType = null,
+  defaultPlantId = null,
+}) {
   const [formData, setFormData] = useState({
-    activity_type_code: '',
-    plant_id: '',
+    activity_type_code: defaultActivityType || '',
+    plant_id: defaultPlantId || '',
     activity_date: new Date().toISOString().split('T')[0],
     quantifier: '',
     unit: '',
@@ -95,16 +100,18 @@ export default function NewActivityModal({ onClose, onSuccess }) {
       isLoading={isLoading}
       error={error}
     >
-      {/* Activity Type — free dropdown */}
+      {/* Activity Type — locked if defaultActivityType was provided */}
       <ActivityTypeSelect
         value={formData.activity_type_code}
         onChange={handleChange}
+        disabled={!!defaultActivityType}
       />
 
-      {/* Plant — free dropdown */}
+      {/* Plant — locked if defaultPlantId was provided */}
       <PlantSelect
         value={formData.plant_id}
         onChange={handleChange}
+        disabled={!!defaultPlantId}
       />
 
       {/* Date */}
