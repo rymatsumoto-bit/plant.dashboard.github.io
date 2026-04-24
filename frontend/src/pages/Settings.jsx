@@ -31,33 +31,38 @@ export default function Settings({ onNavigate }) {
 
   return (
     <PageLayout currentView="settings" onNavigate={onNavigate}>
+      {/* Container */}
+      <div className="grid grid-cols-3">
 
-      {/* Admin Actions */}
-      <div className="card">
-        <h1>Daily Batch</h1>
-        <p>Manually trigger the daily batch to recalculate plant factors, statuses, and schedules.</p>
+        {/* Admin Actions */}
+        <div className="card p-6">
+          <h1>Daily Batch</h1>
+          <p>Manually trigger the daily batch to recalculate plant factors, statuses, and schedules.</p>
+          <br/>
+          <div className="grid grid-cols-2 items-start justify-start">
+            <button
+              className="btn btn-primary w-48 h-12"
+              onClick={handleRunDailyBatch}
+              disabled={batchStatus === 'loading'}
+            >
+              {batchStatus === 'loading' ? 'RUNNING...' : 'RUN DAILY BATCH'}
+            </button>
 
-        <button
-          className="btn btn-primary w-48 h-12"
-          onClick={handleRunDailyBatch}
-          disabled={batchStatus === 'loading'}
-        >
-          {batchStatus === 'loading' ? 'Running...' : 'RUN DAILY BATCH'}
-        </button>
+            {/* Feedback */}
+            {batchStatus === 'success' && (
+              <p className="text-success">
+                ✅ {batchMessage}
+              </p>
+            )}
+            {batchStatus === 'error' && (
+              <p className="text-danger">
+                ❌ {batchMessage}
+              </p>
+            )}
+          </div>
+        </div>
 
-        {/* Feedback */}
-        {batchStatus === 'success' && (
-          <p className="mt-4 text-success">
-            ✅ {batchMessage}
-          </p>
-        )}
-        {batchStatus === 'error' && (
-          <p className="mt-4 text-danger">
-            ❌ {batchMessage}
-          </p>
-        )}
       </div>
-
     </PageLayout>
   );
 }

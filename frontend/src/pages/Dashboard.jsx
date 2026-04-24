@@ -43,12 +43,7 @@ export default function Dashboard({ onNavigate }) {
     <PageLayout currentView="dashboard" onNavigate={onNavigate} onActivitySuccess={loadDashboardData}>
       {/* Loading State */}
       {isLoading && (
-        <div  style={{ 
-          display: 'flex', 
-          justifyContent: 'center', 
-          alignItems: 'center', 
-          minHeight: '400px' 
-        }}>
+        <div className="flex justify-center items-center min-h-100">
           <div className="loading-spinner">Loading dashboard...</div>
         </div>
       )}
@@ -62,38 +57,40 @@ export default function Dashboard({ onNavigate }) {
 
       {/* Dashboard Content */}
       {!isLoading && !error && metrics && (
-        <div className="grid grid-cols-[1fr_2fr] gap-8 mb-8 items-start">
+        <div className="grid grid-cols-[1fr_3fr] gap-8 items-start">
+
           {/* KPIs Section */}
-          <div className="grid grid-cols-1 gap-6 items-start">
-            <div className="grid grid-cols-[1fr_auto] text-xl font-semibold items-center mb-3">KPIs</div>
-            
-            <KPICard
-              title="Plants"
-              metric={metrics.plant_active_total_count || 0}
-              tagline="Total"
-              iconSrc="assets/images/icons/kpi-plant-count.svg"
-            />
-            
-            <KPICard
-              title="Healthy"
-              metric={`${metrics.plant_healthy_percentage || 0}%`}
-              tagline="of Total"
-              iconSrc="assets/images/icons/kpi-plant-healthy.svg"
-            />
-            
-            <KPICard
-              title="Active Alerts"
-              metric={metrics.schedule_alert_count || 0}
-              tagline="Total"
-              iconSrc="assets/images/icons/kpi-plant-attention.svg"
-            />
+          <div className="card h-160 flex flex-col items-start p-6">
+            <h1 className="shrink-0">Overview</h1>
+            <div className="grid gap-6 flex-1 w-full">
+              <KPICard
+                title="Plants"
+                metric={metrics.plant_active_total_count || 0}
+                tagline="Total"
+                iconSrc="assets/images/icons/kpi-plant-count.svg"
+              />
+              
+              <KPICard
+                title="Healthy"
+                metric={`${metrics.plant_healthy_percentage || 0}%`}
+                tagline="of Total"
+                iconSrc="assets/images/icons/kpi-plant-healthy.svg"
+              />
+              
+              <KPICard
+                title="Alerts"
+                metric={metrics.schedule_alert_count || 0}
+                tagline="Total"
+                iconSrc="assets/images/icons/kpi-plant-attention.svg"
+              />
+            </div>
           </div>
 
-          {/* Schedule Section */}
-          <div className="grid grid-cols-1 gap-6 items-start">
-            <div className="grid grid-cols-[1fr_auto] text-xl font-semibold items-center mb-3">Schedule</div>
+          {/* Alert Section */}
+          <div className="grid grid-cols-1 h-160 gap-6 items-start">
               <ScheduleCard schedule={schedule} />
           </div>
+
         </div>
       )}
     </PageLayout>

@@ -8,6 +8,7 @@ import Landing from './pages/Landing';
 import PlantDetail from './pages/PlantDetail';
 import Reports from './pages/Reports';
 import Settings from './pages/Settings';
+import { ActivityProvider } from './context/ActivityContext';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -143,7 +144,11 @@ function App() {
     }
   };
 
-  return renderView();
+  return (
+    <ActivityProvider>
+      {renderView()}
+    </ActivityProvider>
+  );
 }
 
 export default App;

@@ -114,11 +114,7 @@ A solution that combines plant historical data and environment information, enha
  
 ### Frontend
 - React (with Vite)
-- **CSS: Incremental migration to Tailwind CSS** (decision made 2026-03-20)
-  - New components use Tailwind only
-  - Existing custom CSS files are migrated opportunistically
-  - Both coexist during transition — this is intentional
-  - See `docs/TAILWIND-MIGRATION.md` for per-file migration status and rules
+- Tailwind CSS v4 (finished conversion on 23-Apr-2026)
   - See `docs/DECISIONS.md` for full reasoning
  
 ### Backend
@@ -160,18 +156,11 @@ plant-care-dashboard/
 │   │   ├── css/
 │   │   │   ├── main.css                            # Import all css files, to be the single reference in all html files
 │   │   │   ├── reset.css                           # CSS reset
-│   │   │   ├── variables.css                       # Design tokens (colors, spacing, etc.)
-│   │   │   ├── base.css                            # Base styles and utilities
-│   │   │   │
-│   │   │   ├── components/
-│   │   │   │   ├── buttons.css                     # Button styles
-│   │   │   │   ├── cards.css
-│   │   │   │   ├── chunks.css
-│   │   │   │   ├── forms.css
-│   │   │   │   └── modal.css                      # 
-│   │   │   │
-│   │   │   └── pages/                          # Styles specific for individual pages
-│   │   │      └── inventory.css                      # Settings feature styles
+│   │   │   └── base.css                            # Base styles and utilities
+│   │   │
+│   │   ├── context/                                # jsx components for handling hooks
+│   │   │   ├── ActivityContext.jsx                     # ActivityProvide, useActivity hook
+│   │   │
 │   │   │
 │   │   ├── components/                             # jsx components of the pages
 │   │   │   ├── dashboard/                          # components in dashboard page
@@ -183,6 +172,7 @@ plant-care-dashboard/
 │   │   │   │   ├── PlantTable.jsx                      # Table
 │   │   │   │   └── PlantTableRow.jsx                   # Table row
 │   │   │   ├── modals/                             # modal components
+│   │   │   │   ├── ActivityLauncher.jsx                # switchboard for activity modals
 │   │   │   │   ├── LoginModal.jsx                      # Logging in from Landing page
 │   │   │   │   └── 
 │   │   │   │

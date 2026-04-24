@@ -154,7 +154,7 @@
             p-1
             cursor-pointer;
 
-    h1 { @apply text-forest-teal text-3xl mb-0 pb-2.5; }
+    h1 { @apply text-forest-teal text-3xl mb-0 pb-6; }
     h2 { @apply text-botanical text-xl mb-0 pb-2.5; }
     h3 { @apply text-botanical text-base pb-2.5; }
     h4 { @apply text-botanical text-sm pb-2.5; }
