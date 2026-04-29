@@ -1,7 +1,7 @@
 {
   "name": "plant-dashboard",
   "private": true,
-  "version": "0.5.0",
+  "version": "0.5.0.7",
   "type": "module",
   "homepage": "https://rymatsumoto-bit.github.io/plant.dashboard.github.io",
   "scripts": {

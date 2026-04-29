@@ -50,7 +50,7 @@ export default function PlantDetail({ plantId, onBack, onNavigate }) {
     <PageLayout currentView="inventory" onNavigate={onNavigate}>
 
       {/* BACK */}
-      <button className="btn btn-edit" onClick={onBack}>
+      <button className="btn btn-edit p-2" onClick={onBack}>
         BACK ↩
       </button>
       <br/>
@@ -81,7 +81,7 @@ export default function PlantDetail({ plantId, onBack, onNavigate }) {
               </div>
             </div>
 
-            <div className="card">
+            <div className="card p-4">
               <h1>{capitalize(details.plant_name)}</h1>
               <div>{capitalize(details.species)}</div>
               
