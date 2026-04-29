@@ -12,6 +12,7 @@ import uuid
 import pandas as pd
 import json
 from utils.supabase_client import get_client
+from scripts.functions import supabase_rpc_payload
 from scripts.factors import registry as factor_registry
 from scripts.factors_contribution import registry as factor_contribution_registry
 import scripts.manager_plant_status as manager_plant_status
@@ -108,7 +109,9 @@ class NewActivity:
             # MERGE PLANT TYPE DATA INTO PLANT DETAIL
             plant_data_df = plant_data_df.merge(plant_type_df, on='plant_type_id', how='left')
 
-            # GET ACTIVITY
+
+
+            # GET NEW ACTIVITY DATA
             activity_data_df = (self.supabase
                 .table('plant_activity_history')
                 .select('plant_id, activity_date, quantifier')
@@ -118,7 +121,7 @@ class NewActivity:
                 .order('activity_date', desc=False)
                 .execute())
             
-            ## Add new activity
+            # APPEND WITH HISTORICAL ACTIVITY
             if activity_data_df.data:
                 activity_data_df = pd.DataFrame(activity_data_df.data)    
             else:
@@ -126,6 +129,7 @@ class NewActivity:
             
             activity_data_df = pd.concat([new_activity_df, activity_data_df], join='inner', ignore_index=True)
             activity_data_df['activity_date'] = pd.to_datetime(activity_data_df['activity_date'])
+
 
             # GET ALL CURRENT FACTOR CONTRIBUTIONS (for status calculations)
             factor_contribution_data = (self.supabase
@@ -145,90 +149,96 @@ class NewActivity:
              # Get the factors for this specific activity type
             factors_to_calculate = list_factors_calculation.get(activity_type_code, [])
             
+            # DETERMINE IF CALCULATES FACTORS
             if not factors_to_calculate:
-                print(f"Warning: No factors defined for activity type '{activity_type_code}'")
-                self.stats['errors'] += 1
-                return self.stats
-            
-            # CALCULATE FACTOR and CONTRIBUTION for EACH COMPONENT
-            for factor in factors_to_calculate:
+
+                # If there's nothing to calculate, prep the data as None
+                plant_factor_df = None
+                plant_factor_contribution_df = None
+                plant_status_df = None
+                schedule_df = None
+
+            else:
+
+                # CALCULATE FACTOR and CONTRIBUTION for EACH COMPONENT
+                for factor in factors_to_calculate:
+                    try:
+                        # CALCULATE FACTOR
+                        if factor in factor_registry:
+                            print(f"Calculating {factor}.")
+                            plant_single_factor_df = factor_registry[factor].run(
+                                plant_data_df,
+                                activity_data_df,
+                                run_id=self.batch_id
+                            )
+                            plant_factor_df = pd.concat([plant_factor_df,plant_single_factor_df], ignore_index=True)
+                            self.stats['completed'] += 1
+                            
+                        else:
+                            print(f"Warning: {factor} is not a valid factor.")
+                            self.stats['errors'] += 1
+
+                        # CALCULATE FACTOR CONTRIBUTION
+                        if factor in factor_contribution_registry:
+                            print(f"Calculating {factor} contribution.")
+                            plant_single_factor_contribution_df = factor_contribution_registry[factor].run(
+                                plant_factor_df,
+                                today = self.today_date,
+                                run_id=self.batch_id
+                            )
+                            plant_factor_contribution_df = pd.concat([plant_factor_contribution_df,plant_single_factor_contribution_df], ignore_index=True)
+
+                            # ADJUST TABLE OF FACTORS CONTRIBUTIONS
+                            ## Remove previous factor contribution
+                            factor_contribution_data_df = factor_contribution_data_df[factor_contribution_data_df['factor_code'] != factor]
+                            ## Add new factor contribution
+                            factor_contribution_df = pd.concat([factor_contribution_data_df,plant_factor_contribution_df], ignore_index=True)
+
+                            self.stats['completed'] += 1
+                        else:
+                            print(f"Warning: {factor} is not a valid factor contribution.")
+                            self.stats['errors'] += 1
+
+                    except Exception as e:
+                        print(f"❌ Error in factor calculation: {str(e)}")
+                        raise  # stop entire batch on failure
+
+
+                # CALCULATE STATUS
                 try:
-                    # CALCULATE FACTOR
-                    if factor in factor_registry:
-                        print(f"Calculating {factor}.")
-                        plant_single_factor_df = factor_registry[factor].run(
-                            plant_data_df,
-                            activity_data_df,
-                            run_id=self.batch_id
-                        )
-                        plant_factor_df = pd.concat([plant_factor_df,plant_single_factor_df], ignore_index=True)
-                        self.stats['completed'] += 1
-                        
-                    else:
-                        print(f"Warning: {factor} is not a valid factor.")
-                        self.stats['errors'] += 1
-
-                    # CALCULATE FACTOR CONTRIBUTION
-                    if factor in factor_contribution_registry:
-                        print(f"Calculating {factor} contribution.")
-                        plant_single_factor_contribution_df = factor_contribution_registry[factor].run(
-                            plant_factor_df,
-                            today = self.today_date,
-                            run_id=self.batch_id
-                        )
-                        plant_factor_contribution_df = pd.concat([plant_factor_contribution_df,plant_single_factor_contribution_df], ignore_index=True)
-
-                        # ADJUST TABLE OF FACTORS CONTRIBUTIONS
-                        ## Remove previous factor contribution
-                        factor_contribution_data_df = factor_contribution_data_df[factor_contribution_data_df['factor_code'] != factor]
-                        ## Add new factor contribution
-                        factor_contribution_df = pd.concat([factor_contribution_data_df,plant_factor_contribution_df], ignore_index=True)
-
-                        self.stats['completed'] += 1
-                    else:
-                        print(f"Warning: {factor} is not a valid factor contribution.")
-                        self.stats['errors'] += 1
-
+                    print(f"Calculating statuses.")
+                    plant_status_df = manager_plant_status.run(
+                        factor_contribution_df,
+                        run_id=self.batch_id,
+                        supabase=self.supabase
+                    )
+                    self.stats['completed'] += 1
                 except Exception as e:
-                    print(f"❌ Error in factor calculation: {str(e)}")
+                    print(f"❌ Error in factor contribution calculation: {str(e)}")
                     raise  # stop entire batch on failure
 
-
-            # CALCULATE STATUS
-            try:
-                print(f"Calculating statuses.")
-                plant_status_df = manager_plant_status.run(
-                    factor_contribution_df,
-                    run_id=self.batch_id,
-                    supabase=self.supabase
-                )
-                self.stats['completed'] += 1
-            except Exception as e:
-                print(f"❌ Error in factor contribution calculation: {str(e)}")
-                raise  # stop entire batch on failure
-
-            # PREPARE SCHEDULE ITEMS
-            try:
-                print(f"Managing schedule.")
-                schedule_df = create_schedule(
-                    plant_factor_df,
-                    today_date=self.batch_timestamp,
-                    run_id=self.batch_id,
-                    supabase = self.supabase
-                )
-                self.stats['completed'] += 1
-            except Exception as e:
-                print(f"❌ Error in managing schedule: {str(e)}")
-                raise  # stop entire batch on failure
+                # PREPARE SCHEDULE ITEMS
+                try:
+                    print(f"Managing schedule.")
+                    schedule_df = create_schedule(
+                        plant_factor_df,
+                        today_date=self.batch_timestamp,
+                        run_id=self.batch_id,
+                        supabase = self.supabase
+                    )
+                    self.stats['completed'] += 1
+                except Exception as e:
+                    print(f"❌ Error in managing schedule: {str(e)}")
+                    raise  # stop entire batch on failure
 
 
             # PREPARE DATA TO UPLOAD
             self.batch_timestamp = self.batch_timestamp.isoformat()
-            new_activity_df = json.loads(new_activity_df.to_json(orient="records", date_format="iso")) 
-            plant_factor_df = json.loads(plant_factor_df.to_json(orient="records", date_format="iso"))
-            plant_factor_contribution_df = json.loads(plant_factor_contribution_df.to_json(orient="records", date_format="iso"))
-            plant_status_df = json.loads(plant_status_df.to_json(orient="records", date_format="iso"))
-            schedule_df = json.loads(schedule_df.to_json(orient="records", date_format="iso"))
+            new_activity_df = supabase_rpc_payload(new_activity_df)
+            plant_factor_df = supabase_rpc_payload(plant_factor_df)
+            plant_factor_contribution_df = supabase_rpc_payload(plant_factor_contribution_df)
+            plant_status_df = supabase_rpc_payload(plant_status_df)
+            schedule_df = supabase_rpc_payload(schedule_df)
 
             # EXECUTE IN SUPAPBASE
             response = self.supabase.rpc(

@@ -15,6 +15,7 @@ from utils.supabase_client import get_client
 from scripts.factors_contribution import registry as factor_contribution_registry
 from scripts.schedule.severity import run as schedule_severity_calculator
 from scripts.manager_plant_status import run as status_calculator
+from scripts.functions import supabase_rpc_payload
 
 # Add parent directory to path for imports
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -239,9 +240,9 @@ class DailyBatch:
 
             # PREPARE DATA TO UPLOAD
             self.batch_timestamp = self.batch_timestamp.isoformat()
-            schedule_severity_update_df = json.loads(schedule_severity_update_df.to_json(orient="records", date_format="iso"))
-            factor_contribution_update_df = json.loads(factor_contribution_update_df.to_json(orient="records", date_format="iso"))
-            status_update_df = json.loads(status_update_df.to_json(orient="records", date_format="iso"))
+            schedule_severity_update_df = supabase_rpc_payload(schedule_severity_update_df)
+            factor_contribution_update_df = supabase_rpc_payload(factor_contribution_update_df)
+            status_update_df =supabase_rpc_payload(status_update_df)
 
             # EXECUTE IN SUPAPBASE
             response = self.supabase.rpc(
